@@ -1,0 +1,41 @@
+--- libosso-2.16/src/osso-init.c
++++ libosso-2.16/src/osso-init.c
+@@ -655,11 +655,10 @@ _msg_handler(DBusConnection *conn, DBusM
+ #endif
+ 
+     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+ }
+ 
+-inline int __attribute__ ((visibility("hidden")))
+ muali_convert_msgtype(int t)
+ {
+     switch (t) {
+             case DBUS_MESSAGE_TYPE_METHOD_CALL:
+                     return MUALI_EVENT_MESSAGE;
+--- libosso-2.16/src/osso-internal.h
++++ libosso-2.16/src/osso-internal.h
+@@ -295,9 +295,8 @@ void _close_all_plugins(osso_context_t *
+ 
+ inline void __attribute__ ((visibility("hidden")))
+ _muali_parse_id(const char *id, muali_bus_type *bus, char *sender,
+                 int *serial);
+ 
+-inline void __attribute__ ((visibility("hidden")))
+ _muali_make_id(muali_bus_type bus, const char *sender, int serial, char *id);
+ 
+ #endif /* OSSO_INTERNAL_H_ */
+--- libosso-2.16/src/osso-rpc.c
++++ libosso-2.16/src/osso-rpc.c
+@@ -1024,11 +1024,10 @@ _muali_parse_id(const char *id, muali_bu
+         }
+         buf[i] = '\0';
+         *serial = atoi(buf);
+ }
+ 
+-inline void __attribute__ ((visibility("hidden")))
+ _muali_make_id(muali_bus_type bus, const char *sender, int serial, char *id)
+ {
+         snprintf(id, MAX_MSGID_LEN, "%d,%s,%d", bus, sender, serial);
+ }
+ 
+
