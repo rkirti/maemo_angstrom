@@ -5,9 +5,9 @@ DESCRIPTION = "DEv package for browser services"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "Mozilla Public License"
 SECTION = "base"
-PR = "r1"
+PR = "r4"
 
-SRC_URI = "http://repository.maemo.org/pool/diablo/free/t/${PN}/${PN}_${PV}-1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/fremantle/free/t/${PN}/${PN}_${PV}-4.tar.gz"
 
 inherit autotools
 
