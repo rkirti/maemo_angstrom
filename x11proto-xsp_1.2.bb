@@ -5,9 +5,9 @@ DESCRIPTION = "X11 XSP extension wire protocol"
 HOMEPAGE = "unknown"
 LICENSE = "Nokia copyright"
 SECTION = "base"
-PR = "r1"
+PR = "r151"
 
-SRC_URI = "http://repository.maemo.org/pool/diablo/free/x/${PN}/${PN}_${PV}-1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/fremantle/free/x/${PN}/${PN}_${PV}-1.tar.gz"
 
 inherit autotools pkgconfig
 
