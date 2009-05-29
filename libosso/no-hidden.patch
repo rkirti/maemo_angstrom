@@ -1,0 +1,35 @@
+diff --git a/libosso-2.19.orig/src/osso-init.c b/libosso-2.19/src/osso-init.c
+index 9d9c624..90f621e 100644
+--- libosso-2.19/src/osso-init.c
++++ libosso-2.19/src/osso-init.c
+@@ -717,8 +717,11 @@ _msg_handler(DBusConnection *conn, DBusMessage *msg, void *data)
+     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+ }
+ 
+-inline int __attribute__ ((visibility("hidden")))
+-muali_convert_msgtype(int t)
++/*inline int __attribute__ ((visibility("hidden")))*/
++/* 29/05/09 17:22:48  Kirtika B Ruchandani <kirtibr@gmail.com> 
++ * Attribute hidden breaks build at link stage 
++ */
++inline int muali_convert_msgtype(int t)
+ {
+     switch (t) {
+             case DBUS_MESSAGE_TYPE_METHOD_CALL:
+diff --git a/libosso-2.19.orig/src/osso-rpc.c b/libosso-2.19/src/osso-rpc.c
+index 9b1cde4..21aea9a 100644
+--- libosso-2.19/src/osso-rpc.c
++++ libosso-2.19/src/osso-rpc.c
+@@ -1026,7 +1026,10 @@ _muali_parse_id(const char *id, muali_bus_type *bus, char *sender,
+         *serial = atoi(buf);
+ }
+ 
+-inline void __attribute__ ((visibility("hidden")))
++/*inline void __attribute__ ((visibility("hidden")))*/
++/*29/05/09 17:25:57  Kirtika B Ruchandani <kirtibr@gmail.com> 
++ *Attribute hidden breaks build at link stage
++ */
+ _muali_make_id(muali_bus_type bus, const char *sender, int serial, char *id)
+ {
+         snprintf(id, MAX_MSGID_LEN, "%d,%s,%d", bus, sender, serial);
+
