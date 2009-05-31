@@ -9,7 +9,7 @@ DEPENDS = "libosso libhildon bluez-libs"
 PR = "r1"
 
 
-SRC_URI = "http://repository.maemo.org/pool/diablo/free/o/${PN}/${PN}_${PV}.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}.tar.gz"
 
 
 inherit autotools pkgconfig 
