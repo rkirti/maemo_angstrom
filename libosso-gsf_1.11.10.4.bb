@@ -6,10 +6,10 @@ HOMEPAGE = "http://maemo.org"
 LICENSE = "GPL"
 SECTION = "base"
 DEPENDS = "glib-2.0 zlib"
-PR = "r0"
+PR = "r2"
 
 
-SRC_URI = "http://repository.maemo.org/pool/diablo/free/libo/${PN}/${PN}_${PV}-1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libo/${PN}/${PN}_${PV}-2.tar.gz"
 
 inherit autotools pkgconfig
 
