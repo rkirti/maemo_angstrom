@@ -4,6 +4,6 @@
 LICENSE = "GPL"
 PR = "r1"
 
-SRC_URI = "http://repository.maemo.org/pool/diablo/free/o/${PN}/${PN}_${PV}-1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}-1.tar.gz"
 
 require osso.inc
