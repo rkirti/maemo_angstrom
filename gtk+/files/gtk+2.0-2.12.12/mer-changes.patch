@@ -1,0 +1,110 @@
+--- gtk+2.0-2.12.12-1maemo12+0m5.orig/autogen.sh
++++ gtk+2.0-2.12.12-1maemo12+0m5/autogen.sh
+@@ -16,7 +16,7 @@
+ if libtoolize --version < /dev/null > /dev/null 2>&1 ; then
+ 	libtool_version=`libtoolize --version | sed 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
+ 	case $libtool_version in
+-	    1.4*|1.5*)
++	    1.4*|1.5*|2.2*)
+ 		have_libtool=true
+ 		;;
+ 	esac
+--- gtk+2.0-2.12.12-1maemo12+0m5.orig/configure.in
++++ gtk+2.0-2.12.12-1maemo12+0m5/configure.in
+@@ -381,7 +381,7 @@
+ case $enable_explicit_deps in
+   auto)
+     export SED
+-    deplibs_check_method=`(./libtool --config; echo 'eval echo $deplibs_check_method') | sh`
++    deplibs_check_method=`(${CONFIG_SHELL-/bin/sh} libtool --config; echo 'eval echo $deplibs_check_method') | sh`
+     if test "x$deplibs_check_method" '!=' xpass_all || test "x$enable_static" = xyes ; then
+       enable_explicit_deps=yes  
+     else
+@@ -730,7 +730,7 @@
+     dnl Now we check to see if our libtool supports shared lib deps
+     dnl (in a rather ugly way even)
+     if $dynworks; then
+-        pixbuf_libtool_config="${CONFIG_SHELL-/bin/sh} ./libtool --config"
++        pixbuf_libtool_config="${CONFIG_SHELL-/bin/sh} libtool --config"
+         pixbuf_deplibs_check=`$pixbuf_libtool_config | \
+             grep '^[[a-z_]]*check[[a-z_]]*_method=[['\''"]]' | \
+             sed 's/.*[['\''"]]\(.*\)[['\''"]]$/\1/'`
+@@ -1659,7 +1659,7 @@
+ # We are using gmodule-no-export now, but I'm leaving the stripping
+ # code in place for now, since pango and atk still require gmodule.
+ export SED
+-export_dynamic=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
++export_dynamic=`(${CONFIG_SHELL-/bin/sh} libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
+ if test -n "$export_dynamic"; then
+   GDK_PIXBUF_DEP_LIBS=`echo $GDK_PIXBUF_DEP_LIBS | sed -e "s/$export_dynamic//"`
+   GDK_PIXBUF_XLIB_DEP_LIBS=`echo $GDK_PIXBUF_XLIB_DEP_LIBS | sed -e "s/$export_dynamic//"`
+--- gtk+2.0-2.12.12-1maemo12+0m5.orig/debian/libgtk2.0-dev.files
++++ gtk+2.0-2.12.12-1maemo12+0m5/debian/libgtk2.0-dev.files
+@@ -1,6 +1,6 @@
+ usr/bin/gdk-pixbuf-csource
+ usr/include/*
+-usr/lib/lib*.{so,a}
++usr/lib/lib*.{so,a,la}
+ usr/lib/pkgconfig/*.pc
+ usr/lib/*/*/*/*.a
+ usr/lib/*/include/*.h
+--- gtk+2.0-2.12.12-1maemo12+0m5.orig/debian/control
++++ gtk+2.0-2.12.12-1maemo12+0m5/debian/control
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Claudio Saavedra <csaavedra@igalia.com>
+-Build-Depends: debhelper (>> 4.0.0), gettext, pkg-config, libglib2.0-dev (>= 2.12.12-1osso9), libpango1.0-dev (>= 1.12.0), libatk1.0-dev (>= 1.9.0), libcairo2-dev (>= 1.2.0), libx11-dev, libxext-dev, libxi-dev, libxrandr-dev, libxt-dev, libxrender-dev, libxft-dev, libxcursor-dev,  libjpeg62-dev, libpng12-dev, gtk-doc-tools, libtiff4-dev, libexpat1-dev, libxfixes-dev, libtool (>= 1.5.12), libxtst-dev
++Build-Depends: debhelper (>> 4.0.0), gettext, pkg-config, libglib2.0-dev (>= 2.12.12-1osso9), libpango1.0-dev (>= 1.12.0), libatk1.0-dev (>= 1.9.0), libcairo2-dev (>= 1.2.0), libx11-dev, libxext-dev, libxi-dev, libxrandr-dev, libxt-dev, libxrender-dev, libxft-dev, libxcursor-dev,  libjpeg62-dev, libpng12-dev, gtk-doc-tools, libtiff4-dev, libexpat1-dev, libxfixes-dev, libtool (>= 1.5.12), libxtst-dev, automake1.7
+ Build-Depends-Indep: gtk-doc-tools, libglib2.0-doc, libpango1.0-doc, libatk1.0-doc, libcairo2-doc
+ Standards-Version: 3.6.1.0
+ 
+@@ -12,6 +12,7 @@
+ Depends: libgtk2.0-common (>= ${Source-Version}), libgtk2.0-bin (>= ${Source-Version}), gtk20-l10n, ${shlibs:Depends}
+ Conflicts: libgtk2.0-0png3, eog2 (<< 1.0.1-4), gnome-panel2 (<< 2.0.4-1), celestia (<< 1.2.4-4), gimp1.3 (<< 1.3.7-1.1), metatheme (<< 0.9.7-3), libgnomeui-0 (<< 2.0.6-2), gtk2.0-examples (<< 2.2.0), libgdkxft0, gtk2-engines-wonderland (<= 1.0-2), gtk2-engines-cleanice (<= 1.2.8-1), gtk2-engines-thinice (<< 2.6), gtk2-engines-crux (<< 2.6), gtk2-engines-mist (<< 2.6), gtk2-engines-highcontrast (<< 2.6), gtk2-engines-lighthouseblue (<< 2.6), gnome-themes (<< 2.6), gtk2-engines-industrial (<< 0.2.32-5), gtk2-engines-pixbuf (<< 2.2.0-2.1), gtk2-engines-redmond95 (<< 2.2.0-2.1), gtk2-engines-metal (<< 2.2.0-2.1), gtk2-engines-magicchicken (<= 1.1.1-4), gtk2-engines-qtpixmap (<= 0.28-1), gtk2-engines-smooth (<< 0.5.6-3), gtk2-engines-xfce (<= 2.1.8-1), tamil-gtk2im (<= 2.2-4), imhangul (<< 0.9.9-3), librsvg2-common (<< 2.6.3-1)
+ Replaces: libgtk2.0-0png3
++Provides: gtk2.0-binver-2.10.0
+ Description: The GTK+ graphical user interface library
+  The GTK+ is a multi-platform toolkit for creating graphical user
+  interfaces. Offering a complete set of widgets, the GTK+ is suitable
+--- gtk+2.0-2.12.12-1maemo12+0m5.orig/debian/changelog
++++ gtk+2.0-2.12.12-1maemo12+0m5/debian/changelog
+@@ -1,3 +1,19 @@
++gtk+2.0 (2:2.12.12-1maemo12+0m5-mer2) jaunty; urgency=low
++
++  * Remove ./libtool references.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Thu, 21 May 2009 10:06:19 +0000
++
++gtk+2.0 (2:2.12.12-1maemo12+0m5-mer1) jaunty; urgency=low
++
++  * Changed autogen.sh to handle libtool 2.2 too
++  * Removed bashisms in configure
++  * Build-depend on automake1.7
++  * Provide gtk2.0-binver-2.10.0
++  * Provide .la's with libgtk2.0-dev
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Wed, 20 May 2009 13:35:15 +0000
++
+ gtk+2.0 (2:2.12.12-1maemo12+0m5) unstable; urgency=low
+ 
+   * This entry has been added by BIFH queue processor
+--- gtk+2.0-2.12.12-1maemo12+0m5.orig/debian/control.in
++++ gtk+2.0-2.12.12-1maemo12+0m5/debian/control.in
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Claudio Saavedra <csaavedra@igalia.com>
+-Build-Depends: debhelper (>> 4.0.0), gettext, pkg-config, libglib2.0-dev (>= 2.12.12-1osso9), libpango1.0-dev (>= 1.12.0), libatk1.0-dev (>= 1.9.0), libcairo2-dev (>= 1.2.0), libx11-dev, libxext-dev, libxi-dev, libxrandr-dev, libxt-dev, libxrender-dev, libxft-dev, libxcursor-dev,  libjpeg62-dev, libpng12-dev, gtk-doc-tools, libtiff4-dev, libexpat1-dev, libxfixes-dev, libtool (>= 1.5.12), libxtst-dev
++Build-Depends: debhelper (>> 4.0.0), gettext, pkg-config, libglib2.0-dev (>= 2.12.12-1osso9), libpango1.0-dev (>= 1.12.0), libatk1.0-dev (>= 1.9.0), libcairo2-dev (>= 1.2.0), libx11-dev, libxext-dev, libxi-dev, libxrandr-dev, libxt-dev, libxrender-dev, libxft-dev, libxcursor-dev,  libjpeg62-dev, libpng12-dev, gtk-doc-tools, libtiff4-dev, libexpat1-dev, libxfixes-dev, libtool (>= 1.5.12), libxtst-dev, automake1.7
+ Build-Depends-Indep: gtk-doc-tools, libglib2.0-doc, libpango1.0-doc, libatk1.0-doc, libcairo2-doc
+ Standards-Version: 3.6.1.0
+ 
+@@ -12,6 +12,7 @@
+ Depends: libgtk2.0-common (>= ${Source-Version}), libgtk2.0-bin (>= ${Source-Version}), gtk20-l10n, ${shlibs:Depends}
+ Conflicts: libgtk2.0-0png3, eog2 (<< 1.0.1-4), gnome-panel2 (<< 2.0.4-1), celestia (<< 1.2.4-4), gimp1.3 (<< 1.3.7-1.1), metatheme (<< 0.9.7-3), libgnomeui-0 (<< 2.0.6-2), gtk2.0-examples (<< 2.2.0), libgdkxft0, gtk2-engines-wonderland (<= 1.0-2), gtk2-engines-cleanice (<= 1.2.8-1), gtk2-engines-thinice (<< 2.6), gtk2-engines-crux (<< 2.6), gtk2-engines-mist (<< 2.6), gtk2-engines-highcontrast (<< 2.6), gtk2-engines-lighthouseblue (<< 2.6), gnome-themes (<< 2.6), gtk2-engines-industrial (<< 0.2.32-5), gtk2-engines-pixbuf (<< 2.2.0-2.1), gtk2-engines-redmond95 (<< 2.2.0-2.1), gtk2-engines-metal (<< 2.2.0-2.1), gtk2-engines-magicchicken (<= 1.1.1-4), gtk2-engines-qtpixmap (<= 0.28-1), gtk2-engines-smooth (<< 0.5.6-3), gtk2-engines-xfce (<= 2.1.8-1), tamil-gtk2im (<= 2.2-4), imhangul (<< 0.9.9-3), librsvg2-common (<< 2.6.3-1)
+ Replaces: libgtk2.0-0png3
++Provides: gtk2.0-binver-2.10.0
+ Description: The GTK+ graphical user interface library
+  The GTK+ is a multi-platform toolkit for creating graphical user
+  interfaces. Offering a complete set of widgets, the GTK+ is suitable
