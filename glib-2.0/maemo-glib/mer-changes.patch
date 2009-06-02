@@ -1,0 +1,98 @@
+--- glib2.0-2.18.1-1maemo4+0m5.orig/autogen.sh
++++ glib2.0-2.18.1-1maemo4+0m5/autogen.sh
+@@ -16,7 +16,7 @@
+ if libtoolize --version < /dev/null > /dev/null 2>&1 ; then
+ 	libtool_version=`libtoolize --version | sed 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
+ 	case $libtool_version in
+-	    1.4*|1.5*)
++	    1.4*|1.5*|2.2*)
+ 		have_libtool=true
+ 		;;
+ 	esac
+--- glib2.0-2.18.1-1maemo4+0m5.orig/configure.in
++++ glib2.0-2.18.1-1maemo4+0m5/configure.in
+@@ -1302,7 +1302,7 @@
+   G_MODULE_LDFLAGS=
+ else
+   export SED
+-  G_MODULE_LDFLAGS=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
++  G_MODULE_LDFLAGS=`(libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
+ fi
+ dnl G_MODULE_IMPL= don't reset, so cmd-line can override
+ G_MODULE_NEED_USCORE=0
+@@ -1367,7 +1367,7 @@
+ 	LDFLAGS="$LDFLAGS $G_MODULE_LDFLAGS"
+ dnl *** check for OSF1/5.0 RTLD_GLOBAL brokenness
+ 	echo "void glib_plugin_test(void) { }" > plugin.c
+-	${SHELL} ./libtool --mode=compile ${CC} -shared \
++	${SHELL} libtool --mode=compile ${CC} -shared \
+ 		-export-dynamic -o plugin.o plugin.c 2>&1 >/dev/null
+ 	AC_CACHE_CHECK([for RTLD_GLOBAL brokenness],
+ 		glib_cv_rtldglobal_broken,[
+@@ -1441,7 +1441,7 @@
+ 
+ AC_MSG_CHECKING(for the suffix of module shared libraries)
+ export SED
+-shrext_cmds=`./libtool --config | grep '^shrext_cmds='`
++shrext_cmds=`libtool --config | grep '^shrext_cmds='`
+ eval $shrext_cmds
+ module=yes eval std_shrext=$shrext_cmds
+ # chop the initial dot
+@@ -1846,6 +1846,11 @@
+         G_THREAD_CFLAGS="-D_REENTRANT -D_PTHREADS"
+         G_THREAD_LIBS="-lpthread -lthread"
+         ;;
++      arm-*-linux*)
++        G_THREAD_CFLAGS="-pthread"
++        G_THREAD_LIBS="-lpthread -lrt"
++       G_THREAD_LIBS_FOR_GTHREAD='-lpthread -lrt'
++       ;;
+       *)
+         for flag in pthread pthreads mt; do
+           glib_save_CFLAGS="$CFLAGS"
+--- glib2.0-2.18.1-1maemo4+0m5.orig/debian/rules
++++ glib2.0-2.18.1-1maemo4+0m5/debian/rules
+@@ -86,7 +86,7 @@
+ 			--mandir=\$${prefix}/share/man \
+ 			--infodir=\$${prefix}/share/info \
+ 			--with-html-dir=\$${prefix}/share/doc/libglib$(apiver)-doc \
+-			--enable-static \
++			--enable-static --with-threads=posix \
+ 			$(ENABLE_GTK_DOC)
+ 
+ 	cd $(BUILD_DEB_DIR) && \
+--- glib2.0-2.18.1-1maemo4+0m5.orig/debian/control
++++ glib2.0-2.18.1-1maemo4+0m5/debian/control
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Claudio Saavedra <csaavedra@igalia.com>
+-Build-Depends: debhelper (>> 4.0.0), pkg-config (>= 0.14.0), gettext, autotools-dev, gtk-doc-tools
++Build-Depends: debhelper (>> 4.0.0), pkg-config (>= 0.14.0), gettext, autotools-dev, gtk-doc-tools, libglib2.0-0
+ Standards-Version: 3.6.1.0
+ 
+ Package: libglib2.0-0
+--- glib2.0-2.18.1-1maemo4+0m5.orig/debian/changelog
++++ glib2.0-2.18.1-1maemo4+0m5/debian/changelog
+@@ -1,3 +1,10 @@
++glib2.0 (2.18.1-1maemo4+0m5-mer1) jaunty; urgency=low
++
++  * Added OBS-building-patch by lbt, fixing QEMU-ARM problem and OBS oddity.
++  * Fix libtool2 issue.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Wed, 20 May 2009 13:24:18 +0000
++
+ glib2.0 (2.18.1-1maemo4+0m5) unstable; urgency=low
+ 
+   * This entry has been added by BIFH queue processor
+--- glib2.0-2.18.1-1maemo4+0m5.orig/debian/control.in
++++ glib2.0-2.18.1-1maemo4+0m5/debian/control.in
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Claudio Saavedra <csaavedra@igalia.com>
+-Build-Depends: debhelper (>> 4.0.0), pkg-config (>= 0.14.0), gettext, autotools-dev, gtk-doc-tools
++Build-Depends: debhelper (>> 4.0.0), pkg-config (>= 0.14.0), gettext, autotools-dev, gtk-doc-tools, libglib2.0-0
+ Standards-Version: 3.6.1.0
+ 
+ Package: libglib2.0-@SONAME@
