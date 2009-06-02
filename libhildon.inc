@@ -5,7 +5,7 @@ DEPENDS = "gconf-dbus esound gtk+"
 
 inherit autotools pkgconfig lib_package
 
-EXTRA_OECONF = "--with-maemo-gtk=no"
+EXTRA_OECONF = "--with-maemo-gtk=yes"
 
 do_stage() {
         autotools_stage_all

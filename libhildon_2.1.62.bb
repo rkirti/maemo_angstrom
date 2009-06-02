@@ -8,10 +8,8 @@ SECTION = "base"
 DEPENDS = "gconf-dbus esound gtk+ gtk-doc libpng libxt libxi"
 PR = "r1"
 
+
+SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libh/${PN}/${PN}_${PV}-1+0m5.tar.gz"
+
+
 require libhildon.inc
-
-
-
-
-SRC_URI = "http://repository.maemo.org/pool/diablo/free/libh/${PN}/${PN}_${PV}-1.tar.gz"
-
