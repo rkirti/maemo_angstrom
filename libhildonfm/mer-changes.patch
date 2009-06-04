@@ -1,0 +1,200 @@
+--- debian/rules
++++ debian/rules
+@@ -13,7 +13,7 @@
+ DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+ 
+ 
+-CFLAGS = -Wall -g -Werror
++CFLAGS = -Wall -g
+ 
+ ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+ 	CFLAGS += -O0
+--- debian/control
++++ debian/control
+@@ -2,7 +2,7 @@
+ Section: x11
+ Priority: optional
+ Maintainer: Richard Sun <richard.sun@nokia.com>
+-Build-Depends: debhelper (>= 4.0.0), pkg-config, libosso-dev (>= 0.9.1-1), libgtk2.0-dev (>= 2:2.10), libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, libhildon-thumbnail-dev, osso-gwconnect-dev, mce-dev, libdbus-1-dev (>= 1.0), libdbus-glib-1-dev (>= 0.50-1osso), libhildon1-dev, libhildonmime-dev, gtk-doc-tools
++Build-Depends: debhelper (>= 4.0.0), pkg-config, libosso-dev (>= 0.9.1-1), libgtk2.0-dev (>= 2:2.10), libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, libhildon-thumbnail-dev, osso-gwconnect-dev, mce-dev, libdbus-1-dev (>= 1.0), libdbus-glib-1-dev (>= 0.50-1osso), libhildon1-dev, libhildonmime-dev, gtk-doc-tools, autoconf, automake, libtool
+ Standards-Version: 3.6.0
+ 
+--- hildon-fm/hildon-fm-enum-types.h
++++ hildon-fm/hildon-fm-enum-types.h
+@@ -0,0 +1,30 @@
++
++/* Generated data (by glib-mkenums) */
++
++#ifndef __HILDON_FM_ENUM_TYPES_H__
++#define __HILDON_FM_ENUM_TYPES_H__
++
++#include <glib-object.h>
++
++G_BEGIN_DECLS
++/* enumerations from "hildon-file-selection.h" */
++GType hildon_file_selection_mode_get_type (void);
++#define HILDON_TYPE_FILE_SELECTION_MODE (hildon_file_selection_mode_get_type())
++GType hildon_file_selection_sort_key_get_type (void);
++#define HILDON_TYPE_FILE_SELECTION_SORT_KEY (hildon_file_selection_sort_key_get_type())
++GType hildon_file_selection_pane_get_type (void);
++#define HILDON_TYPE_FILE_SELECTION_PANE (hildon_file_selection_pane_get_type())
++GType hildon_file_selection_visible_columns_get_type (void);
++#define HILDON_TYPE_FILE_SELECTION_VISIBLE_COLUMNS (hildon_file_selection_visible_columns_get_type())
++/* enumerations from "hildon-file-system-model.h" */
++GType hildon_file_system_model_columns_get_type (void);
++#define HILDON_TYPE_FILE_SYSTEM_MODEL_COLUMNS (hildon_file_system_model_columns_get_type())
++/* enumerations from "hildon-file-system-common.h" */
++GType hildon_file_system_model_item_type_get_type (void);
++#define HILDON_TYPE_FILE_SYSTEM_MODEL_ITEM_TYPE (hildon_file_system_model_item_type_get_type())
++G_END_DECLS
++
++#endif /* __HILDON_FM_ENUM_TYPES_H__ */
++
++/* Generated data ends here */
++
+--- hildon-fm/hildon-fm-enum-types.c
++++ hildon-fm/hildon-fm-enum-types.c
+@@ -0,0 +1,143 @@
++
++/* Generated data (by glib-mkenums) */
++
++#include "hildon-file-chooser-dialog.h"
++#include "hildon-file-details-dialog.h"
++#include "hildon-file-selection.h"
++#include "hildon-file-system-common.h"
++#include "hildon-file-system-info.h"
++#include "hildon-file-system-model.h"
++#include "hildon-fm-enum-types.h"
++#include <glib-object.h>
++
++/* enumerations from "hildon-file-selection.h" */
++GType
++hildon_file_selection_mode_get_type (void)
++{
++  static GType etype = 0;
++  if (etype == 0) {
++    static const GEnumValue values[] = {
++      { HILDON_FILE_SELECTION_MODE_LIST, "HILDON_FILE_SELECTION_MODE_LIST", "list" },
++      { HILDON_FILE_SELECTION_MODE_THUMBNAILS, "HILDON_FILE_SELECTION_MODE_THUMBNAILS", "thumbnails" },
++      { 0, NULL, NULL }
++    };
++    etype = g_enum_register_static ("HildonFileSelectionMode", values);
++  }
++  return etype;
++}
++GType
++hildon_file_selection_sort_key_get_type (void)
++{
++  static GType etype = 0;
++  if (etype == 0) {
++    static const GEnumValue values[] = {
++      { HILDON_FILE_SELECTION_SORT_NAME, "HILDON_FILE_SELECTION_SORT_NAME", "name" },
++      { HILDON_FILE_SELECTION_SORT_TYPE, "HILDON_FILE_SELECTION_SORT_TYPE", "type" },
++      { HILDON_FILE_SELECTION_SORT_MODIFIED, "HILDON_FILE_SELECTION_SORT_MODIFIED", "modified" },
++      { HILDON_FILE_SELECTION_SORT_SIZE, "HILDON_FILE_SELECTION_SORT_SIZE", "size" },
++      { 0, NULL, NULL }
++    };
++    etype = g_enum_register_static ("HildonFileSelectionSortKey", values);
++  }
++  return etype;
++}
++GType
++hildon_file_selection_pane_get_type (void)
++{
++  static GType etype = 0;
++  if (etype == 0) {
++    static const GEnumValue values[] = {
++      { HILDON_FILE_SELECTION_PANE_NAVIGATION, "HILDON_FILE_SELECTION_PANE_NAVIGATION", "navigation" },
++      { HILDON_FILE_SELECTION_PANE_CONTENT, "HILDON_FILE_SELECTION_PANE_CONTENT", "content" },
++      { 0, NULL, NULL }
++    };
++    etype = g_enum_register_static ("HildonFileSelectionPane", values);
++  }
++  return etype;
++}
++GType
++hildon_file_selection_visible_columns_get_type (void)
++{
++  static GType etype = 0;
++  if (etype == 0) {
++    static const GEnumValue values[] = {
++      { HILDON_FILE_SELECTION_SHOW_NAME, "HILDON_FILE_SELECTION_SHOW_NAME", "name" },
++      { HILDON_FILE_SELECTION_SHOW_MODIFIED, "HILDON_FILE_SELECTION_SHOW_MODIFIED", "modified" },
++      { HILDON_FILE_SELECTION_SHOW_SIZE, "HILDON_FILE_SELECTION_SHOW_SIZE", "size" },
++      { HILDON_FILE_SELECTION_SHOW_ALL, "HILDON_FILE_SELECTION_SHOW_ALL", "all" },
++      { 0, NULL, NULL }
++    };
++    etype = g_enum_register_static ("HildonFileSelectionVisibleColumns", values);
++  }
++  return etype;
++}
++
++/* enumerations from "hildon-file-system-model.h" */
++GType
++hildon_file_system_model_columns_get_type (void)
++{
++  static GType etype = 0;
++  if (etype == 0) {
++    static const GEnumValue values[] = {
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_GTK_PATH_INTERNAL, "HILDON_FILE_SYSTEM_MODEL_COLUMN_GTK_PATH_INTERNAL", "column-gtk-path-internal" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_LOCAL_PATH, "HILDON_FILE_SYSTEM_MODEL_COLUMN_LOCAL_PATH", "column-local-path" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_URI, "HILDON_FILE_SYSTEM_MODEL_COLUMN_URI", "column-uri" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_NAME, "HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_NAME", "column-file-name" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_DISPLAY_NAME, "HILDON_FILE_SYSTEM_MODEL_COLUMN_DISPLAY_NAME", "column-display-name" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_SORT_KEY, "HILDON_FILE_SYSTEM_MODEL_COLUMN_SORT_KEY", "column-sort-key" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_MIME_TYPE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_MIME_TYPE", "column-mime-type" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_SIZE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_SIZE", "column-file-size" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_TIME, "HILDON_FILE_SYSTEM_MODEL_COLUMN_FILE_TIME", "column-file-time" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_FOLDER, "HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_FOLDER", "column-is-folder" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_AVAILABLE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_AVAILABLE", "column-is-available" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_HAS_LOCAL_PATH, "HILDON_FILE_SYSTEM_MODEL_COLUMN_HAS_LOCAL_PATH", "column-has-local-path" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_TYPE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_TYPE", "column-type" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON, "HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON", "column-icon" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON_EXPANDED, "HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON_EXPANDED", "column-icon-expanded" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON_COLLAPSED, "HILDON_FILE_SYSTEM_MODEL_COLUMN_ICON_COLLAPSED", "column-icon-collapsed" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_THUMBNAIL, "HILDON_FILE_SYSTEM_MODEL_COLUMN_THUMBNAIL", "column-thumbnail" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_LOAD_READY, "HILDON_FILE_SYSTEM_MODEL_COLUMN_LOAD_READY", "column-load-ready" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_FREE_SPACE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_FREE_SPACE", "column-free-space" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_TITLE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_TITLE", "column-title" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_AUTHOR, "HILDON_FILE_SYSTEM_MODEL_COLUMN_AUTHOR", "column-author" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_HIDDEN, "HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_HIDDEN", "column-is-hidden" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_UNAVAILABLE_REASON, "HILDON_FILE_SYSTEM_MODEL_COLUMN_UNAVAILABLE_REASON", "column-unavailable-reason" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_FAILED_ACCESS_MESSAGE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_FAILED_ACCESS_MESSAGE", "column-failed-access-message" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_SORT_WEIGHT, "HILDON_FILE_SYSTEM_MODEL_COLUMN_SORT_WEIGHT", "column-sort-weight" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_EXTRA_INFO, "HILDON_FILE_SYSTEM_MODEL_COLUMN_EXTRA_INFO", "column-extra-info" },
++      { HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_DRIVE, "HILDON_FILE_SYSTEM_MODEL_COLUMN_IS_DRIVE", "column-is-drive" },
++      { HILDON_FILE_SYSTEM_MODEL_NUM_COLUMNS, "HILDON_FILE_SYSTEM_MODEL_NUM_COLUMNS", "num-columns" },
++      { 0, NULL, NULL }
++    };
++    etype = g_enum_register_static ("HildonFileSystemModelColumns", values);
++  }
++  return etype;
++}
++
++/* enumerations from "hildon-file-system-common.h" */
++GType
++hildon_file_system_model_item_type_get_type (void)
++{
++  static GType etype = 0;
++  if (etype == 0) {
++    static const GEnumValue values[] = {
++      { HILDON_FILE_SYSTEM_MODEL_UNKNOWN, "HILDON_FILE_SYSTEM_MODEL_UNKNOWN", "unknown" },
++      { HILDON_FILE_SYSTEM_MODEL_FILE, "HILDON_FILE_SYSTEM_MODEL_FILE", "file" },
++      { HILDON_FILE_SYSTEM_MODEL_FOLDER, "HILDON_FILE_SYSTEM_MODEL_FOLDER", "folder" },
++      { HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_IMAGES, "HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_IMAGES", "safe-folder-images" },
++      { HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_VIDEOS, "HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_VIDEOS", "safe-folder-videos" },
++      { HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_SOUNDS, "HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_SOUNDS", "safe-folder-sounds" },
++      { HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_DOCUMENTS, "HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_DOCUMENTS", "safe-folder-documents" },
++      { HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_GAMES, "HILDON_FILE_SYSTEM_MODEL_SAFE_FOLDER_GAMES", "safe-folder-games" },
++      { HILDON_FILE_SYSTEM_MODEL_MMC, "HILDON_FILE_SYSTEM_MODEL_MMC", "mmc" },
++      { HILDON_FILE_SYSTEM_MODEL_GATEWAY, "HILDON_FILE_SYSTEM_MODEL_GATEWAY", "gateway" },
++      { HILDON_FILE_SYSTEM_MODEL_LOCAL_DEVICE, "HILDON_FILE_SYSTEM_MODEL_LOCAL_DEVICE", "local-device" },
++      { 0, NULL, NULL }
++    };
++    etype = g_enum_register_static ("HildonFileSystemModelItemType", values);
++  }
++  return etype;
++}
++
++/* Generated data ends here */
++
