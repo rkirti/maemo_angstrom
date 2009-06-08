@@ -1,0 +1,47 @@
+--- libhildonmime-2.1.2-1.orig/autogen.sh
++++ libhildonmime-2.1.2-1/autogen.sh
+@@ -34,9 +34,9 @@
+ 	exit;
+ fi
+ 
+-(automake-1.8 --version) < /dev/null > /dev/null 2>&1 || {
++(automake-1.10 --version) < /dev/null > /dev/null 2>&1 || {
+ 	echo;
+-	echo "You must have automake 1.8 installed to compile $PACKAGE";
++	echo "You must have automake 1.10 installed to compile $PACKAGE";
+ 	echo;
+ 	exit;
+ }
+@@ -52,10 +52,10 @@
+     fi
+ fi
+ 
+-aclocal-1.8 $ACLOCAL_FLAGS
++aclocal-1.10 $ACLOCAL_FLAGS
+ libtoolize --force
+ autoheader
+-automake-1.8 --add-missing
++automake-1.10 --add-missing
+ autoconf
+ 
+ if test x$NOCONFIGURE = x; then
+--- libhildonmime-2.1.2-1.orig/debian/control
++++ libhildonmime-2.1.2-1/debian/control
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Erik Karlsson <erik.b.karlsson@nokia.com>
+-Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev (>= 2.8), libosso-gnomevfs2-dev (>= 2.16.3), libdbus-glib-1-dev
++Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev (>= 2.8), libosso-gnomevfs2-dev (>= 2.16.3), libdbus-glib-1-dev, autoconf, libtool, automake
+ Standards-Version: 3.6.1.0
+ 
+ Package: libhildonmime0
+@@ -32,7 +32,7 @@
+ Package: hildon-update-category-database
+ Section: misc
+ Architecture: any
+-Depends: ${shlibs:Depends}
++Depends: ${shlibs:Depends}, shared-mime-info
+ Description: Tool for managing the mime/category database
+  This package contains a tool that manages the mime/category mapping
+  database.
