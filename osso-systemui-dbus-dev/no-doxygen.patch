@@ -1,0 +1,23 @@
+Index: osso-systemui-dbus-dev-0.1.2/Makefile
+===================================================================
+--- osso-systemui-dbus-dev-0.1.2.orig/Makefile	2008-11-12 09:56:07.000000000 +0000
++++ osso-systemui-dbus-dev-0.1.2/Makefile	2008-11-12 09:56:17.000000000 +0000
+@@ -22,17 +22,13 @@
+ 	$(INCDIR)/actingdead-dbus-names.h \
+ 	$(INCDIR)/alarm_dialog-dbus-names.h
+ 
+-.PHONY: doc
+-doc:
+-	@$(DOXYGEN) 2> $(TOPDIR)/doc/warnings > /dev/null
+-
+ clean:
+ 	@if [ x"$(DOCDIR)" != x"" ]; then	\
+ 		rm -rf $(DOCDIR)/*;		\
+ 	fi
+ 
+ .PHONY: install
+-install: doc
++install:
+ 	$(INSTALL_DIR) $(PCDIR) $(INCLUDEDIR)				&&\
+ 	$(INSTALL_DATA) $(PCFILE) $(PCDIR)				&&\
+ 	$(INSTALL_DATA) $(INCLUDE_FILES) $(INCLUDEDIR)
