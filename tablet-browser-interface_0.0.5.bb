@@ -1,7 +1,7 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 
-DESCRIPTION = "DEv package for browser services"
+DESCRIPTION = "Dev package for browser services"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "Mozilla Public License"
 SECTION = "base"
@@ -11,3 +11,6 @@ SRC_URI = "http://repository.maemo.org/pool/fremantle/free/t/${PN}/${PN}_${PV}-4
 
 inherit autotools
 
+do_stage(){
+    autotools_stage_all
+}
