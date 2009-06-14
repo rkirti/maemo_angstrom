@@ -1,0 +1,97 @@
+--- osso-gnomevfs-extra-1.9.6-3.orig/autogen.sh
++++ osso-gnomevfs-extra-1.9.6-3/autogen.sh
+@@ -34,9 +34,9 @@
+ 	exit;
+ fi
+ 
+-(automake-1.8 --version) < /dev/null > /dev/null 2>&1 || {
++(automake --version) < /dev/null > /dev/null 2>&1 || {
+ 	echo;
+-	echo "You must have automake 1.8 installed to compile $PACKAGE";
++	echo "You must have automake >= 1.8 installed to compile $PACKAGE";
+ 	echo;
+ 	exit;
+ }
+@@ -52,10 +52,10 @@
+     fi
+ fi
+ 
+-aclocal-1.8 $ACLOCAL_FLAGS
++aclocal $ACLOCAL_FLAGS
+ libtoolize --force
+ autoheader
+-automake-1.8 --add-missing
++automake --add-missing
+ autoconf
+ 
+ if test x$NOCONFIGURE = x; then
+--- osso-gnomevfs-extra-1.9.6-3.orig/debian/rules
++++ osso-gnomevfs-extra-1.9.6-3/debian/rules
+@@ -35,6 +35,7 @@
+ 
+ 	./configure $(confflags) \
+ 		--prefix=/usr --sysconfdir=/etc \
++		--with-compile-warnings=yes \
+ 		--localstatedir=/var \
+ 		--with-doc-dir=$(CURDIR)/debian/tmp/usr/share/doc
+ 
+--- osso-gnomevfs-extra-1.9.6-3.orig/debian/control
++++ osso-gnomevfs-extra-1.9.6-3/debian/control
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Richard Hult <richard@imendio.com>
+-Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev (>= 2.8), libopenobex1-dev, libgwobex-dev (>= 0.47), libosso-gnomevfs2-dev (>= 2.16.3), libdbus-glib-1-dev, osso-gwconnect-dev (>=0.93.2), libexpat1-dev
++Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev (>= 2.8), libopenobex1-dev, libgwobex-dev (>= 0.47), libosso-gnomevfs2-dev (>= 2.16.3), libdbus-glib-1-dev, osso-gwconnect-dev (>=0.93.2), libexpat1-dev, autoconf, automake, libtool
+ Standards-Version: 3.6.1.0
+ 
+ Package: osso-gnomevfs-extra
+@@ -31,3 +31,11 @@
+ Depends: osso-gnomevfs-extra (= ${Source-Version})
+ Description: OSSO GnomeVFS Extra debugging symbols
+  Development files for the osso-gnome-vfs-extra package.
++
++Package: libgnomevfs2-extra
++Architecture: any
++Section: libs
++Depends: osso-gnomevfs-extra (= ${Source-Version})
++Description: Transitional package for osso-gnomevfs2-extra
++ Transitional package for osso-gnomevfs2-extra
++
+--- osso-gnomevfs-extra-1.9.6-3.orig/debian/changelog
++++ osso-gnomevfs-extra-1.9.6-3/debian/changelog
+@@ -1,13 +1,31 @@
+-osso-gnomevfs-extra (1.9.6-3) unstable; urgency=low
++osso-gnomevfs-extra (2:1.9.6-3-mer1) jaunty; urgency=low
+ 
+   * No change in this version, just bump the version to get rebuilt
+   * Fixes: NB#94728, several gnome-vfs packages shall be recompiled to
+ 
+- -- Richard Hult <richard@imendio.com>  Tue,  9 Dec 2008 13:20:00 +0100
++ -- Valerio Valerio <vdv100@gmail.com>  Wed, 18 Mar 2009 13:45:07 +0000
++
++osso-gnomevfs-extra (2:1.9.6-2mer3) jaunty; urgency=low
++
++  * Bump, to solve MB#4013
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Tue, 03 Feb 2009 18:16:10 +0000
++
++osso-gnomevfs-extra (1.9.6-2mer2) jaunty; urgency=low
++
++  * Disabled compile warnings being errors.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Thu, 27 Nov 2008 13:56:30 +0000
++
++osso-gnomevfs-extra (1.9.6-2mer1) jaunty; urgency=low
++
++  * Added autoconf, automake, libtool to build dependancies, and removed version dependancy in autogen.sh.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Thu, 27 Nov 2008 09:50:16 +0000
+ 
+ osso-gnomevfs-extra (1.9.6-2) unstable; urgency=low
+ 
+-  * F i x e s : NB#88054, File Manager crashes when user tries to browse through
++  * Fixes: NB#88054, File Manager crashes when user tries to browse through
+ 
+  -- Richard Hult <richard@imendio.com>  Wed, 24 Sep 2008 08:56:04 +0200
+ 
