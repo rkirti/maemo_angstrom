@@ -1,0 +1,70 @@
+--- osso-gnome-vfs2-2.16.3-2osso2.orig/debian/rules
++++ osso-gnome-vfs2-2.16.3-2osso2/debian/rules
+@@ -33,8 +33,7 @@
+ 
+ post-patches:: debian/stamp-autothings-update
+ debian/stamp-autothings-update:
+-	# Set ACLOCAL_FLAGS so that libtool.m4 is picked up in scratchbox 1.0.x + sardine
+-	NOCONFIGURE=1 ACLOCAL_FLAGS="-I /targets/links/arch_tools/share/aclocal" ./autogen.sh
++	NOCONFIGURE=1 ./autogen.sh
+ 	# Can add things here that need to be ran after autogen.sh
+ 	touch $@
+ 
+--- osso-gnome-vfs2-2.16.3-2osso2.orig/debian/control
++++ osso-gnome-vfs2-2.16.3-2osso2/debian/control
+@@ -2,7 +2,7 @@
+ Section: libs
+ Priority: optional
+ Maintainer: Kimmo Hämäläinen <kimmo.hamalainen@nokia.com>
+-Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev, cdbs, libgconf2-dev (>= 2.6.4), libxml2-dev, gettext, debhelper (>> 4.1.0), zlib1g-dev, intltool, gnome-common, gnome-pkg-tools, libdbus-glib-1-dev (>= 0.60), gtk-doc-tools, libsmbclient-dev, libhal-dev, libhal-storage-dev
++Build-Depends: debhelper (>= 4.0.0), libglib2.0-dev, cdbs, libgconf2-dev (>= 2.6.4), libxml2-dev, gettext, debhelper (>> 4.1.0), zlib1g-dev, intltool, gnome-common, gnome-pkg-tools, libdbus-glib-1-dev (>= 0.60), gtk-doc-tools, libsmbclient-dev, libhal-dev, libhal-storage-dev, automake1.10
+ Standards-Version: 3.6.1.0
+ 
+ Package: libosso-gnomevfs2-common
+@@ -44,12 +44,10 @@
+  This package contains debugging symbols for the samba module for the GNOME 
+  virtual file system. It has been split out from the GNOME VFS package.
+ 
++
+ Package: libosso-gnomevfs2-0
+ Architecture: any
+ Depends: ${shlibs:Depends}, libosso-gnomevfs2-common (>= ${Source-Version})
+-Replaces: libgnomevfs2-0
+-Conflicts: libgnomevfs2-0
+-Provides: libgnomevfs2-0
+ Description: The GNOME virtual file-system libraries (for GNOME2)
+  GNOME VFS is the GNOME virtual file system. It is the foundation of the
+  Nautilus file manager. It provides a modular architecture and ships with
+@@ -59,6 +57,20 @@
+  .
+  This package is a patched version of gnome-vfs in GNOME2.
+ 
++Package: libgnomevfs2-0
++Architecture: any
++Section: libs
++Depends: libosso-gnomevfs2-0 (= ${Source-Version})
++Description: Transitional package for libgnomevfs2-0
++ Transitional package for libgnomevfs2-0.
++
++Package: libgnomevfs2-dev
++Architecture: any
++Section: libs
++Depends: libosso-gnomevfs2-dev (= ${Source-Version})
++Description: Transitional package for libgnomevfs2-dev
++ Transitional package for libgnomevfs2-dev
++
+ Package: libosso-gnomevfs2-0-dbg
+ Architecture: any
+ Section: libdevel
+@@ -70,9 +82,8 @@
+ Section: libdevel
+ Architecture: any
+ Depends: libosso-gnomevfs2-common, libosso-gnomevfs2-0 (= ${Source-Version}), libc6-dev, libgconf2-dev (>= 2.6.0), libxml2-dev
+-Replaces: libgnomevfs2-common (<< 2.2.5-1), libgnomevfs2-dev
+-Conflicts: libgnomevfs2-common (<< 2.2.5-1), libgnomevfs2-dev
+-Provides: libgnomevfs2-dev
++Replaces: libgnomevfs2-common (<< 2.2.5-1)
++Conflicts: libgnomevfs2-common (<< 2.2.5-1)
+ Description: The GNOME virtual file-system development files (for GNOME2)
+  This package provides the necessary development libraries for writing
+  GNOME VFS modules and applications that use the GNOME VFS API
