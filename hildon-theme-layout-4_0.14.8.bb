@@ -12,4 +12,6 @@ SRC_URI = "http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}-1
 
 inherit autotools pkgconfig
 
-
+do_stage(){
+    autotools_stage_all
+}
