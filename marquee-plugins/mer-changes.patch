@@ -1,0 +1,869 @@
+--- marquee-plugins-0.22/debian/rules
++++ marquee-plugins-0.22/debian/rules
+@@ -0,0 +1,55 @@
++#!/usr/bin/make -f
++
++include /usr/share/cdbs/1/rules/simple-patchsys.mk
++
++CFLAGS += -Wall -g -O$(if $(findstring noopt,$(DEB_BUILD_OPTIONS)),0,2)
++
++configure: configure-stamp
++configure-stamp:
++	dh_testdir
++	./autogen.sh
++	CFLAGS="$(CFLAGS)" ./configure --prefix=/usr --sysconf=/etc
++	touch $@
++
++build: apply-patches build-stamp
++build-stamp: configure-stamp
++	dh_testdir
++	$(MAKE)
++	touch $@
++
++clean::
++	dh_testdir
++	dh_testroot
++	rm -f build-stamp configure-stamp
++	[ ! -f Makefile ] || $(MAKE) distclean
++	dh_clean
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k
++	dh_installdirs
++	$(MAKE) DESTDIR=$(CURDIR)/debian/marquee-plugins install
++	install -D -m 644 $(CURDIR)/src/clock-plugin.conf $(CURDIR)/debian/marquee-plugins/etc/clock-plugin.conf
++
++binary-indep: build install
++
++binary-arch: build install
++	dh_testdir
++	dh_testroot
++	dh_installchangelogs -s ChangeLog
++	dh_installdocs -s
++	dh_installexamples -s
++	dh_installman -s
++	dh_link -s
++	dh_strip -s
++	dh_compress -s
++	dh_fixperms -s
++	dh_installdeb -s
++	dh_shlibdeps -s
++	dh_gencontrol -s
++	dh_md5sums -s
++	dh_builddeb -s
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install configure
+--- marquee-plugins-0.22/debian/compat
++++ marquee-plugins-0.22/debian/compat
+@@ -0,0 +1 @@
++5
+--- marquee-plugins-0.22/debian/marquee-plugins.postinst
++++ marquee-plugins-0.22/debian/marquee-plugins.postinst
+@@ -0,0 +1,20 @@
++#!/bin/sh
++
++set -e
++
++# disabled for Ubuntu; we should fix the config file instead
++#case "$1" in
++#        configure)
++#                if [ -w "/etc/hildon-desktop/desktop.conf" ]; then
++#                        sed -i 's/549/670/;s/200/303/' /etc/hildon-desktop/desktop.conf
++#                fi
++#
++#                if [ -w "/etc/hildon-desktop/marquee.conf" ]; then
++#                        sed -i 's/navigator/marquee/;s/applications-menu/showhome-plugin/' /etc/hildon-d
++#                fi
++#        ;;
++#esac
++
++#DEBHELPER#
++
++exit 0
+--- marquee-plugins-0.22/debian/marquee-plugins1.dirs
++++ marquee-plugins-0.22/debian/marquee-plugins1.dirs
+@@ -0,0 +1,4 @@
++usr/lib/hildon-desktop
++usr/share/pixmaps
++usr/share/applications/hildon-marquee
++usr/share/applications/hildon-status-bar
+--- marquee-plugins-0.22/debian/control
++++ marquee-plugins-0.22/debian/control
+@@ -0,0 +1,25 @@
++Source: marquee-plugins
++Section: libs
++Priority: optional
++Maintainer: Ubuntu Mobile <ubuntu-mobile@lists.ubuntu.com>
++XSBC-Original-Maintainer: Bob Spencer <bob.spencer@intel.com>
++Build-Depends: debhelper (>= 5),
++               libtool,
++               automake (>= 1:1.10),
++               automake (<< 1:1.11~),
++               autoconf,
++               libhildondesktop-dev,
++               libdbus-glib-1-dev,
++               cdbs,
++               libhildonwm-dev
++Standards-Version: 3.7.3
++
++Package: marquee-plugins
++Section: libs
++Architecture: any
++Depends: hildon-desktop,
++         ${shlibs:Depends},
++         ${misc:Depends}
++Description: Plugins for the Hildon marquee
++ This package contains the marquee plugins for hildon, such as the
++ application menu, the clock and the close button.
+--- marquee-plugins-0.22/debian/copyright
++++ marquee-plugins-0.22/debian/copyright
+@@ -0,0 +1,34 @@
++This package was debianized by bspencer <bob.spencer@intel.com> on
++Mon, 02 Jul 2007 16:39:31 +0000.
++
++It was downloaded from <http://moblin.org/repos/releases/>.
++
++Upstream Author:
++    Lucas Rocha <lucas.rocha@nokia.com>
++    Bob Spencer <bob.spencer@intel.com>
++    Horace Li <horace.li@intel.com>
++    Bo Xu <bo.b.xu@intel.com>
++
++Copyright:
++
++    Copyright (C) 2007 Intel Corporation.
++    Copyright (C) 2006 Nokia Corporation.
++
++License:
++
++This library is free software; you can redistribute it and/or
++modify it under the terms of the GNU Lesser General Public License
++version 2.1 as published by the Free Software Foundation.
++
++This library is distributed in the hope that it will be useful, but
++WITHOUT ANY WARRANTY; without even the implied warranty of
++MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
++Lesser General Public License for more details.
++
++You should have received a copy of the GNU Lesser General Public
++License along with this library; if not, write to the Free Software
++Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
++02110-1301 USA
++
++The full text of the LGPL version 2.1 can be found in
++/usr/share/common-licenses/LGPL-2.1 on most Debian and Ubuntu systems.
+--- marquee-plugins-0.22/debian/changelog
++++ marquee-plugins-0.22/debian/changelog
+@@ -0,0 +1,332 @@
++marquee-plugins (0.22-0ubuntu2mer10) jaunty; urgency=low
++
++  * Build using Mer
++  * 64_mer_ui.patch: Adapt to Mer UI specs.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Sat, 23 May 2009 12:48:56 +0000
++
++marquee-plugins (0.22-0ubuntu2) intrepid; urgency=low
++
++  * 63_add-clock-plugin-close.patch: Add patch by Horace Li to add a close
++    button to the Time & Date dialog.
++  * Correct OriginalMaintainer -> Original-Maintainer in the control file. 
++    (LP: #244799)
++
++ -- Steve Kowalik <stevenk@ubuntu.com>  Mon, 11 Aug 2008 14:18:55 +1000
++
++marquee-plugins (0.22-0ubuntu1) hardy; urgency=low
++
++  * Cleanup rules.
++  * Hook simple-patchsys in the build process; build-dep on cdbs; rename
++    clean: to clean::; add apply-patches as a prereq to build:.
++  * New upstream releases
++    - Move to tarball release; add upstream download URL in copyright;
++      warning, 0.4 in gutsy and 0.20, 0.21, and 0.22 in the ubuntu-mobile ppa
++      don't match the upstream changelog below; 0.4 in gutsy disabled sed
++      snippets in debian/marquee-plugins.postinst which are just commented our
++      here; add the following patches for ppa changes:
++      - 60_drop-werror-cflag: drops -Werror from CFLAGS in configure.ac.
++      - 61_disable-screen-changed: comments out screen_changed callbacks from
++        src/clock-plugin.c, src/close-app-plugin.c,
++        src/drop-down-menu-plugin.c, src/showhome-plugin.c.
++  * Wrap build-deps and deps.
++  * Set maintainer to Ubuntu Mobile.
++  * Bump up Standards-Version to 3.7.3.
++  * Don't ignore distclean failures.
++  * Call dh_* with -s in binary-arch.
++  * Force aclocal-1.10/automake-1.10 to be used.
++    - New patch, 62_force-automake-1.10, replaces calls to random automake and
++      aclocal versions with calls to 1.10 versions; as autogen.sh called
++      aclocal-1.7 || aclocal there was a risk that a developer runs
++      aclocal-1.7/automake-1.7 in clean:: while the build daemon / environment
++      calls aclocal/automake (currently 1.10) on top.
++    - Version the automake build-dep to >= 1:1.10 << 1:1.11~.
++  * Cleanup whitespace in copyright.
++
++ -- Loic Minier <lool@dooz.org>  Wed, 09 Apr 2008 18:01:09 +0200
++
++marquee-plugins (0.22) gaston; urgency=low
++
++  * Remove marquee-plugins.schemas since category key setting in gconf
++    is now handled in mobile-basic-flash. This is also remove original
++    default "Mobile" as active category. New default active category is
++    "All" that is done in mobile-basic-flash too.
++
++ -- Horace Li <horace.li@intel.com>  Wed, 02 Apr 2008 14:50:29 +0800
++
++marquee-plugins (0.21) gaston; urgency=low
++
++  * Show up "AlL" as default category and save user changes.
++
++ -- Horace Li <horace.li@intel.com>  Fri, 28 Mar 2008 15:03:40 +0800
++
++marquee-plugins (0.20) gaston; urgency=low
++
++  * Update marquee plugins entry plugin type field name from "X-Plugin-Type"
++    to "Type", mainly to be compatible with upstream hildon-desktop.
++
++ -- Horace Li <horace.li@intel.com>  Thu, 28 Feb 2008 15:31:41 +0800
++
++marquee-plugins (0.19) gaston; urgency=low
++
++  * Removed previous change by Horace which hides the down arrow when the menu
++    is showing.  The intent was to hide the down arrow when no menu exists to
++    show.
++
++ -- Bob Spencer <bob.spencer@intel.com>  Thu, 21 Feb 2008 07:54:43 -0800
++
++marquee-plugins (0.18) gaston; urgency=low
++
++  * Hide/Show arrow on titlebar when drop down menu is showed up/hide.
++  * ellipsize (add an ellipsis: "...") to the title if there is not
++    enough space on title bar.
++
++ -- Horace Li <horace.li@intel.com>  Thu, 14 Feb 2008 15:23:36 +0800
++
++marquee-plugins (0.17) gaston; urgency=low
++
++  * update marquee plugins desktop entry files, according to
++    freedesktop specification.
++
++ -- Horace Li <horace.li@intel.com>  Mon, 21 Jan 2008 17:50:13 +0800
++
++marquee-plugins (0.16) gaston; urgency=low
++
++  * fix bug #176074.
++  * fix bug #179032, tuning status bar length to be suitable for both
++    800 and 1024 screen width.
++  * Support dynamic screen resolution switch between 1024*600/1024*768
++    and 800*480/800*600.
++  * Cut a new release.
++
++ -- Horace Li <horace.li@intel.com>  Tue, 15 Jan 2008 17:31:12 +0800
++
++marquee-plugins (0.15) gaston; urgency=low
++
++  * Removing the extra 'All' from the settings configuration
++
++ -- Rusty Lynch <rusty.lynch@intel.com>  Thu,  6 Dec 2007 03:29:19 -0800
++
++marquee-plugins (0.14) gaston; urgency=low
++
++  * Adding 'Settings' to the default containers list
++
++ -- Rusty Lynch <rusty.lynch@intel.com>  Wed,  5 Dec 2007 00:33:05 -0800
++
++marquee-plugins (0.13) gaston; urgency=low
++
++  * Increased font size of titlebar and clock
++
++ -- Bob Spencer <bob.spencer@intel.com>  Wed, 21 Nov 2007 16:43:57 -0800
++
++marquee-plugins (0.12) gaston; urgency=low
++
++  * Adding support for an addition "All" category that the desktop
++    launcher will interpret as "list all applications"
++  * fixed a bug in the schema file that was causing the "active"
++    category gconf key to be installed in the wrong location
++
++ -- Rusty Lynch <rusty.lynch@intel.com>  Wed, 21 Nov 2007 16:34:21 -0800
++
++marquee-plugins (0.11) gaston; urgency=low
++
++  * Setting the active category to "Mobile" if no categories are listed
++    the the gconf key.
++
++ -- Rusty Lynch <rusty.lynch@intel.com>  Wed, 21 Nov 2007 11:36:55 -0800
++
++marquee-plugins (0.10) gaston; urgency=low
++
++  * reworked the gconf notification code
++  * added code to force the active category to always be the first 
++    entry in the categories list on startup
++
++ -- Rusty Lynch <rusty.lynch@intel.com>  Tue, 20 Nov 2007 22:51:11 -0800
++
++marquee-plugins (0.9) gaston; urgency=low
++
++  * Incrementing the version info to work around a build system issue
++
++ -- Rusty Lynch <rusty.lynch@intel.com>  Tue, 20 Nov 2007 20:49:15 -0800
++
++marquee-plugins (0.8) gaston; urgency=low
++
++  * Changing drop-down-menu-plugin implementation to list available 'views',
++    where each view is pulled from a new marquee-plugin gconf setting.  When
++    the user selects the given view, then an 'active' gconf setting is set to
++    the selected view, and the label on the ddm is changed to the name of the
++    choosen view.
++  * Fixing the braindead implementation for detecting that the desktop is on
++    top by just looking for the window title to be "Home".
++  * Adding the first step of localizing by calling gettext() on the text
++    for setting the drop-down-menu label 
++
++ -- Rusty Lynch <rusty@intel.com>  Tue, 20 Nov 2007 20:29:19 -0800
++
++marquee-plugins (0.7) gaston; urgency=low
++
++  [ Bob Spencer ]
++  * Drop down menu arrow is separate image. Can be hidden.
++    TBD: hide arrow when no menu items exist.
++
++  [ Horace Li ]
++  * fix bug #146083
++
++ -- Horace Li <horace.li@intel.com>  Tue,  6 Nov 2007 11:59:12 +0800
++
++marquee-plugins (0.6) gaston; urgency=low
++
++  [ Horace Li ]
++  * Remove nav-next-plugin and nav-prev-plugin.
++  * Set plug-ins height configurable according to marquee panel height.
++  * Add home menu to access background, menus & toolbars, and about-me preference.
++  * Re-organize the included header files.
++
++  [ Xu Li ]
++  * Add calendar show-up in clock plug-in.
++
++  [ Horace Li ]
++  * Cut a new release.
++  * Move home drop-down menu up 2 pixels.
++  * Allow only single dialog pop-up for each preference.
++
++ -- Horace Li <horace.li@intel.com>  Sun, 28 Oct 2007 16:31:53 +0800
++
++marquee-plugins (0.5) gaston; urgency=low
++
++  * Removed dummy plugin from marquee
++
++ -- Bob Spencer <bob.spencer@intel.com>  Tue, 23 Oct 2007 14:28:45 -0700
++
++marquee-plugins (0.4) gaston; urgency=low
++
++  [ Bob Spencer ]
++  * Bumping the version to get a new build and update changelog
++
++  [ Horace Li ]
++  * fix launchpad bug #145936
++
++ -- Bob Spencer <bob.spencer@intel.com>  Wed, 12 Oct 2007 14:41:37 -0700
++
++marquee-plugins (0.3) gaston; urgency=low
++
++  [ Bob Spencer ]
++  * Updated with new graphics from Jason
++  * Added isascii check for graphics.  Added -Werror flag. Added _XOPEN_SOURCE 600
++    so that ctype.h would compile
++
++ -- Bob Spencer <bob.spencer@intel.com>  Wed, 10 Oct 2007 17:45:37 -0700
++
++marquee-plugins (0.2-1ubuntu3) feisty; urgency=low
++
++  [ Horace Li ]
++  * show up last active window when showhome-plugin is clicked with desktop on-top.
++
++ -- Horace Li <horace.li@intel.com>  Fri,  7 Sep 2007 16:51:46 +0800
++
++marquee-plugins (0.2-1ubuntu2) gaston; urgency=low
++
++  [ Horace Li ]
++  * add a new plugin to show homescreen as a replacement of applications-menu.
++  * re-design navigator next/prev buttons event handler. this is to fix moblin bug #12
++  * fix the bug that window title name sometimes mismatched. moblin bug #51
++  * re-config desktop.conf and marquee.conf to set proper position for statusbar and show up 
++    'show homescreen' plugin.
++
++ -- Horace Li <horace.li@intel.com>  Fri,  7 Sep 2007 16:51:46 +0800
++
++marquee-plugins (0.2-1ubuntu1) gaston; urgency=low
++
++  [ Horace Li ]
++  * set nav next/prev button to switch running application instead of windows.
++
++  [ Bob Spencer ]
++  * Upated README
++  * Changed error handling to not treat warnings as errors.  
++    Temporary quick fix to get build to complete, build complains about isascii
++ 
++ -- Bob Spencer <bob.spencer@intel.com>  Thu, 30 Aug 2007 07:49:34 -0700
++
++marquee-plugins (0.2) gutsy; urgency=low
++
++  [ Horace Li ]
++  * update application menu icon size and installation path.
++  * update drop-down-menu-size width since increase application menu width from 52 pixels
++    to 69 pixels.
++
++  [ Tollef Fog Heen ]
++  * Remove (s) from debian/copyright to shut up lintian.
++  * Update description.
++  * Remove duplicates from Depends, and get rid of obsolete libwnck build
++    dependency.
++  * Do make distclean, not just make clean to try to get rid of generated
++    files in the source package.
++
++ -- Tollef Fog Heen <tfheen@ubuntu.com>  Tue, 24 Jul 2007 16:35:38 +0200
++
++marquee-plugins (0.1-1ubuntu8) feisty; urgency=low
++
++  [ Rusty Lynch ]
++  * Performed some basic code cleanup on the nav-prev-app plugin
++    with no new functionality
++
++  [ Horace Li ]
++  * add COPYING and README, append Intel developers in AUTHORS
++
++  [ Tollef Fog Heen ]
++  * Remove useless README.Debian.
++  * Remove shared library cruft from debian/rules.
++  * Fix copyright to refer to /usr/share/common-licenses/LGPL-2.1
++
++ -- Tollef Fog Heen <tfheen@ubuntu.com>  Fri, 20 Jul 2007 09:18:50 +0200
++
++marquee-plugins (0.1-1ubuntu7) feisty; urgency=low
++
++  * Enable nav buttons for "watchable" applications switching
++
++ -- Horace Li <horace.li@intel.com>  Wed, 11 Jul 2007 17:04:28 +0800
++
++marquee-plugins (0.1-1ubuntu6) feisty; urgency=low
++
++  * Changed the clock format. Fixed reading from config so it would actually read more than one value
++  * Changed drop down menu font, color, and made it work (not add new label each time clicked)
++
++ -- Bob Spencer <bob.spencer@intel.com>  Sun,  8 Jul 2007 00:42:46 -0700
++
++marquee-plugins (0.1-1ubuntu5) feisty; urgency=low
++
++  * Display close button only when there is active window on the screen
++
++ -- Horace Li <horace.li@intel.com>  Fri,  6 Jul 2007 17:41:41 +0800
++
++marquee-plugins (0.1-1ubuntu4) feisty; urgency=low
++
++  * Added support to update Window titlename
++
++ -- Horace Li <horace.li@intel.com>  Fri,  6 Jul 2007 16:55:59 +0800
++
++marquee-plugins (0.1-1ubuntu3) gutsy; urgency=low
++
++  * Added resize for screen so plugins will fill the space for 1024 and 800
++    screens
++
++ -- Bob Spencer <bob.spencer@intel.com>  Fri, 06 Jul 2007 08:28:48 +0000
++
++marquee-plugins (0.1-1ubuntu2) gutsy; urgency=low
++
++  * added dummy statusbar plugin.  Create /usr/shrae/applications/hildon-status-bar folder
++
++ -- Bob Spencer <bob.spencer@intel.com>  Fri, 06 Jul 2007 08:09:09 +0000
++
++marquee-plugins (0.1-1ubuntu1) gutsy; urgency=low
++
++  * Plugins sized correctly for 800 width.  Also graphics added 
++
++ -- Bob Spencer <bob.spencer@intel.com>  Fri, 06 Jul 2007 00:49:44 +0000
++
++marquee-plugins (0.1-1) unstable; urgency=low
++
++  * Initial checkin of Nokia example plugins 
++
++ -- bspencer <bob.spencer@intel.com>  Mon, 02 Jul 2007 16:39:31 +0000
++
+--- marquee-plugins-0.22/debian/marquee-plugins1.install
++++ marquee-plugins-0.22/debian/marquee-plugins1.install
+@@ -0,0 +1,5 @@
++usr/lib/lib*.so.*
++etc/clock-plugin.conf
++usr/share/pixmaps/mb_apps_menu.png
++usr/share/applications/hildon-marquee
++usr/share/applications/hildon-status-bar
+--- marquee-plugins-0.22/debian/patches/63_add-clock-plugin-close.patch
++++ marquee-plugins-0.22/debian/patches/63_add-clock-plugin-close.patch
+@@ -0,0 +1,49 @@
++diff -Nur marquee-plugins-0.22/src/clock-plugin.c marquee-plugins-0.22-new/src/clock-plugin.c
++--- marquee-plugins-0.22/src/clock-plugin.c	2008-05-06 07:08:44.000000000 +0000
+++++ marquee-plugins-0.22-new/src/clock-plugin.c	2008-05-06 07:11:34.000000000 +0000
++@@ -80,6 +80,17 @@
++   return FALSE;
++ }
++ 
+++static void clock_plugin_dialog_close (ClockPlugin *clock_plugin)
+++{
+++  ClockPluginPrivate *priv = CLOCK_PLUGIN_GET_PRIVATE (clock_plugin);
+++
+++  if (priv->cal_dlg)
+++  {
+++    gtk_widget_destroy (priv->cal_dlg);
+++    priv->cal_dlg = NULL;
+++  }
+++}
+++
++ // Display the pop-up calendar
++ static void on_cal_btn_clicked (GtkWidget *widget, ClockPlugin *clock_plugin)
++ {
++@@ -95,9 +106,13 @@
++                                       GTK_CALENDAR_SHOW_WEEK_NUMBERS);
++ 
++     priv->cal_dlg = gtk_dialog_new ();
++-    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(priv->cal_dlg)->vbox), gtk_cal, TRUE, TRUE, 0);
+++    gtk_dialog_add_button (GTK_DIALOG (priv->cal_dlg), "Close", GTK_RESPONSE_CLOSE);
+++    g_signal_connect_swapped (GTK_DIALOG (priv->cal_dlg),
+++                              "response", 
+++                              G_CALLBACK (clock_plugin_dialog_close),
+++                              clock_plugin);
++ 
++-    gtk_dialog_set_has_separator (GTK_DIALOG (priv->cal_dlg), FALSE);
+++    gtk_box_pack_start (GTK_BOX (GTK_DIALOG(priv->cal_dlg)->vbox), gtk_cal, TRUE, TRUE, 0);
++ 
++     //set decorations, needs realizing first
++     gtk_widget_realize (priv->cal_dlg);
++@@ -112,11 +127,6 @@
++     //set the window position
++     gtk_window_move (GTK_WINDOW (priv->cal_dlg), dlg_x, priv->panel_height+2);
++   }
++-  else
++-  {
++-    gtk_widget_destroy (priv->cal_dlg);
++-    priv->cal_dlg = NULL;
++-  }
++ }
++ 
++ static void clock_plugin_set_up_time_format (ClockPlugin *clock_plugin, gint scn_width)
+--- marquee-plugins-0.22/debian/patches/65_matanz_mb4576.patch
++++ marquee-plugins-0.22/debian/patches/65_matanz_mb4576.patch
+@@ -0,0 +1,75 @@
++diff -Nur -x '*.orig' -x '*~' marquee-plugins-0.22/src/close-app-plugin.c marquee-plugins-0.22.new/src/close-app-plugin.c
++--- marquee-plugins-0.22/src/close-app-plugin.c	2009-05-23 12:50:36.000000000 +0000
+++++ marquee-plugins-0.22.new/src/close-app-plugin.c	2009-05-23 12:50:49.000000000 +0000
++@@ -23,6 +23,47 @@
++ 
++ HD_DEFINE_PLUGIN (CloseAppPlugin, close_app_plugin, TASKNAVIGATOR_TYPE_ITEM);
++ 
+++static GdkPixbuf *
+++get_icon_from_theme (const gchar     *icon_name,
+++                                      gint             size)
+++{
+++  static GtkIconTheme *icon_theme = NULL;
+++
+++  GError *error;
+++  GdkPixbuf *retval;
+++
+++  if (!icon_theme)
+++    icon_theme = gtk_icon_theme_get_default ();
+++
+++  if (!icon_name)
+++    return NULL;
+++
+++  g_return_val_if_fail (icon_theme, NULL);
+++
+++  if (!icon_name || icon_name[0] == '\0')
+++    return NULL;
+++
+++  error = NULL;
+++  retval = gtk_icon_theme_load_icon (icon_theme,
+++                                     icon_name,
+++                                     size == -1 ? 48 : size,
+++                                     0,
+++                                     &error);
+++
+++  if (error)
+++  {
+++    g_warning ("Could not load icon '%s': %s\n",
+++              icon_name,
+++              error->message);
+++
+++    g_error_free (error);
+++
+++    return NULL;
+++  }
+++
+++  return retval;
+++}
+++
++ void close_app_screen_changed (TaskNavigatorItem *item);
++ static void close_app_finalize (GObject *object);
++ 
++@@ -43,7 +84,7 @@
++ 
++ static void close_app_plugin_init (CloseAppPlugin *close_plugin)
++ {
++-   GtkWidget *btn;
+++   GtkWidget *btn, *hbox, *arrowImg;;
++    gint panel_height;
++ 
++    close_plugin->hdwm = hd_wm_get_singleton ();
++@@ -53,6 +94,14 @@
++ 
++    btn = close_plugin->btn = gtk_button_new();
++ 
+++  // Create the arrow image
+++  arrowImg = gtk_image_new_from_pixbuf (get_icon_from_theme("qgn_mer_menubutton", -1));
+++
+++  //use hbox containing arrowImg and label
+++  hbox = gtk_hbox_new(FALSE,0);
+++  gtk_box_pack_start  ((GtkBox*)hbox, arrowImg, FALSE, FALSE, 0);
+++  gtk_container_add (GTK_CONTAINER (btn), hbox);
+++
++    gtk_widget_set_size_request (btn, DEFAULT_MARQUEE_PANEL_HEIGHT, panel_height);
++ 
++    g_signal_connect (btn, "clicked", 
+--- marquee-plugins-0.22/debian/patches/60_drop-werror-cflag.patch
++++ marquee-plugins-0.22/debian/patches/60_drop-werror-cflag.patch
+@@ -0,0 +1,12 @@
++diff -Nur marquee-plugins-0.22/configure.ac marquee-plugins-0.22.new/configure.ac
++--- marquee-plugins-0.22/configure.ac	2008-04-05 04:07:53.000000000 +0200
+++++ marquee-plugins-0.22.new/configure.ac	2008-04-09 18:29:48.000000000 +0200
++@@ -22,7 +22,7 @@
++ # Misc build flags
++ #++++++++++++++++++
++ 
++-CFLAGS="$CFLAGS -Wall -Werror -ansi -Wmissing-prototypes -Wmissing-declarations -std=c99 -rdynamic"
+++CFLAGS="$CFLAGS -Wall -ansi -Wmissing-prototypes -Wmissing-declarations -std=c99 -rdynamic"
++ 
++ AC_SUBST(CFLAGS)
++ 
+--- marquee-plugins-0.22/debian/patches/62_force-automake-1.10.patch
++++ marquee-plugins-0.22/debian/patches/62_force-automake-1.10.patch
+@@ -0,0 +1,12 @@
++--- marquee-plugins-0.22/autogen.sh	2008-04-05 04:07:53.000000000 +0200
+++++ marquee-plugins-0.22.new/autogen.sh	2008-04-10 10:28:47.000000000 +0200
++@@ -3,7 +3,7 @@
++ 
++ set -x
++ libtoolize --automake --copy
++-aclocal-1.7 || aclocal
+++aclocal-1.10
++ autoconf
++ autoheader
++-automake-1.7 --add-missing --foreign --force --copy || automake --add-missing --foreign --force --copy
+++automake-1.10 --add-missing --foreign --force --copy
+--- marquee-plugins-0.22/debian/patches/61_disable-screen-changed.patch
++++ marquee-plugins-0.22/debian/patches/61_disable-screen-changed.patch
+@@ -0,0 +1,48 @@
++diff -Nur marquee-plugins-0.22/src/clock-plugin.c marquee-plugins-0.22.new/src/clock-plugin.c
++--- marquee-plugins-0.22/src/clock-plugin.c	2008-04-05 04:07:53.000000000 +0200
+++++ marquee-plugins-0.22.new/src/clock-plugin.c	2008-04-09 18:35:07.000000000 +0200
++@@ -269,7 +269,7 @@
++   GObjectClass   *object_class = G_OBJECT_CLASS (class);
++   TaskNavigatorItemClass *item_class = TASKNAVIGATOR_ITEM_CLASS (class);
++ 
++-  item_class->screen_changed = clock_plugin_screen_changed;
+++  //item_class->screen_changed = clock_plugin_screen_changed;
++   object_class->finalize = clock_plugin_finalize;
++ 
++   g_type_class_add_private (object_class, sizeof (ClockPluginPrivate));
++diff -Nur marquee-plugins-0.22/src/close-app-plugin.c marquee-plugins-0.22.new/src/close-app-plugin.c
++--- marquee-plugins-0.22/src/close-app-plugin.c	2008-04-05 04:07:53.000000000 +0200
+++++ marquee-plugins-0.22.new/src/close-app-plugin.c	2008-04-09 18:34:50.000000000 +0200
++@@ -76,7 +76,7 @@
++   GObjectClass *object_class = G_OBJECT_CLASS (class);
++   TaskNavigatorItemClass *item_class = TASKNAVIGATOR_ITEM_CLASS (class);
++ 
++-  item_class->screen_changed = close_app_screen_changed;
+++  //item_class->screen_changed = close_app_screen_changed;
++   object_class->finalize = close_app_finalize;
++ }
++ 
++diff -Nur marquee-plugins-0.22/src/drop-down-menu-plugin.c marquee-plugins-0.22.new/src/drop-down-menu-plugin.c
++--- marquee-plugins-0.22/src/drop-down-menu-plugin.c	2008-04-05 04:07:53.000000000 +0200
+++++ marquee-plugins-0.22.new/src/drop-down-menu-plugin.c	2008-04-09 18:34:50.000000000 +0200
++@@ -441,7 +441,7 @@
++    GObjectClass *object_class = G_OBJECT_CLASS (class);
++    TaskNavigatorItemClass *item_class = TASKNAVIGATOR_ITEM_CLASS (class);
++ 
++-   item_class->screen_changed = drop_down_menu_screen_changed;
+++   //item_class->screen_changed = drop_down_menu_screen_changed;
++    object_class->finalize = drop_down_menu_finalize;
++ 
++    g_type_class_add_private (object_class, sizeof (DropDownMenuPluginPrivate));
++diff -Nur marquee-plugins-0.22/src/showhome-plugin.c marquee-plugins-0.22.new/src/showhome-plugin.c
++--- marquee-plugins-0.22/src/showhome-plugin.c	2008-04-05 04:07:53.000000000 +0200
+++++ marquee-plugins-0.22.new/src/showhome-plugin.c	2008-04-09 18:34:50.000000000 +0200
++@@ -100,7 +100,7 @@
++   GObjectClass *object_class = G_OBJECT_CLASS (class);
++   TaskNavigatorItemClass *item_class = TASKNAVIGATOR_ITEM_CLASS (class);
++ 
++-  item_class->screen_changed = showhome_plugin_screen_changed;
+++  //item_class->screen_changed = showhome_plugin_screen_changed;
++   object_class->finalize = showhome_plugin_finalize;
++ }
++ 
+--- marquee-plugins-0.22/debian/patches/64_mer_ui.patch
++++ marquee-plugins-0.22/debian/patches/64_mer_ui.patch
+@@ -0,0 +1,155 @@
++diff -Nur -x '*.orig' -x '*~' marquee-plugins-0.22/src/common-config.h marquee-plugins-0.22.new/src/common-config.h
++--- marquee-plugins-0.22/src/common-config.h	2008-04-05 02:07:53.000000000 +0000
+++++ marquee-plugins-0.22.new/src/common-config.h	2009-05-23 12:46:00.000000000 +0000
++@@ -31,7 +31,7 @@
++ #define MARQUEE_DROPDOWN "marquee-drowdown"
++ #define MARQUEE_ENTRY "Marquee"
++ #define MARQUEE_HEIGHT "X-Size-Height"
++-#define HILDON_DESKTOP_CONFIG "/etc/hildon-desktop/desktop.conf"
+++#define HILDON_DESKTOP_CONFIG "~/.osso/hildon-desktop/desktop.conf"
++ 
++ void plugins_popup_preference (const gchar *pref_id);
++ gint plugins_get_marquee_panel_height (void);
++diff -Nur -x '*.orig' -x '*~' marquee-plugins-0.22/src/drop-down-menu-plugin.c marquee-plugins-0.22.new/src/drop-down-menu-plugin.c
++--- marquee-plugins-0.22/src/drop-down-menu-plugin.c	2009-05-23 12:45:33.000000000 +0000
+++++ marquee-plugins-0.22.new/src/drop-down-menu-plugin.c	2009-05-23 12:46:00.000000000 +0000
++@@ -27,6 +27,8 @@
++ #include <ctype.h>  //for isascii (menu title)
++ #include <X11/Xatom.h>
++ #include <gconf/gconf-client.h>
+++#include <libhildonwm/hd-wm.h>
+++#include <libhildondesktop/hildon-home-window.h>
++ 
++ #include "drop-down-menu-plugin.h"
++ 
++@@ -55,6 +57,48 @@
++ static gboolean home_menu_hide_cb (GtkWidget *widget, gpointer user_data);
++ static gboolean home_menu_show_cb (GtkWidget *widget, gpointer user_data);
++ 
+++static GdkPixbuf *
+++get_icon_from_theme (const gchar     *icon_name,
+++                                      gint             size)
+++{
+++  static GtkIconTheme *icon_theme = NULL;
+++	
+++  GError *error;
+++  GdkPixbuf *retval;
+++
+++  if (!icon_theme)
+++    icon_theme = gtk_icon_theme_get_default ();
+++
+++  if (!icon_name)
+++    return NULL;
+++
+++  g_return_val_if_fail (icon_theme, NULL);
+++
+++  if (!icon_name || icon_name[0] == '\0')
+++    return NULL;
+++
+++  error = NULL;
+++  retval = gtk_icon_theme_load_icon (icon_theme,
+++                                     icon_name,
+++                                     size == -1 ? 48 : size,
+++                                     0,
+++                                     &error);
+++
+++  if (error)
+++  {
+++    g_warning ("Could not load icon '%s': %s\n",
+++              icon_name,
+++              error->message);
+++
+++    g_error_free (error);
+++
+++    return NULL;
+++  }
+++
+++  return retval;
+++}
+++
+++
++ static void updateDownArrow (DropDownMenuPlugin *ddm_plugin, gboolean hasMenuItems) 
++ {
++   // find out if current app has any menu items
++@@ -304,18 +348,10 @@
++ 	   XSync(dpy, False);
++        }
++     } else {
++-        GtkWidget *home_menu;
++-
++-	home_menu = drop_down_menu_create_home_menu (ddm_plugin);
++-        g_signal_connect (G_OBJECT (home_menu), "hide",
++-                          G_CALLBACK (home_menu_hide_cb), ddm_plugin);
++-        g_signal_connect (G_OBJECT (home_menu), "show", 
++-                          G_CALLBACK (home_menu_show_cb), ddm_plugin);
++-	gtk_menu_popup (GTK_MENU(home_menu),
++-			NULL, NULL,
++-			drop_down_menu_position_func, ddm_plugin,
++-			0,
++-			gtk_get_current_event_time());
+++       /* XXX: EVIL EVIL EVIL HACK */
+++       HDWM *wm = hd_wm_get_singleton ();
+++       HildonHomeWindow *hmw = hd_wm_get_hildon_home_window(wm);
+++       hildon_home_window_toggle_menu(hmw);  
++     }
++ }
++ 
++@@ -346,44 +382,15 @@
++     scn_width = gdk_screen_get_width (screen);
++   }
++ 
++-  if (scn_width > 600)
++-    plugin_width = 52 * (3 + scn_width / 320);
++-  else
++-    plugin_width = scn_width - 52 * (5 + scn_width / 320);
++-
+++  plugin_width = 90;
++   gtk_widget_set_size_request (GTK_WIDGET(ddm_plugin), plugin_width, panel_height);
++ 
++   // Create the arrow image
++-  arrowImg = gtk_image_new_from_file (THEME_DIR "/images/mb_marquee_btn_title_arrow.png");
++-
++-  // Create label and set font
++-  label = gtk_label_new (NULL);
++-
++-  //set the font size smaller
++-  PangoAttribute *pa_size = pango_attr_size_new (17000);
++-  pa_size->start_index = 0;
++-  pa_size->end_index = -1;
++-  PangoAttribute *pa_font = pango_attr_family_new ("Sans");
++-  pa_font->start_index = 0;
++-  pa_font->end_index = -1;
++-  PangoAttribute *pa_color = pango_attr_foreground_new (0xE2E1,0xE2E1,0xE2E1);
++-  pa_color->start_index = 0;
++-  pa_color->end_index = -1;
++-  PangoAttrList *pl = pango_attr_list_new();
++-  pango_attr_list_insert(pl,pa_size);
++-  pango_attr_list_insert(pl,pa_font);
++-  pango_attr_list_insert(pl,pa_color);
++-  
++-  gtk_label_set_attributes ((GtkLabel*)label, pl);
++-  pango_attr_list_unref (pl);
++-
++-  //gtk_label_set_justify ((GtkLabel*)label, GTK_JUSTIFY_LEFT);
++-  gtk_misc_set_alignment((GtkMisc*)label, 0.0, 0.5);
+++  arrowImg = gtk_image_new_from_pixbuf (get_icon_from_theme("qgn_mer_menubutton", -1));
++ 
++   //use hbox containing arrowImg and label 
++   hbox = gtk_hbox_new(FALSE,0);
++   gtk_box_pack_start  ((GtkBox*)hbox, arrowImg, FALSE, FALSE, 0);
++-  gtk_container_add (GTK_CONTAINER(hbox), label);
++   gtk_container_add (GTK_CONTAINER (btn), hbox);
++   
++   priv->hdwm = hdwm;
++@@ -418,10 +425,7 @@
++   GList *children, *iter;
++   
++   scn_width = gdk_screen_get_width (screen);
++-  if (scn_width > 600)
++-    width = 52 * (3 + scn_width / 320);
++-  else
++-    width = scn_width - 52 * (5 + scn_width / 320);
+++  width = 52;
++   height = plugins_get_marquee_panel_height ();
++ 
++   children = gtk_container_get_children (GTK_CONTAINER(item));
