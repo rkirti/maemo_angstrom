@@ -1,0 +1,37 @@
+2009-03-20 08:54 diff -lru gtkhtml-3.24.4/gtkhtml/htmlengine.c gtkhtml-3.24.4-fix_crash_dkedves/gtkhtml/htmlengine.c Page 1
+--- gtkhtml-3.24.4/gtkhtml/htmlengine.c	2009-03-20 08:54:09.000000000 +0100
++++ gtkhtml-3.24.4/gtkhtml/htmlengine.c	2009-03-19 21:38:46.000000000 +0100
+@@ -1137,17 +1137,22 @@
+
+ 	while (l) {
+ 		gint cd;
+-		elem = l->data;
+-
+-		cd = elem->style->display;
+-		if (cd == display)
+-			break;
+ 
+-		if (cd > maxLevel) {
+-			if (display != DISPLAY_INLINE
+-			    || cd > DISPLAY_BLOCK)
+-				return;
+-		}
++        /* We skip invalid items to avoid crash...
++         * Yeah, its only a workaround... FIXME */
++        if (l->data && ((HTMLElement*)l->data)->style) {
++	    	elem = l->data;
++    
++    		cd = elem->style->display;
++		    if (cd == display)
++	    		break;
++    
++    		if (cd > maxLevel) {
++			    if (display != DISPLAY_INLINE
++		    	    || cd > DISPLAY_BLOCK)
++	    			return;
++    		}
++        }
+ 
+ 		l = l->next;
+ 	}
+

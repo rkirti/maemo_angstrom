@@ -1,0 +1,78 @@
+diff -ru gtkhtml-3.24.4/gtkhtml/gtkhtml.c gtkhtml-3.24.4/gtkhtml/gtkhtml.c
+--- gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2009-04-09 10:13:35.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2009-04-09 11:28:49.000000000 +0200
+@@ -960,14 +960,14 @@
+ {
+ 	HTMLEngine *engine = GTK_HTML (widget)->engine;
+ 
++  if (!engine)
++    return;
++
+ 	/* we don't need to set font's in idle time so call idle callback directly to avoid
+ 	   recalculating whole document
+ 	*/
+-	if (engine) {
+-		gtk_html_set_fonts (GTK_HTML (widget), engine->painter);
+-		html_engine_refresh_fonts (engine);
+-	}
+-
++	gtk_html_set_fonts (GTK_HTML (widget), engine->painter);
++	html_engine_refresh_fonts (engine);
+ 
+ 	html_colorset_set_style (engine->defaultSettings->color_set, widget);
+ 	html_colorset_set_unchanged (engine->settings->color_set,
+@@ -2555,6 +2555,7 @@
+ 						g_return_if_fail (link);
+ 						text = g_strndup (HTML_TEXT (obj)->text + link->start_index, link->end_index - link->start_index);
+ 						utf8 = g_strconcat (complete_url, "\n", text, NULL);
++            g_free (text);
+ 					} else
+ 						utf8 = g_strconcat (complete_url, "\n", complete_url, NULL);
+ 
+@@ -2562,7 +2563,6 @@
+ 					gtk_selection_data_set (selection_data, selection_data->target, 8,
+ 								(guchar *) utf16, written_len);
+ 					g_free (utf8);
+-					g_free (complete_url);
+ 					GTK_HTML (widget)->priv->dnd_url = utf16;
+ 				} else {
+ 					gtk_selection_data_set (selection_data, selection_data->target, 8,
+@@ -2570,6 +2570,8 @@
+ 				        /* printf ("complete URL %s\n", complete_url); */
+ 					GTK_HTML (widget)->priv->dnd_url = complete_url;
+ 				}
++
++				g_free (complete_url);
+ 			}
+ 		}
+ 	}
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlcheckbox.c gtkhtml-3.24.4/gtkhtml/htmlcheckbox.c
+--- gtkhtml-3.24.4/gtkhtml/htmlcheckbox.c	2008-10-13 10:31:38.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlcheckbox.c	2009-04-09 10:50:17.000000000 +0200
+@@ -110,11 +110,12 @@
+ {
+ 	HTMLEmbedded *element;
+ 	GtkWidget  *check;
++  static char *on = "on";
+ 
+ 	element = HTML_EMBEDDED (checkbox);
+ 
+ 	if (value == NULL)
+-		value = g_strdup ("on");
++		value = on; 
+ 
+ 	html_embedded_init (element, HTML_EMBEDDED_CLASS (klass), parent, name, value);
+ 
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlclueflow.c gtkhtml-3.24.4/gtkhtml/htmlclueflow.c
+--- gtkhtml-3.24.4/gtkhtml/htmlclueflow.c	2008-10-13 10:31:38.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlclueflow.c	2009-04-09 11:27:05.000000000 +0200
+@@ -2308,7 +2308,8 @@
+ 					p += (info->forward) ? 1 : -1;
+ 					} */
+ 
+-				while ((info->forward && index < text_bytes)
++        /* index should be lesser than text_bytes - 1 */
++				while ((info->forward && index < (text_bytes - 1))
+ 				       || (!info->forward && index >= 0)) {
+ 					rv = regexec (info->reb,
+ 						      (gchar *) par + index,

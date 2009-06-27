@@ -1,0 +1,306 @@
+diff -ru gtkhtml-3.24.4/gtkhtml/gtkhtml.c gtkhtml-3.24.4/gtkhtml/gtkhtml.c
+--- gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2009-04-07 04:15:16.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2009-04-07 04:14:25.000000000 +0200
+@@ -6139,6 +6139,12 @@
+ 	html_engine_get_selection_area (html->engine, x, y, w, h);
+ }
+ 
++void
++gtk_html_set_max_image_size (GtkHTML *html, gint width, gint height)
++{
++	html_engine_set_max_image_size (html->engine, width, height);
++}
++
+ void 
+ gtk_html_set_allow_frameset (GtkHTML *html, gboolean allow)
+ {
+diff -ru gtkhtml-3.24.4/gtkhtml/gtkhtml.h gtkhtml-3.24.4/gtkhtml/gtkhtml.h
+--- gtkhtml-3.24.4/gtkhtml/gtkhtml.h	2009-04-07 04:15:16.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/gtkhtml.h	2009-04-07 04:14:25.000000000 +0200
+@@ -366,6 +366,9 @@
+ 								   gint *w,
+ 								   gint *h);
+ 
++void               gtk_html_set_max_image_size                    (GtkHTML           *html,
++                                                                   gint width, gint height);
++
+ #endif
+ 
+ #endif /* _GTKHTML_H_ */
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlengine.c gtkhtml-3.24.4/gtkhtml/htmlengine.c
+--- gtkhtml-3.24.4/gtkhtml/htmlengine.c	2009-04-07 04:15:16.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlengine.c	2009-04-07 04:14:25.000000000 +0200
+@@ -4413,6 +4413,7 @@
+ 
+ 	engine->language = NULL;
+ 
++  engine->image_max_size_set = FALSE;
+ }
+ 
+ HTMLEngine *
+@@ -6966,3 +6967,12 @@
+ 	*w = e->search_area_w;
+ 	*h = e->search_area_h;
+ }
++
++void html_engine_set_max_image_size (HTMLEngine *e, 
++                                     gint width,
++                                     gint height)
++{
++  e->image_max_height = height;
++  e->image_max_width = width;
++  e->image_max_size_set = TRUE;
++}
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlengine.h gtkhtml-3.24.4/gtkhtml/htmlengine.h
+--- gtkhtml-3.24.4/gtkhtml/htmlengine.h	2009-04-07 04:15:16.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlengine.h	2009-04-07 04:14:25.000000000 +0200
+@@ -270,6 +270,10 @@
+ 	gint search_area_y;
+ 	gint search_area_w;
+ 	gint search_area_h;
++
++  gboolean image_max_size_set;
++  gint image_max_width;
++  gint image_max_height;
+ };
+ 
+ /* must be forward referenced *sigh* */
+@@ -500,5 +504,6 @@
+ void html_engine_get_selection_area (HTMLEngine *e, 
+ 				     gint *x, gint *y, 
+ 				     gint *w, gint *h);
++void html_engine_set_max_image_size (HTMLEngine *e, gint width, gint height);
+ 
+ #endif /* _HTMLENGINE_H_ */
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlimage.c gtkhtml-3.24.4/gtkhtml/htmlimage.c
+--- gtkhtml-3.24.4/gtkhtml/htmlimage.c	2009-04-07 04:15:16.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlimage.c	2009-04-07 04:31:37.000000000 +0200
+@@ -83,8 +83,9 @@
+ html_image_get_actual_width (HTMLImage *image, HTMLPainter *painter)
+ {
+ 	GdkPixbufAnimation *anim = image->image_ptr->animation;
++  GdkPixbuf *pixbuf = image->image_ptr->pixbuf;
+ 	gint pixel_size = painter ? html_painter_get_pixel_size (painter) : 1;
+-	gint width;
++	gint width, get_width, get_height;
+ 
+ 	if (image->percent_width) {
+ 		/* The cast to `gdouble' is to avoid overflow (eg. when
+@@ -93,16 +94,24 @@
+ 			 * image->specified_width) / 100 * image->magnification;
+ 	} else if (image->specified_width > 0) {
+ 		width = image->specified_width * pixel_size * image->magnification;
+-	} else if (image->image_ptr == NULL || anim == NULL) {
++	} else if (image->image_ptr == NULL || 
++             (anim == NULL && pixbuf == NULL)) {
+ 		width = DEFAULT_SIZE * pixel_size * image->magnification;
+ 	} else {
+-		width = gdk_pixbuf_animation_get_width (anim) * pixel_size * image->magnification;
++    if (anim) {
++      get_width = gdk_pixbuf_animation_get_width (anim);
++      get_height = gdk_pixbuf_animation_get_height (anim);
++    } else {
++      get_width = gdk_pixbuf_get_width (pixbuf); 
++      get_height = gdk_pixbuf_get_height (pixbuf);
++    }
++		width = get_width * pixel_size * image->magnification;
+ 
+ 		if (image->specified_height > 0 || image->percent_height) {
+ 			double scale;
+ 
+ 			scale =  ((double) html_image_get_actual_height (image, painter))
+-				/ (gdk_pixbuf_animation_get_height (anim) * pixel_size);
++				/ (get_height * pixel_size);
+ 
+ 			width *= scale;
+ 		}
+@@ -116,8 +125,9 @@
+ html_image_get_actual_height (HTMLImage *image, HTMLPainter *painter)
+ {
+ 	GdkPixbufAnimation *anim = image->image_ptr->animation;
++  GdkPixbuf *pixbuf = image->image_ptr->pixbuf;
+ 	gint pixel_size = painter ? html_painter_get_pixel_size (painter) : 1;
+-	gint height;
++	gint height, get_width, get_height;
+ 
+ 	if (image->percent_height) {
+ 		/* The cast to `gdouble' is to avoid overflow (eg. when
+@@ -126,16 +136,24 @@
+ 			  * image->specified_height) / 100 * image->magnification;
+ 	} else if (image->specified_height > 0) {
+ 		height = image->specified_height * pixel_size * image->magnification;
+-	} else if (image->image_ptr == NULL || anim == NULL) {
++	} else if (image->image_ptr == NULL || 
++             (anim == NULL && pixbuf == NULL)) {
+ 		height = DEFAULT_SIZE * pixel_size * image->magnification;
+ 	} else {
+-		height = gdk_pixbuf_animation_get_height (anim) * pixel_size * image->magnification;
++    if (anim) {
++      get_width = gdk_pixbuf_animation_get_width (anim);
++      get_height = gdk_pixbuf_animation_get_height (anim);
++    } else {
++      get_width = gdk_pixbuf_get_width (pixbuf); 
++      get_height = gdk_pixbuf_get_height (pixbuf);
++    }
++		height = get_height * pixel_size * image->magnification;
+ 
+ 		if (image->specified_width > 0 || image->percent_width) {
+ 			double scale;
+ 
+ 			scale = ((double) html_image_get_actual_width (image, painter))
+-				/ (gdk_pixbuf_animation_get_width (anim) * pixel_size);
++				/ (get_width * pixel_size);
+ 
+ 			height *= scale;
+ 		}
+@@ -454,7 +472,7 @@
+ 			pixbuf = gdk_pixbuf_animation_get_static_image (ip->animation);
+ 		}
+ 	} else {
+-		pixbuf = NULL;
++    pixbuf = ip->pixbuf;
+ 	}
+ 
+ 	pixel_size = html_painter_get_pixel_size (painter);
+@@ -1121,11 +1139,16 @@
+ 
+ 	gdk_pixbuf_loader_close (ip->loader, NULL);
+ 
+-	if (!ip->animation) {
+-		ip->animation = gdk_pixbuf_loader_get_animation (ip->loader);
++	if (ip->rescaled && !ip->pixbuf) {
++    ip->pixbuf = gdk_pixbuf_loader_get_pixbuf (ip->loader);
+ 
+-		if (ip->animation)
+-			g_object_ref (ip->animation);
++    if (ip->pixbuf)
++      g_object_ref (ip->pixbuf);
++  } else if (!ip->rescaled && !ip->animation) {
++    ip->animation = gdk_pixbuf_loader_get_animation (ip->loader);
++
++    if (ip->animation)
++	    g_object_ref (ip->animation);
+ 	}
+ 	html_image_pointer_start_animation (ip);
+ 
+@@ -1231,15 +1254,49 @@
+ static void
+ html_image_factory_area_prepared (GdkPixbufLoader *loader, HTMLImagePointer *ip)
+ {
+-	if (!ip->animation) {
+-		ip->animation = gdk_pixbuf_loader_get_animation (loader);
++  if (ip->rescaled && !ip->pixbuf) {
++    ip->pixbuf = gdk_pixbuf_loader_get_pixbuf (loader);
++    g_object_ref (ip->pixbuf);
++	} else if (!ip->rescaled && !ip->animation) {
++    ip->animation = gdk_pixbuf_loader_get_animation (loader);
+ 		g_object_ref (ip->animation);
+ 
+-		html_image_pointer_start_animation (ip);
++    html_image_pointer_start_animation (ip);
+ 	}
+ 	update_or_redraw (ip);
+ }
+ 
++static void
++html_image_factory_size_prepared (GdkPixbufLoader *loader,
++                                  gint width,
++                                  gint height,
++                                  HTMLImagePointer *ip)
++{
++  HTMLEngine* e = ip->factory->engine;
++  gint new_width = width;
++  gint new_height = height;
++
++  if (!e->image_max_size_set)
++    return;
++
++  if (new_width > e->image_max_width) {
++    new_height = (gint) ((double) new_height * 
++                 ((double) e->image_max_width / (double) new_width));
++    new_width = e->image_max_width;
++  }
++
++  if (new_height > e->image_max_height) {
++    new_width = (gint) ((double) new_width * 
++                ((double) e->image_max_height / (double) new_height));
++    new_height = e->image_max_height;
++  }
++
++  if ((width != new_width) || (height != new_height)) {
++    ip->rescaled = TRUE;
++    gdk_pixbuf_loader_set_size (loader, new_width, new_height);
++  }
++}
++
+ static GdkPixbuf *
+ html_image_factory_get_missing (HTMLImageFactory *factory)
+ {
+@@ -1321,6 +1378,8 @@
+ 	retval->iter = NULL;
+ 	retval->animation = NULL;
+ 	retval->interests = NULL;
++  retval->pixbuf = NULL;
++  retval->rescaled = FALSE;
+ 	retval->factory = factory;
+ 	retval->stall = FALSE;
+ 	retval->stall_timeout = g_timeout_add (STALL_INTERVAL,
+@@ -1379,6 +1438,10 @@
+ 		g_object_unref (ip->animation);
+ 		ip->animation = NULL;
+ 	}
++	if (ip->pixbuf) {
++		g_object_unref (ip->pixbuf);
++		ip->pixbuf = NULL;
++	}
+ 	if (ip->iter) {
+ 		g_object_unref (ip->iter);
+ 		ip->iter = NULL;
+@@ -1441,21 +1504,28 @@
+ 
+ 	if (!ip) {
+ 		ip = html_image_pointer_new (url, factory);
++    g_signal_connect (ip->loader, "size_prepared",
++                      G_CALLBACK (html_image_factory_size_prepared),
++                      ip);
+ 		g_hash_table_insert (factory->loaded_images, ip->url, ip);
+ 		if (*url) {
+-			g_signal_connect (G_OBJECT (ip->loader), "area_prepared",
+-					  G_CALLBACK (html_image_factory_area_prepared),
+-					  ip);
+-
+-			g_signal_connect (G_OBJECT (ip->loader), "area_updated",
+-					  G_CALLBACK (html_image_factory_area_updated),
+-					  ip);
++ 			g_signal_connect (G_OBJECT (ip->loader), "area_prepared",
++				    G_CALLBACK (html_image_factory_area_prepared),
++			  	  ip);
++
++		  g_signal_connect (G_OBJECT (ip->loader), "area_updated",
++	  			  G_CALLBACK (html_image_factory_area_updated),
++   				  ip);
+ 			stream = html_image_pointer_load (ip);
+ 		}
+ 	} else {
+ 		if (reload) {
+ 			free_image_ptr_data (ip);
+ 			ip->loader = gdk_pixbuf_loader_new ();
++      g_signal_connect (ip->loader, "size_prepared",
++                        G_CALLBACK (html_image_factory_size_prepared),
++                        ip);
++
+ 			stream = html_image_pointer_load (ip);
+ 		}
+ 	}
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlimage.h gtkhtml-3.24.4/gtkhtml/htmlimage.h
+--- gtkhtml-3.24.4/gtkhtml/htmlimage.h	2009-04-07 04:15:16.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlimage.h	2009-04-07 04:23:46.000000000 +0200
+@@ -41,6 +41,8 @@
+ 	gint stall;
+ 	guint stall_timeout;
+ 	guint animation_timeout;
++  GdkPixbuf *pixbuf; /* Only used when image_max_size_set & image rescaled */
++  gboolean rescaled; /* to know image was rescaled */
+ };
+ 
+ #define HTML_IMAGE(x) ((HTMLImage *)(x))

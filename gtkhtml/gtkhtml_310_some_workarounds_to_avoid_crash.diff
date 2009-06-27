@@ -1,0 +1,36 @@
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlengine.c gtkhtml-3.24.4/gtkhtml/htmlengine.c
+--- gtkhtml-3.24.4/gtkhtml/htmlengine.c	2009-04-09 13:15:13.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlengine.c	2009-04-09 13:24:57.000000000 +0200
+@@ -795,13 +795,15 @@
+ static void
+ finish_flow (HTMLEngine *e, HTMLObject *clue) {
+ 	g_return_if_fail (HTML_IS_ENGINE (e));
+-
++  
+ 	if (e->flow && HTML_CLUE (e->flow)->tail == NULL) {
+-		html_clue_remove (HTML_CLUE (clue), e->flow);
++    if (clue)
++      html_clue_remove (HTML_CLUE (clue), e->flow);
+ 		html_object_destroy (e->flow);
+ 		e->flow = NULL;
+ 	}
+-	close_flow (e, clue);
++  if (clue)
++   close_flow (e, clue);
+ }
+ 
+ 
+diff -ru gtkhtml-3.24.4/gtkhtml/htmlobject.c gtkhtml-3.24.4/gtkhtml/htmlobject.c
+--- gtkhtml-3.24.4/gtkhtml/htmlobject.c	2008-10-13 10:31:38.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlobject.c	2009-04-09 13:26:02.000000000 +0200
+@@ -57,7 +57,9 @@
+ static void
+ destroy (HTMLObject *self)
+ {
+-#define GTKHTML_MEM_DEBUG 1
++  if (!self)
++    return;
++/* #define GTKHTML_MEM_DEBUG 1 */
+ #if GTKHTML_MEM_DEBUG
+ 	self->parent = HTML_OBJECT (0xdeadbeef);
+ 	self->next = HTML_OBJECT (0xdeadbeef);

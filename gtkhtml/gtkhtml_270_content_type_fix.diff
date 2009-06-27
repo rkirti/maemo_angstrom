@@ -1,0 +1,12 @@
+diff -ru gtkhtml-3.24.4/gtkhtml/gtkhtml.c gtkhtml-3.24.4-proper_content_type_handling/gtkhtml/gtkhtml.c
+--- gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2009-02-20 14:00:56.000000000 +0100
++++ gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2009-02-20 14:02:22.000000000 +0100
+@@ -3680,7 +3680,7 @@
+ {
+ 	g_return_val_if_fail (! gtk_html_get_editable (html), NULL);
+ 
+-	return gtk_html_begin_full (html, NULL, NULL, 0);
++	return gtk_html_begin_full (html, NULL, content_type, 0);
+ }
+ 
+ /**

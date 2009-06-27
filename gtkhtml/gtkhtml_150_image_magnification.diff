@@ -1,0 +1,126 @@
+diff -r -U5 gtkhtml-3.24.4/gtkhtml/gtkhtml.c gtkhtml-3.24.4/gtkhtml/gtkhtml.c
+--- gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2008-10-16 11:45:07.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/gtkhtml.c	2008-10-16 11:42:21.000000000 +0200
+@@ -6048,12 +6048,14 @@
+ 		html_font_manager_set_magnification (&GTK_HTML (HTML_FRAME (o)->html)->engine->painter->font_manager,
+ 						     *(gdouble *) data);
+ 	} else if (HTML_IS_IFRAME (o)) {
+ 		html_font_manager_set_magnification (&GTK_HTML (HTML_IFRAME (o)->html)->engine->painter->font_manager,
+ 						     *(gdouble *) data);
+-	} else if (HTML_IS_TEXT (o))
+-		html_text_calc_font_size (HTML_TEXT (o), e);
++	} else if (HTML_IS_TEXT (o)) {
++		html_text_calc_font_size (HTML_TEXT (o), e); 
++	} else if (HTML_IS_IMAGE (o))
++		html_image_set_magnification (HTML_IMAGE (o), (*((gdouble *)data))) ;
+ }
+ 
+ void
+ gtk_html_set_magnification (GtkHTML *html, gdouble magnification)
+ {
+diff -r -U5 gtkhtml-3.24.4/gtkhtml/htmlimage.c gtkhtml-3.24.4/gtkhtml/htmlimage.c
+--- gtkhtml-3.24.4/gtkhtml/htmlimage.c	2008-10-16 11:45:06.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlimage.c	2008-10-16 11:42:26.000000000 +0200
+@@ -70,10 +70,17 @@
+ static gint                html_image_pointer_update            (HTMLImagePointer *ip);
+ static void                html_image_pointer_start_animation   (HTMLImagePointer *ip);
+ 
+ static GdkPixbuf *         html_image_factory_get_missing       (HTMLImageFactory *factory);
+ 
++void
++html_image_set_magnification (HTMLImage *image, gdouble new_magnification)
++{
++	if (NULL == image) return ;
++	image->magnification = new_magnification ;
++}
++
+ guint
+ html_image_get_actual_width (HTMLImage *image, HTMLPainter *painter)
+ {
+ 	GdkPixbufAnimation *anim = image->image_ptr->animation;
+ 	gint pixel_size = painter ? html_painter_get_pixel_size (painter) : 1;
+@@ -81,17 +88,17 @@
+ 
+ 	if (image->percent_width) {
+ 		/* The cast to `gdouble' is to avoid overflow (eg. when
+                    printing).  */
+ 		width = ((gdouble) HTML_OBJECT (image)->max_width
+-			 * image->specified_width) / 100;
++			 * image->specified_width) / 100 * image->magnification;
+ 	} else if (image->specified_width > 0) {
+-		width = image->specified_width * pixel_size;
++		width = image->specified_width * pixel_size * image->magnification;
+ 	} else if (image->image_ptr == NULL || anim == NULL) {
+-		width = DEFAULT_SIZE * pixel_size;
++		width = DEFAULT_SIZE * pixel_size * image->magnification;
+ 	} else {
+-		width = gdk_pixbuf_animation_get_width (anim) * pixel_size;
++		width = gdk_pixbuf_animation_get_width (anim) * pixel_size * image->magnification;
+ 
+ 		if (image->specified_height > 0 || image->percent_height) {
+ 			double scale;
+ 
+ 			scale =  ((double) html_image_get_actual_height (image, painter))
+@@ -114,17 +121,17 @@
+ 
+ 	if (image->percent_height) {
+ 		/* The cast to `gdouble' is to avoid overflow (eg. when
+                    printing).  */
+ 		height = ((gdouble) html_engine_get_view_height (image->image_ptr->factory->engine)
+-			  * image->specified_height) / 100;
++			  * image->specified_height) / 100 * image->magnification;
+ 	} else if (image->specified_height > 0) {
+-		height = image->specified_height * pixel_size;
++		height = image->specified_height * pixel_size * image->magnification;
+ 	} else if (image->image_ptr == NULL || anim == NULL) {
+-		height = DEFAULT_SIZE * pixel_size;
++		height = DEFAULT_SIZE * pixel_size * image->magnification;
+ 	} else {
+-		height = gdk_pixbuf_animation_get_height (anim) * pixel_size;
++		height = gdk_pixbuf_animation_get_height (anim) * pixel_size * image->magnification;
+ 
+ 		if (image->specified_width > 0 || image->percent_width) {
+ 			double scale;
+ 
+ 			scale = ((double) html_image_get_actual_width (image, painter))
+@@ -852,11 +859,11 @@
+ 	image->vspace = 0;
+ 
+ 	if (valign == HTML_VALIGN_NONE)
+ 		valign = HTML_VALIGN_BOTTOM;
+ 	image->valign = valign;
+-
++	image->magnification = 1.0 ;
+ 	image->image_ptr = html_image_factory_register (imf, image, filename, reload);
+ }
+ 
+ HTMLObject *
+ html_image_new (HTMLImageFactory *imf,
+diff -r -U5 gtkhtml-3.24.4/gtkhtml/htmlimage.h gtkhtml-3.24.4/gtkhtml/htmlimage.h
+--- gtkhtml-3.24.4/gtkhtml/htmlimage.h	2008-06-13 05:05:58.000000000 +0200
++++ gtkhtml-3.24.4/gtkhtml/htmlimage.h	2008-10-16 11:44:16.000000000 +0200
+@@ -71,10 +71,11 @@
+ 	gchar *url;
+ 	gchar *target;
+ 	gchar *alt;
+ 	gchar *usemap;
+ 	gchar *final_url;
++	gdouble magnification;
+ };
+ 
+ struct _HTMLImageClass {
+ 	HTMLObjectClass parent_class;
+ };
+@@ -139,10 +140,12 @@
+ 					    const gchar     *url);
+ guint       html_image_get_actual_width    (HTMLImage       *image,
+ 					    HTMLPainter     *painter);
+ guint       html_image_get_actual_height   (HTMLImage       *image,
+ 					    HTMLPainter     *painter);
++void        html_image_set_magnification   (HTMLImage       *image,
++					    gdouble new_magnification) ;
+ /* FIXME move to htmlimagefactory.c */
+ HTMLImageFactory *html_image_factory_new                    (HTMLEngine       *e);
+ void              html_image_factory_free                   (HTMLImageFactory *factory);
+ void              html_image_factory_cleanup                (HTMLImageFactory *factory); /* Does gc etc. - removes unused image entries */
+ void              html_image_factory_stop_animations        (HTMLImageFactory *factory);
