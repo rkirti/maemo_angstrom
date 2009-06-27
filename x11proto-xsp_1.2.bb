@@ -4,8 +4,10 @@
 DESCRIPTION = "X11 XSP extension wire protocol"
 HOMEPAGE = "unknown"
 LICENSE = "Nokia copyright"
-SECTION = "base"
-PR = "r151"
+#No deps.
+DEPENDS = ""
+SECTION = "x11"
+PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/fremantle/free/x/${PN}/${PN}_${PV}-1.tar.gz"
 
