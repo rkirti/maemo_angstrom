@@ -26,7 +26,9 @@ do_stage(){
 
 
 do_install_append () {
-	install -d ${D}${sysconfdir}/osso-af-init
-	install -m755 ${S}/debian/sapwood-server.sh  ${D}${sysconfdir}/osso-af-init/sapwood-server.sh
+	install -d ${D}${sysconfdir}/osso-af-init ${D}${sysconfdir}/X11/replace/Xsession.d/
+	install -m 755 ${S}/debian/sapwood-server.sh  ${D}${sysconfdir}/osso-af-init/sapwood-server.sh
+    install -m 755 ${S}/debian/gtk2-engines-sapwood.xsession ${D}${sysconfdir}/X11/replace/Xsession.d/gtk2-engines-sapwood
+
 }
 
