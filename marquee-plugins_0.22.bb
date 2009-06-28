@@ -5,7 +5,7 @@ DESCRIPTION = "Plugins for the hildon marquee, with Mer patches: Part of a messy
 HOMEPAGE = "unknown (Ubuntu Mobile home page)"
 LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "ui"
-DEPENDS = "hildon-desktop libdbus-glib"
+DEPENDS = "hildon-desktop dbus-glib"
 PR = "r0"
 
 SRC_URI = "http://mirror.anl.gov/pub/ubuntu/pool/universe/m/${PN}/${PN}_${PV}.orig.tar.gz \
