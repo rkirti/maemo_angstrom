@@ -5,7 +5,7 @@ DESCRIPTION = "Tool to generate gtkrc cache files on the fly"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GPL"
 SECTION = "base"
-DEPENDS = "gtk2.0"
+DEPENDS = "gtk+"
 PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}-1-recomp1.tar.gz"
