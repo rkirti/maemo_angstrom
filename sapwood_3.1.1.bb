@@ -5,7 +5,7 @@ DESCRIPTION = "Sapwood: pixbuf based theming for gtk+ 2.x"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GNU Lesser General Public License-version 2.0"
 SECTION = "x11/base"
-DEPENDS = "gtk+2.0 upstart"
+DEPENDS = "gtk+ upstart"
 
 PR = "r2"
 
