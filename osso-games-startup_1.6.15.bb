@@ -5,7 +5,7 @@ DESCRIPTION = "Startup Screen for osso-games"
 HOMEPAGE = "http://maemo.org "
 LICENSE = "unknown"
 SECTION = "apps"
-DEPENDS = " libhildon gtk2.0 osso-gnomevfs2  glib2.0 dbus-glib libosso gconf2 libhildonfm2 libhildonmime maemo-launcher"
+DEPENDS = "libhildon gtk+ osso-gnome-vfs2 glib-2.0 dbus-glib libosso gconf libhildonfm libhildonmime maemo-launcher"
 PR = "r2"
 
 SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}-2+0m5.tar.gz"
