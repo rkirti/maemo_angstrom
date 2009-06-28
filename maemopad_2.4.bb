@@ -5,7 +5,7 @@ DESCRIPTION = "Text editor application for editing plain-text documents."
 HOMEPAGE = "http://maemo.org"
 LICENSE = "unknown"
 SECTION = "apps"
-DEPENDS = "libhildon1 gtk-2.0 osso-gnome-vfs2 glib-2.0 dbus-glib libosso conbtdialogs libhildonhelp libhildonfm2 osso-af-settings"
+DEPENDS = "libhildon gtk+ osso-gnome-vfs2 glib-2.0 dbus-glib libosso libconbtui libhildonhelp libhildonfm osso-af-settings"
 # This is imp. Only r3 (rev. in pre-alpha repo) works. Later ones dont build
 PR = "r3"
 
