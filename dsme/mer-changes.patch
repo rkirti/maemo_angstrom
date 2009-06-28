@@ -1,0 +1,120 @@
+--- dsme-0.60.4+0m5/dsme-cal.c
++++ dsme-0.60.4+0m5/dsme-cal.c
+@@ -26,18 +26,17 @@
+ #include "dsme/dsme-cal.h"
+ #include "dsme/logging.h"
+ 
+-#include <cal.h>
+-
+ 
+ static void dsme_cal_debug(int level, const char *str);
+ static void dsme_cal_error(const char *str);
+ 
+ 
++
+ int dsme_cal_init(void) {
+ 
+-	cal_debug_log = dsme_cal_debug;
++/*	cal_debug_log = dsme_cal_debug;
+ 	cal_error_log = dsme_cal_error;
+-
++*/
+ 	return 0;
+ }
+ 
+@@ -53,3 +52,4 @@
+ 
+ 	dsme_log(LOG_ERR, "CAL ERROR: %s", str);
+ }
++
+--- dsme-0.60.4+0m5/Makefile
++++ dsme-0.60.4+0m5/Makefile
+@@ -38,10 +38,10 @@
+ # C_DBGFLAGS are not used for normal builds
+ #
+ C_GENFLAGS     := -DPRG_VERSION=$(VERSION) -g \
+-                  -Wall -Wwrite-strings -Wmissing-prototypes -Werror# -pedantic
++                  -Wall -Wwrite-strings -Wmissing-prototypes -D_GNU_SOURCE # -pedantic
+ C_OPTFLAGS     := -O2 -s
+ C_DBGFLAGS     := -g -DDEBUG -DDSME_LOG_ENABLE
+-C_DEFINES      := DSME_POSIX_TIMER DSME_WD_SYNC DSME_BMEIPC
++C_DEFINES      := DSME_POSIX_TIMER DSME_WD_SYNC
+ C_INCDIRS      := $(TOPDIR)/include $(TOPDIR)/modules $(TOPDIR) 
+ MKDEP_INCFLAGS := $$(pkg-config --cflags-only-I glib-2.0)
+ 
+@@ -70,7 +70,7 @@
+                            logging.o oom.o mainloop.o \
+                            dsme-cal.o dsmesock.o
+ dsme_SO_LIBS            := dsme
+-dsme_LIBS               := dl cal
++dsme_LIBS               := dl
+ dsme: LD_EXTRA_GENFLAGS := -rdynamic
+ 
+ #logging.o:	C_EXTRA_DEFINES	:=	USE_STDERR
+--- dsme-0.60.4+0m5/util/kicker.c
++++ dsme-0.60.4+0m5/util/kicker.c
+@@ -94,7 +94,7 @@
+               return -1;
+       }
+ 
+-      ret = cal_read_block(kicker_cal, "r&d_mode", &vptr, &len, CAL_FLAG_USER);
++      ret = cal_read_block(kicker_cal, "r&d_mode", &vptr, &len, 0);
+       if (ret < 0) {
+               fprintf(stderr, "Kicker: error reading R&D mode flags, watchdog enabled\n");
+               cal_finish(kicker_cal);
+--- dsme-0.60.4+0m5/util/Makefile
++++ dsme-0.60.4+0m5/util/Makefile
+@@ -20,9 +20,9 @@
+ waitfordsme_SO_LIBS	:=	dsme
+ kicker_C_OBJS 	:=	kicker.o
+ kicker_SO_LIBS	:=	dsme
+-kicker_LIBS     :=      cal
++kicker_LIBS     :=      
+ thermaltool_C_OBJS := thermaltool.o
+-thermaltool_LIBS   := cal
++thermaltool_LIBS   := 
+ 
+ #
+ # Install files in this directory
+--- dsme-0.60.4+0m5/debian/control
++++ dsme-0.60.4+0m5/debian/control
+@@ -3,7 +3,7 @@
+ Priority: optional
+ Maintainer: Semi Malinen <semi.malinen@nokia.com>
+ Uploaders: Ismo Laitinen <ismo.laitinen@nokia.com>, David Weinehall <david.weinehall@nokia.com>, Philippe De Swert <philippe.de-swert@nokia.com>
+-Build-Depends: debhelper (>= 4.1.0), libbmeipc-dev, libcal-dev (>= 0.2.0), pkg-config, libglib2.0-dev, libdbus-1-dev (>= 1.0), libdbus-glib-1-dev, upstart-dev
++Build-Depends: debhelper (>= 4.1.0), pkg-config, libglib2.0-dev, libdbus-1-dev (>= 1.0), libdbus-glib-1-dev, upstart-dev
+ Standards-Version: 3.7.2
+ 
+ Package: dsme
+--- dsme-0.60.4+0m5/debian/changelog
++++ dsme-0.60.4+0m5/debian/changelog
+@@ -1,3 +1,9 @@
++dsme (0.60.4+0m5-mer1) jaunty; urgency=low
++
++  * Make it compile under Mer.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Wed, 27 May 2009 16:27:10 +0000
++
+ dsme (0.60.4+0m5) unstable; urgency=low
+ 
+   * This entry has been added by BIFH queue processor
+--- dsme-0.60.4+0m5/include/cal.h
++++ dsme-0.60.4+0m5/include/cal.h
+@@ -0,0 +1,16 @@
++#ifndef __CAL_H
++#define __CAL_H
++
++struct cal;
++
++static void cal_debug(int a, const char *b) {}
++static void cal_error(const char *a) {}
++static void cal_finish(struct cal *a) {}
++static int cal_init(struct cal **a) { return -1; }
++static int cal_lock_otp_area(struct cal *a, unsigned int b) { return -1; }
++static int cal_read_block(struct cal *a, const char *b, void **c, long unsigned int *d, long unsigned int e) { return -1; };
++static int cal_write_block(struct cal *a, const char *b, const void *c, long unsigned int d, long unsigned int e) { return -1; };
++
++#define CAL_FLAG_USER 0
++
++#endif
