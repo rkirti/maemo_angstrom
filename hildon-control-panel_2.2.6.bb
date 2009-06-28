@@ -5,7 +5,7 @@ DESCRIPTION = "Control Panel to configure the Hildon desktop"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "base"
-DEPENDS = "libosso-gnomevfs2 libhildon1 libosso osso-af-settings libhildonhelp maemo-launcher"
+DEPENDS = "osso-gnome-vfs2 libhildon libosso osso-af-settings libhildonhelp maemo-launcher"
 PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}-1+0m5.tar.gz \
