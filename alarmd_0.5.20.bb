@@ -37,19 +37,19 @@ do_install_prepend(){
 
 
 do_install(){
-    install -d ${D}${bindir} ${D}${libdir} ${D}${includedir}
+    install -d ${D}${bindir} ${D}${libdir} ${D}${includedir}  ${D}${libdir}/alarmd
     install -m 0755 ${S}/.libs/alarmd ${D}${bindir}
     install -m 0755 ${S}/.libs/alarmtool ${D}${bindir}
     install -m 0755 ${S}/.libs/apitest ${D}${bindir}
     install -m 0755 ${S}/.libs/dbustest ${D}${bindir}
     oe_libinstall -so libalarm ${D}${libdir}
-    oe_libinstall -so libretu ${D}${libdir}
-    oe_libinstall -so libgtimeout ${D}${libdir}
+    oe_libinstall -so libretu ${D}${libdir}/alarmd
+    oe_libinstall -so libgtimeout ${D}${libdir}/alarmd
     install -m 0644 ${S}/include/*.h ${D}${includedir}
 }
 
 do_stage(){
-    install -d ${STAGING_INCDIR} ${STAGING_LIBDIR}
+    install -d ${STAGING_INCDIR} ${STAGING_LIBDIR}   
     oe_libinstall -so libalarm    ${STAGING_LIBDIR}
     oe_libinstall -so libretu     ${STAGING_LIBDIR}
     oe_libinstall -so libgtimeout ${STAGING_LIBDIR}
