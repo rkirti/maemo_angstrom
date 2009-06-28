@@ -5,7 +5,7 @@ DESCRIPTION = "Extra support for osso-gnome-vfs in form of an OBEX GnomeVFS modu
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GPL"
 SECTION = "base"
-DEPENDS = "glib-2.0 libopenobex1 libgwobex libosso-gnomevfs2 libdbus-glib-1 osso-gwconnect libexpat1"
+DEPENDS = "glib-2.0 libopenobex1 osso-gwobex osso-gnome-vfs2 dbus-glib osso-gwconnect expat"
 PR = "r3"
 
 SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}-3.tar.gz \
