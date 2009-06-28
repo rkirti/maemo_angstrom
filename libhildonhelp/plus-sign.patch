@@ -1,0 +1,13 @@
+diff --git a/reference/Makefile.am b/reference/Makefile.am
+index 7131af2..84e40e7 100644
+--- reference/Makefile.am
++++ reference/Makefile.am
+@@ -75,7 +75,7 @@ include $(top_srcdir)/gtk-doc.make
+ 
+ # Other files to distribute
+ # e.g. EXTRA_DIST += version.xml.in
+-EXTRA_DIST += 
++#EXTRA_DIST += 
+ 
+ GNOME_DEV_HOME = https://stage.maemo.org/svn/maemo/projects/haf/doc/api
+ 
