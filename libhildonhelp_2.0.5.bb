@@ -5,7 +5,7 @@ DESCRIPTION = "Hildon HelpLib for application developers"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "misc"
-DEPENDS = "gtk-2.0 libosso libhildon1 gtkhtml libxml2"
+DEPENDS = "gtk+ libosso libhildon gtkhtml3.14 libxml2"
 PR = "r0"
 
 SRC_URI = "http://ftp.debian.org/pool/main/libh/${PN}/${PN}_${PV}.orig.tar.gz \
