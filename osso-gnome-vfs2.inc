@@ -5,7 +5,7 @@ DESCRIPTION = "Patched version of gnome-vfs"
 HOMEPAGE = "gnome.org"
 LICENSE = "GPL"
 SECTION = "base"
-DEPENDS = "glib-2.0 gconf libxml2 zlib gnome-common dbus-glib samba hal libhal-storage openssl"
+DEPENDS = "glib-2.0 gconf libxml2 zlib gnome-common dbus-glib samba hal openssl"
 
 
 
