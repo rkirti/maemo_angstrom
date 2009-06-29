@@ -28,14 +28,31 @@ do_make(){
 #FIXME :  Get the issue with the () flags 
 #for install solved.
 do_install(){
-    install -d ${D}${libdir}  ${D}${includedir} ${D}${includedir}/dsme ${D}${sysconfdir}/dsme ${D}${base_sbindir} ${D}${libdir}/dsme
- 
-    install -m 755  ${S}/libdsme.so.0.2.0 ${D}${libdir}
-    ln -sf ${D}${libdir}/libdsme.so.0.2.0 ${D}${libdir}/libdsme.so
+    install -d ${D}${libdir}   ${D}${includedir} ${D}${includedir}/dsme 
+    install -d ${D}${sysconfdir}/dsme ${D}${base_sbindir} ${D}${libdir}/dsme
+    install -d ${D}${sbindir} ${D}${libdir}/pkgconfig  
+    install -d ${D}${sysconfdir}/default  ${D}${sysconfdir}/init.d ${D}${sysconfdir}/event.replace.d  
+    
+
+    install -m 0644  ${S}/debian/dsme.default ${D}${sysconfdir}/default/dsme
+    install -m 0644  ${S}/debian/dsme.init ${D}${sysconfdir}/init.d/dsme
+    install -m 0644  ${S}/debian/dsme-dbus.init ${D}${sysconfdir}/init.d/dsme-dbus
+    install -m 0644  ${S}/debian/dsme.upstart ${D}${sysconfdir}/event.replace.d/dsme
+
+
+
+
+    oe_libinstall -so -a libdsme ${D}${libdir}
+#    install -m 755  ${S}/libdsme.so.0.2.0 ${D}${libdir}
+#    ln -sf ${D}${libdir}/libdsme.so.0.2.0 ${D}${libdir}/libdsme.so
     install -m 0755 ${S}/dsme ${D}${base_sbindir}
  
     install -m 755  ${S}/libdsme_dbus_if.so.0.2.0 ${D}${libdir}
     ln -sf ${D}${libdir}/libdsme_dbus_if.so.0.2.0 ${D}${libdir}/libdsme_dbus_if.so
+
+
+    install -m 0644  ${S}/dsme.pc ${D}${libdir}/pkgconfig 
+    install -m 0644  ${S}/dsme_dbus_if.pc ${D}${libdir}/pkgconfig
 
     install -m 0644  ${S}/include/dsme/protocol.h ${D}${includedir}/dsme
     install -m 0644  ${S}/include/dsme/messages.h ${D}${includedir}/dsme
@@ -98,6 +115,10 @@ do_install(){
 
     install -m 755  ${S}/modules/libthermalmanager.so.0.0.0 ${D}${libdir}/dsme
     ln -sf ${D}${libdir}/dsme/libthermalmanager.so.0.0.0 ${D}${libdir}/dsme/libthermalmanager.so
+
+#    install -m 755  ${S}/modules/libthermalobject_surface.so.0.0.0 ${D}${libdir}/dsme
+#    ln -sf ${D}${libdir}/dsme/libthermalobject_surface.so.0.0.0 ${D}${libdir}/dsme/libthermalobject_surface.so
+
 
 
     install -m 755  ${S}/modules/libemergencycalltracker.so.0.0.0 ${D}${libdir}/dsme
