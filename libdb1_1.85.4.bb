@@ -13,13 +13,23 @@ SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libd/${PN}/${PN}_${PV
 
 S = "${WORKDIR}/${PN}-${PV}/PORT/linux"
 
+
 do_compile() {
 	oe_runmake PREFIX=${prefix} libdir=${libdir} includedir=${includedir} D=${D} 
 }
+
 
 do_install() {
 	oe_runmake PREFIX=${prefix}  libdir=${libdir} includedir=${includedir} D=${D} DESTDIR=${D} install
 }
 
-
+#FIXME Check if there is a better way to do this
+do_stage(){
+    install -d ${STAGING_INCDIR}/db 
+	install    -m 644 libdb.a ${STAGING_LIBDIR}
+	install    -m 644 libdb.so.1.85.4 ${STAGING_LIBDIR}
+    ln -s ${STAGING_LIBDIR}/libdb.so.1.85.4 libdb1.so 
+    install -m 644 include/mpool.h ${STAGING_INCDIR}/db/mpool.h
+	install -m 644 include/db.h ${STAGING_INCDIR}/db/db.h
+}
 
