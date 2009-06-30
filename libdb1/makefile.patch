@@ -1,0 +1,52 @@
+diff --git Makefile Makefile
+index fa174e1..86fb642 100644
+--- Makefile
++++ Makefile
+@@ -1,11 +1,11 @@
+ #	@(#)Makefile	8.9 (Berkeley) 7/14/94
+ 
+-prefix = /root/usr
+-libdir = ${prefix}/lib
+-includedir = ${prefix}/include
++#prefix = /root/usr
++#libdir = ${prefix}/lib
++#includedir = ${prefix}/include
+ 
+-INSTALL = install -c
+-LN	= ln -s
++#INSTALL = install -c
++#LN	= ln -s
+ 
+ LIBNAME		= libdb
+ MAJ_VERSION 	= 1
+@@ -16,7 +16,7 @@ VERSION 	= ${MAJ_VERSION}.${MIN_VERSION}.${TINY_VERSION}
+ LIBDB	= ${LIBNAME}.a
+ SHLIBDB	= ${LIBNAME}.so.${VERSION}
+ SONAME	= ${LIBNAME}.so.${MAJ_VERSION}
+-CC := /usr/bin/gcc
++#CC := /usr/bin/gcc
+ 
+ OBJ1=	hash.o hash_bigkey.o hash_buf.o \
+ 	hash_func.o hash_log2.o hash_page.o \
+@@ -46,14 +46,14 @@ ${SHLIBDB}: ${OBJS}
+ 	${CC} -shared -Wl,-soname,${SONAME} -Wl,-lc shared/*.o -o $@
+ 
+ install:
+-	-mkdir ${libdir}
+-	-mkdir ${includedir}
+-	${INSTALL} -m 644 ${LIBDB} ${libdir}/${LIBDB}
+-	${INSTALL} -m 755 ${SHLIBDB} ${libdir}/${SHLIBDB}
+-	(cd ${libdir}; ${LN} ${SHLIBDB} ${SONAME})
++	install -d ${D}${libdir}
++	install -d ${D}${includedir}
++	install -m 644 ${LIBDB} ${D}${libdir}/${LIBDB}
++	install -m 755 ${SHLIBDB} ${D}${libdir}/${SHLIBDB}
++	(cd ${D}${libdir}; ln -s ${SHLIBDB} ${SONAME})
+ #	${LN} ${libdir}/${SHLIBDB} ${libdir}/${LIBNAME}.so
+-	${INSTALL} -m 644 include/mpool.h ${includedir}/mpool.h
+-	${INSTALL} -m 644 include/db.h ${includedir}/db.h
++	install -m 644 include/mpool.h ${D}${includedir}/mpool.h
++	install -m 644 include/db.h ${D}${includedir}/db.h
+ 
+ clean:
+ 	rm -f ${LIBDB} ${SHLIBDB}
