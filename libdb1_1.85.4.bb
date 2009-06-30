@@ -28,7 +28,7 @@ do_stage(){
     install -d ${STAGING_INCDIR}/db 
 	install    -m 644 libdb.a ${STAGING_LIBDIR}
 	install    -m 644 libdb.so.1.85.4 ${STAGING_LIBDIR}
-    ln -s ${STAGING_LIBDIR}/libdb.so.1.85.4 libdb1.so 
+    ln -s ${STAGING_LIBDIR}/libdb.so.1.85.4 ${STAGING_INCDIR}/libdb1.so 
     install -m 644 include/mpool.h ${STAGING_INCDIR}/db/mpool.h
 	install -m 644 include/db.h ${STAGING_INCDIR}/db/db.h
 }
