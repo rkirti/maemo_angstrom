@@ -5,7 +5,7 @@ DESCRIPTION = "Hildon widget library"
 HOMEPAGE = "http://live.gnome.org/Hildon"
 LICENSE = "GNU Lesser General Public License-version 2.1 "
 SECTION = "base"
-DEPENDS = "gconf-dbus esound gtk+ gtk-doc libpng libxt libxi"
+DEPENDS = "gconf-dbus esound gtk+ gtk-doc libpng libxt libxi libcanberra"
 PR = "r1"
 
 
