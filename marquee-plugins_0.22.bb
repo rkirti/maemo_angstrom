@@ -14,6 +14,11 @@ SRC_URI = "http://mirror.anl.gov/pub/ubuntu/pool/universe/m/${PN}/${PN}_${PV}.or
 
 inherit autotools pkgconfig
 
+# A test workaround to fix the "No GNU_HASH"
+# in elf binary issue            
+TARGET_CC_ARCH += "${LDFLAGS}"
+
+
 do_configure_prepend(){
     for i in `grep -r -l Werror *`;
     do sed -i s:-Werror::g $i;
