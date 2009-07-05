@@ -1,0 +1,367 @@
+--- obexd-0.10/debian/obexd-test.dirs
++++ obexd-0.10/debian/obexd-test.dirs
+@@ -0,0 +1 @@
++usr/bin
+--- obexd-0.10/debian/compat
++++ obexd-0.10/debian/compat
+@@ -0,0 +1 @@
++4
+--- obexd-0.10/debian/obexd.install
++++ obexd-0.10/debian/obexd.install
+@@ -0,0 +1,3 @@
++debian/tmp/usr/lib/obex/obexd
++debian/tmp/usr/share/doc/*
++debian/tmp/usr/share/dbus-1/services/obexd.service
+--- obexd-0.10/debian/obexd-test.install
++++ obexd-0.10/debian/obexd-test.install
+@@ -0,0 +1 @@
++debian/tmp/usr/bin/obexd-*
+--- obexd-0.10/debian/changelog
++++ obexd-0.10/debian/changelog
+@@ -0,0 +1,137 @@
++obexd (0.10-0maemo2+0m5) unstable; urgency=low
++
++  * This entry has been added by BIFH queue processor
++    Suffix +0m5 added to package revision
++
++ -- Mika Linnanoja <mika.linnanoja@nokia.com>  Thu, 16 Apr 2009 12:18:30 +0300
++
++obexd (0.10-0maemo2) unstable; urgency=low
++
++  * Backport fix for pending call cancelation. Might fix: NB#105927 
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Sat, 11 Apr 2009 13:18:58 +0300
++
++obexd (0.10-0maemo1) unstable; urgency=low
++
++  * New upstream release
++  * Changes in upstream ChangeLog since 0.8:
++     - Fix showing symlinks as files.
++     - Fix error codes on OBEX get operations.
++     - Fix "not found" error for delete operations.
++     - Fix NULL pointer usage of 'nonnull' parameter.
++     - Fix TTY handling with PC Suite mode.
++     - Fix D-Bus NameOwnerChanged watch handling.
++     - Fix O_NOCTTY issue when opening TTY device.
++     - Add support for verbose compiler warnings.
++     - Add support for application parameters.
++     - Add support for generic GetCapabilities command.
++     - Add initial support for Synchronization profile.
++     - Add basic implementation of Phonebook Access profile.
++     - Add basic Phonebook Access client support.
++  * Might fix: NB#105611, NB#104711, NB#110496, NB#110549, NB#110178
++  * Note: this requires a kernel with the fix for NB#109936
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Thu,  9 Apr 2009 21:16:20 +0300
++
++obexd (0.8-0maemo3) unstable; urgency=low
++
++  * Don't open tty upon startup. Fixes: NB#100759, NB#100939 
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Fri,  3 Apr 2009 12:41:29 +0300
++
++obexd (0.8-0maemo2) unstable; urgency=low
++
++  * Backport O_NOCTTY patch. Fixes: NB#97887 
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Wed, 28 Jan 2009 15:00:41 +0000
++
++obexd (0.8-0maemo1) unstable; urgency=low
++
++  * New upstream release
++  * Changes from ChangeLog since 0.7:
++     - Fix memory leaks with asynchronous operations.
++     - Fix issues with handling larger MTU sizes.
++     - Fix session and client disconnect handling.
++     - Add basic Nokia PC Suite support.
++     - Add support for reinitializing TTY server.
++  * Use special masync script for capability object. Fixes: NB#91609
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Thu, 20 Nov 2008 12:04:21 +0000
++
++obexd (0.7-0maemo1) unstable; urgency=low
++
++  * New upstream release
++  * Changes from ChangeLog since 0.6:
++     - Fix issue with transfers larger than session buffer size.
++     - Fix various memory leaks within session handling.
++     - Add support for OBEX client session interface.
++     - Add support for File Transfer client interface.
++     - Add support for using the any adapter object path.
++  * Monitor bluetoothd and use the new "any" adapter. Fixes: NB#90474
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Sun,  9 Nov 2008 20:02:35 +0000
++
++obexd (0.6-0maemo1) unstable; urgency=low
++
++  * New upstream version. Changes from ChangeLog since 0.4:
++     - Use BlueZ service for FTP authorization.
++     - Use BlueZ service for service records.
++     - Never send an OBEX abort for a server.
++     - Set buffer to NULL after freeing it.
++     - Include the correct COPYING file.
++     - Add initial obex-client support.
++     - Add missing API documenation.
++     - Rename D-Bus service files.
++  * Enable USB support through --tty /dev/ttyGS0
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Fri, 17 Oct 2008 22:31:46 +0000
++
++obexd (0.4-0maemo1) unstable; urgency=low
++
++  * New upstream release. Changes from ChangeLog since 0.3:
++     - Add plugin infrastructure.
++     - Add support for TTY transport.
++     - Fix case when the client doesn't send length header.
++     - Use LM_AUTH and LM_ENCRYPT instead of LM_SECURE.
++  * Fix PUT/Delete detection without length header. Fixes: NB#88563
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Fri, 19 Sep 2008 03:06:40 +0000
++
++obexd (0.3-0maemo3) unstable; urgency=low
++
++  * Only enable socket security if specified. Fixes: NB#88520
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Tue, 16 Sep 2008 19:31:09 +0000
++
++obexd (0.3-0maemo2) unstable; urgency=low
++
++  * Recompile against libbluetooth3
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Thu,  7 Aug 2008 09:28:48 +0000
++
++obexd (0.3-0maemo1) unstable; urgency=low
++
++  * New upstream release. Changes from ChangeLog:
++     - Add support for dynamic capability file.
++     - Removing incomplete files on error.
++     - Multiple bug fixes.
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Fri, 25 Jul 2008 09:22:59 +0000
++
++obexd (0.2-0maemo1) unstable; urgency=low
++
++  * New upstream release. Changes from ChangeLog:
++     - Add folder listing support.
++     - Add D-Bus session interface.
++     - Check for dbus_watch_get_unix_fd function.
++  * Implemented: NR#192005
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Fri,  4 Jul 2008 10:44:24 +0000
++
++obexd (0.1-0maemo1) unstable; urgency=low
++
++  * Initial release
++  * Implemented: NR#192004
++  * Partial: NR#192005
++
++ -- Johan Hedberg <johan.hedberg@nokia.com>  Fri, 27 Jun 2008 12:09:09 +0000
+--- obexd-0.10/debian/rules
++++ obexd-0.10/debian/rules
+@@ -0,0 +1,11 @@
++#!/usr/bin/make -f
++include /usr/share/cdbs/1/rules/buildcore.mk
++include /usr/share/cdbs/1/rules/debhelper.mk
++include /usr/share/cdbs/1/rules/simple-patchsys.mk
++include /usr/share/cdbs/1/class/autotools.mk
++
++DEB_DH_STRIP_ARGS := --dbg-package=obexd
++DEB_CONFIGURE_EXTRA_FLAGS := --enable-debug --libexec=/usr/lib/obex
++
++install/obexd-test::
++	install -D -m 0755 test/simple-agent $(DEB_DESTDIR)/usr/bin/obexd-simple-agent
+--- obexd-0.10/debian/obexd.dirs
++++ obexd-0.10/debian/obexd.dirs
+@@ -0,0 +1,3 @@
++usr/lib/obex
++usr/share/dbus-1/services
++etc/obex
+--- obexd-0.10/debian/copyright
++++ obexd-0.10/debian/copyright
+@@ -0,0 +1,6 @@
++obexd - OBEX Server
++
++Copyright (C) 2007-2008  Nokia Corporation
++Copyright (C) 2007-2008  Instituto Nokia de Tecnologia (INdT)
++Copyright (C) 2007-2008  Marcel Holtmann <marcel@holtmann.org>
++
+--- obexd-0.10/debian/patches/001_daemon_params.patch
++++ obexd-0.10/debian/patches/001_daemon_params.patch
+@@ -0,0 +1,7 @@
++--- src/obexd.service.in	2008-10-04 13:05:03.000000000 +0000
+++++ src/obexd.service.in	2008-11-20 12:08:31.000000000 +0000
++@@ -1,3 +1,3 @@
++ [D-BUS Service]
++ Name=org.openobex
++-Exec=@libexecdir@/obexd --nodaemon --opp --ftp
+++Exec=@libexecdir@/obexd --nodaemon --opp --ftp --pcsuite --symlinks --tty /dev/ttyGS0 --root /home/user/MyDocs --capability '!/usr/bin/gen-obex-capability.sh'
+--- obexd-0.10/debian/patches/002_nonblocking_tty.patch
++++ obexd-0.10/debian/patches/002_nonblocking_tty.patch
+@@ -0,0 +1,58 @@
++diff --git a/src/main.c b/src/main.c
++index f23356c..3d6292c 100644
++--- a/src/main.c
+++++ b/src/main.c
++@@ -72,7 +72,7 @@ int tty_init(int services, const gchar *root_path,
++ {
++ 	struct server *server;
++ 	struct termios options;
++-	int fd, ret;
+++	int fd, err, arg;
++ 	glong flags;
++ 
++ 	tty_needs_reinit = TRUE;
++@@ -88,6 +88,18 @@ int tty_init(int services, const gchar *root_path,
++ 	cfmakeraw(&options);
++ 	tcsetattr(fd, TCSANOW, &options);
++ 
+++	arg = fcntl(fd, F_GETFL);
+++	if (arg < 0) {
+++		err = -errno;
+++		goto failed;
+++	}
+++
+++	arg |= O_NONBLOCK;
+++	if (fcntl(fd, F_SETFL, arg) < 0) {
+++		err = -errno;
+++		goto failed;
+++	}
+++
++ 	server = g_new0(struct server, 1);
++ 	server->services = services;
++ 	server->folder = g_strdup(root_path);
++@@ -97,14 +109,21 @@ int tty_init(int services, const gchar *root_path,
++ 	server->rx_mtu = TTY_RX_MTU;
++ 	server->tx_mtu = TTY_TX_MTU;
++ 
++-	ret = obex_session_start(fd, server);
++-	if (ret < 0) {
+++	err = obex_session_start(fd, server);
+++	if (err < 0) {
++ 		server_free(server);
++-		close(fd);
+++		goto failed;
++ 	} else
++ 		tty_needs_reinit = FALSE;
++ 
++-	return ret;
+++	debug("Successfully opened %s", devnode);
+++
+++	return 0;
+++
+++failed:
+++	error("tty_init(): %s (%d)", strerror(-err), -err);
+++	close(fd);
+++	return err;
++ }
++ 
++ void tty_closed(void)
+--- obexd-0.10/debian/patches/003_auth_cancel.patch
++++ obexd-0.10/debian/patches/003_auth_cancel.patch
+@@ -0,0 +1,74 @@
++diff --git a/src/manager.c b/src/manager.c
++index 0abab9c..2c2768d 100644
++--- a/src/manager.c
+++++ b/src/manager.c
++@@ -833,6 +833,9 @@ static void agent_reply(DBusPendingCall *call, gpointer user_data)
++ 	DBusMessage *reply = dbus_pending_call_steal_reply(call);
++ 	const gchar *name;
++ 	DBusError derr;
+++	gboolean *got_reply = user_data;
+++
+++	*got_reply = TRUE;
++ 
++ 	/* Received a reply after the agent exited */
++ 	if (!agent)
++@@ -870,17 +873,8 @@ static void agent_reply(DBusPendingCall *call, gpointer user_data)
++ static gboolean auth_error(GIOChannel *io, GIOCondition cond,
++ 			gpointer user_data)
++ {
++-	DBusMessage *msg;
++-
++ 	agent->auth_pending = FALSE;
++ 
++-	msg = dbus_message_new_method_call(agent->bus_name, agent->path,
++-					"org.openobex.Agent", "Cancel");
++-
++-	dbus_connection_send_with_reply(connection, msg, NULL, -1);
++-
++-	dbus_message_unref(msg);
++-
++ 	return FALSE;
++ }
++ 
++@@ -897,6 +891,7 @@ int request_authorization(gint32 cid, int fd, const gchar *filename,
++ 	const gchar *bda = address;
++ 	gchar *path;
++ 	guint watch;
+++	gboolean got_reply;
++ 
++ 	if (!agent)
++ 		return -1;
++@@ -940,6 +935,7 @@ int request_authorization(gint32 cid, int fd, const gchar *filename,
++ 	dbus_message_unref(msg);
++ 
++ 	agent->auth_pending = TRUE;
+++	got_reply = FALSE;
++ 
++ 	/* Catches errors before authorization response comes */
++ 	io = g_io_channel_unix_new(fd);
++@@ -948,7 +944,7 @@ int request_authorization(gint32 cid, int fd, const gchar *filename,
++ 			auth_error, NULL, NULL);
++ 	g_io_channel_unref(io);
++ 
++-	dbus_pending_call_set_notify(call, agent_reply, NULL, NULL);
+++	dbus_pending_call_set_notify(call, agent_reply, &got_reply, NULL);
++ 
++ 	/* Workaround: process events while agent doesn't reply */
++ 	while (agent && agent->auth_pending)
++@@ -956,7 +952,15 @@ int request_authorization(gint32 cid, int fd, const gchar *filename,
++ 
++ 	g_source_remove(watch);
++ 
++-	dbus_pending_call_cancel(call);
+++	if (!got_reply) {
+++		dbus_pending_call_cancel(call);
+++		msg = dbus_message_new_method_call(agent->bus_name,
+++							agent->path,
+++							"org.openobex.Agent",
+++							"Cancel");
+++		g_dbus_send_message(connection, msg);
+++	}
+++
++ 	dbus_pending_call_unref(call);
++ 
++ 	if (!agent || !agent->new_name)
+--- obexd-0.10/debian/control
++++ obexd-0.10/debian/control
+@@ -0,0 +1,29 @@
++Source: obexd
++Priority: optional
++Section: net
++Maintainer: Johan Hedberg <johan.hedberg@nokia.com>
++Build-Depends: debhelper (>> 4.0.0), libopenobex1-dev, libbluetooth3-dev (>= 4.0), cdbs, libdbus-1-dev, libdbus-glib-1-dev, libglib2.0-dev
++Standards-Version: 3.7.2
++
++Package: obexd
++Section: net
++Depends: ${shlibs:Depends}, bluez (>= 4.18)
++Conflicts: obex-data-server
++Architecture: any
++Description: OBEX Server
++ A basic OBEX server implementation.
++
++Package: obexd-test
++Architecture: any
++Priority: extra
++Depends: obexd (= ${binary:Version}), python, python2.5-gobject, python2.5-dbus
++Description: testing tools for obexd
++ This package contains test tools for testing obexd
++
++Package: obexd-dbg
++Section: libdevel
++Architecture: any
++Depends: obexd (= ${binary:Version})
++Description: Debug symbols for obexd
++ This package contains debug symbols for the obexd package.
++
