@@ -5,7 +5,7 @@ DESCRIPTION = "Cron like daemon functionality"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "base"
-DEPENDS = "dbus dbus-glib glib-2.0 libconic osso-systemui-dbus-dev dsme mce-dev statusbar-alarm "
+DEPENDS = "dbus dbus-glib glib-2.0 libconic osso-systemui-dbus-dev dsme mce-dev "
 PR = "r0"
 
 SRC_URI = "http://repository.maemo.org/pool/diablo/free/a/${PN}/${PN}_${PV}.tar.gz  \
