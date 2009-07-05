@@ -5,7 +5,7 @@ DESCRIPTION = "A Hildon theme"
 HOMEPAGE = "Unknown"
 LICENSE = "Creative Commons"
 SECTION = "ui"
-DEPENDS = "sapwood hildon-theme-cacher"
+DEPENDS = "sapwood hildon-theme-cacher hildon-theme-layout-4"
 PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0prealpha1/free/h/${PN}/${PN}_${PV}-1.cs2007q3.tar.gz"
