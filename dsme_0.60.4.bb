@@ -14,6 +14,12 @@ SRC_URI = "http://repository.maemo.org/pool/fremantle/free/d/${PN}/${PN}_${PV}+0
 
 S= "${WORKDIR}/${PN}-${PV}+0m5"
 
+# A test workaround to fix the "No GNU_HASH"
+# in elf binary issue            
+TARGET_CC_ARCH += "${LDFLAGS}"
+
+
+
 inherit autotools pkgconfig
 
 do_configure(){
