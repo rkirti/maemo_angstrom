@@ -1,0 +1,152 @@
+--- hildon-icons-2.1.debian.orig/index.theme
++++ hildon-icons-2.1.debian/index.theme
+@@ -2,7 +2,7 @@
+ Name=hildon-Icons
+ Comment=Default hildon Theme
+ Directories=16x16/apps,16x16/devices,16x16/filesystems,16x16/mimetypes,16x16/hildon,26x26/apps,26x26/devices,26x26/filesystems,26x26/mimetypes,26x26/hildon,34x34/apps,34x34/devices,34x34/filesystems,34x34/mimetypes,34x34/hildon,40x40/apps,40x40/devices,40x40/filesystems,40x40/mimetypes,40x40/hildon,50x50/apps,50x50/devices,50x50/filesystems,50x50/mimetypes,50x50/hildon,250x250/hildon,scalable/apps,scalable/devices,scalable/filesystems,scalable/mimetypes,scalable/hildon
+-Inherits=gnome
++Inherits=hicolor
+ 
+ [16x16/apps]
+ Size=16
+--- hildon-icons-2.1.debian.orig/install-theme.sh
++++ hildon-icons-2.1.debian/install-theme.sh
+@@ -25,9 +25,7 @@
+ pushd $2
+ 
+ for i in $1/*/*.png; do 
+-	INFO="`file $i | sed -e 's/,//g'`"
+-	IX="`echo $INFO | awk -- '{ print $5}'`"
+-	IY="`echo $INFO | awk -- '{ print $7}'`"
++	eval $(basename `dirname $1` | awk -Fx '{ print "IX=" $1 " IY=" $2 }')
+ 
+ 	[ -n "$DH_VERBOSE" ] && echo "$i $IX $IY"
+ 	if [ "$IX" = "$IY" ]; then
+--- hildon-icons-2.1.debian.orig/debian/rules
++++ hildon-icons-2.1.debian/debian/rules
+@@ -0,0 +1,39 @@
++#!/usr/bin/make -f
++
++build:
++
++clean:
++	dh_testdir
++	dh_testroot
++	[ ! -f Makefile ] || $(MAKE) distclean
++	dh_clean
++
++install: build
++	dh_testdir
++	dh_testroot
++	dh_clean -k
++	mkdir -p $(CURDIR)/debian/tmp/usr/share/icons/hildon
++	cp index.theme $(CURDIR)/debian/tmp/usr/share/icons/hildon/
++	./install-theme.sh $(CURDIR)/icons $(CURDIR)/debian/tmp/usr/share/icons/hildon
++	./make-mime-symlinks.sh $(CURDIR)/debian/tmp/usr/share/icons/hildon/scalable
++	./make-mime-symlinks.sh $(CURDIR)/debian/tmp/usr/share/icons/hildon/26x26
++
++# Build architecture-independent files here.
++binary-indep: build install
++	dh_install -i
++	dh_installchangelogs -i
++	dh_installdocs -i
++	dh_icons -i
++	dh_link -i
++	dh_compress -i
++	dh_fixperms -i
++	dh_installdeb -i
++	dh_gencontrol -i
++	dh_md5sums -i
++	dh_builddeb -i
++
++# Build architecture-dependent files here.
++binary-arch: build install
++
++binary: binary-indep binary-arch
++.PHONY: build clean binary-indep binary-arch binary install 
+--- hildon-icons-2.1.debian.orig/debian/compat
++++ hildon-icons-2.1.debian/debian/compat
+@@ -0,0 +1 @@
++4
+--- hildon-icons-2.1.debian.orig/debian/hildon-icons.install
++++ hildon-icons-2.1.debian/debian/hildon-icons.install
+@@ -0,0 +1 @@
++debian/tmp/usr
+--- hildon-icons-2.1.debian.orig/debian/control
++++ hildon-icons-2.1.debian/debian/control
+@@ -0,0 +1,13 @@
++Source: hildon-icons
++Section: x11
++Priority: optional
++Maintainer: Debian Maemo Maintainers <pkg-maemo-maintainers@lists.alioth.debian.org>
++Uploaders: Loic Minier <lool@dooz.org>, Jonny Lamb <jonnylamb@jonnylamb.com>, Riku Voipio <riku.voipio@iki.fi>
++Build-Depends: debhelper (>= 5.0.51~)
++Standards-Version: 3.8.0
++
++Package: hildon-icons
++Architecture: all
++Depends: gnome-icon-theme
++Description: Default Hildon icon theme for maemo's SDK
++ This is the default Hildon icon theme for maemo's SDK.
+--- hildon-icons-2.1.debian.orig/debian/copyright
++++ hildon-icons-2.1.debian/debian/copyright
+@@ -0,0 +1,27 @@
++This package was downloaded from:
++    <http://repository.maemo.org/pool/maemo4.1/free/s/sdk-default-icons/>
++
++Initial packaging was updated for Ubuntu by Loïc Minier <lool@dooz.org> on
++Tue, 24 Jun 2008 13:56:51 +0200.
++
++The original debian/copyright follows:
++
++Copyright (C) 2006-2008 Nokia Corporation. All rights reserved.  
++Contact: Maemo Integration <integration@maemo.org> 
++
++This software is licensed under the Creative Commons Attribution 3.0 License, 
++which can be found at http://creativecommons.org/licenses/by/3.0/
++ 
++THE SOFTWARE IS DISTRIBUTED AS-IS WITH NO REPRESENTATIONS OR  WARRANTIES OF ANY
++KIND CONCERNING THE WORK, EXPRESS, IMPLIED,  STATUTORY OR OTHERWISE, INCLUDING,
++WITHOUT LIMITATION,  WARRANTIES OF TITLE, MERCHANTIBILITY, FITNESS FOR A
++PARTICULAR  PURPOSE, NONINFRINGEMENT, OR THE ABSENCE OF LATENT OR OTHER
++DEFECTS, ACCURACY, OR THE PRESENCE OF ABSENCE OF ERRORS,  WHETHER OR NOT
++DISCOVERABLE. SOME JURISDICTIONS DO NOT ALLOW  THE EXCLUSION OF IMPLIED
++WARRANTIES, SO SUCH EXCLUSION MAY NOT  APPLY TO YOU.
++               
++EXCEPT TO THE EXTENT REQUIRED BY  APPLICABLE LAW, IN NO EVENT WILL NOKIA
++CORPORATION BE LIABLE TO YOU ON  ANY LEGAL THEORY FOR ANY SPECIAL, INCIDENTAL,
++CONSEQUENTIAL,  PUNITIVE OR EXEMPLARY DAMAGES ARISING OUT OF THIS LICENSE OR
++THE USE OF THE WORK, EVEN IF LICENSOR HAS BEEN ADVISED OF THE  POSSIBILITY OF
++SUCH DAMAGES. 
+--- hildon-icons-2.1.debian.orig/debian/changelog
++++ hildon-icons-2.1.debian/debian/changelog
+@@ -0,0 +1,29 @@
++hildon-icons (2.1.debian-2mer1) jaunty; urgency=low
++
++  * Change Inherits to hicolor.
++
++ -- Carsten V. Munk <cvm@cs.au.dk>  Sun, 22 Mar 2009 20:03:38 +0000
++
++hildon-icons (2.1.debian-2) unstable; urgency=medium
++
++  [ Jonny Lamb ]
++  * Fixed install-theme.sh to get the image resolutions correctly instead of
++    failing to build. (Closes: #494226)
++
++ -- Riku Voipio <riku.voipio@iki.fi>  Sat, 09 Aug 2008 00:58:04 +0300
++
++hildon-icons (2.1.debian-1) unstable; urgency=low
++
++  * Initial upload to debian
++  * New upstream version with CC-BY 3.0 license
++  * Merge packaging fixes from ubuntu, Thanks Loic Minier
++
++ -- Riku Voipio <riku.voipio@iki.fi>  Thu, 26 Jun 2008 23:20:43 +0300
++
++hildon-icons (2.0.debian-5) unstable; urgency=low
++
++  * re-Debianization
++  * rename package and make it not conflict with hicolor-icon-theme
++
++ -- Riku Voipio <riku.voipio@iki.fi>  Sat, 20 Oct 2007 22:57:33 +0300
++
