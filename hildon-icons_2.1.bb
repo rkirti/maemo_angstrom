@@ -15,7 +15,7 @@ PACKAGES = "${PN}"
 
 FILES_${PN} = "${datadir}/icons/*"
 
-
+inherit gtk-icon-cache
 
 do_install(){
     install -d ${D}${datadir}/icons ${D}${datadir}/icons/hildon

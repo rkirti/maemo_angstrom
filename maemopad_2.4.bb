@@ -11,7 +11,7 @@ PR = "r3"
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0prealpha1/free/m/${PN}/${PN}_${PV}-3.tar.gz"
 
-inherit autotools pkgconfig
+inherit autotools pkgconfig gtk-icon-cache
 
 FILES_${PN} += "${datadir}/icons/*  \
                 ${datadir}/hildon-help/* \
