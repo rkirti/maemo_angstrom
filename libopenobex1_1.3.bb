@@ -14,6 +14,10 @@ S = "${WORKDIR}/${PN}-${PV}osso5"
 
 inherit autotools pkgconfig
 
+# Temporary fix to stop it from checking the system
+# files instead of staging
+EXTRA_OECONF +=" --disable-usb" 
+
 do_stage(){
     autotools_stage_all
 }
