@@ -12,4 +12,6 @@ SRC_URI = "http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}+r
 
 S = "${WORKDIR}/${PN}-${PV}+r6710+0m5"
 
+TEXT_DOMAIN = "hildon-control-panel"
+
 require hildon-l10n.inc
