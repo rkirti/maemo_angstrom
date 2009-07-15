@@ -1,0 +1,38 @@
+Index: sources/mobile-application-service-0.9/src/main.cpp
+===================================================================
+--- mobile-application-service-0.9/src/main.cpp	2009-07-16 02:14:18.000000000 +0530
++++ mobile-application-service-0.9/src/main.cpp	2009-07-16 02:14:40.000000000 +0530
+@@ -28,7 +28,7 @@
+ #include <netdb.h> //for all socket structures
+ #include <pthread.h>
+ #include <sys/stat.h> //for umask (making daemon in init)
+-
++#include <string.h>
+ #include "main.h"
+ #include "errno.h"
+ #include "ConnectionMgr.h"
+Index: sources/mobile-application-service-0.9/src/ConnectionMgr.cpp
+===================================================================
+--- mobile-application-service-0.9/src/ConnectionMgr.cpp	2009-07-16 02:16:35.000000000 +0530
++++ mobile-application-service-0.9/src/ConnectionMgr.cpp	2009-07-16 02:16:59.000000000 +0530
+@@ -24,6 +24,7 @@
+ #include "Exception.h"
+ #include <iostream>
+ #include <sstream>
++#include <string.h>
+ #include <sys/poll.h> //polling during read
+ #include <netdb.h>
+ #include <errno.h>
+Index: sources/mobile-application-service-0.9/src/ProcessMgr.cpp
+===================================================================
+--- mobile-application-service-0.9/src/ProcessMgr.cpp	2009-07-16 02:17:14.000000000 +0530
++++ mobile-application-service-0.9/src/ProcessMgr.cpp	2009-07-16 02:17:37.000000000 +0530
+@@ -21,7 +21,7 @@
+ 
+ #include "ProcessMgr.h"
+ #include "main.h"
+-
++#include <string.h>
+ #include <iostream>
+ #include <string>
+ #include <vector>
