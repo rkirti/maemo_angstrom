@@ -11,7 +11,7 @@ PROVIDES = "gdk-pixbuf"
 RPROVIDES = "gdk-pixbuf"
 EXTRA_OECONF += "--with-included-loaders=png,tga --disable-gtk-doc"
 
-PR = "r103"
+PR = "r1"
 
 DEPENDS += "cairo"
 
