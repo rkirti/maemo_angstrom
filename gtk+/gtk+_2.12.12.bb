@@ -4,26 +4,36 @@
 
 require gtk+.inc
 
-PR = "r1"
+# Temporary additions for testing
+# to get rid of the vagaries of the 
+# standalone gdk-pixbuf recipe
+PROVIDES = "gdk-pixbuf"
+RPROVIDES = "gdk-pixbuf"
+EXTRA_OECONF += "--with-included-loaders=png,tga --disable-gtk-doc"
+
+PR = "r103"
 
 DEPENDS += "cairo"
 
-DEFAULT_PREFERENCE = 1 
+DEFAULT_PREFERENCE = 1
 
 S="${WORKDIR}/gtk+2.0-2.12.12"
 
-#FIXME : Patches currently used are only to get the build working. After testing on the device,
-#uncomment the required patches
+#FIXME : Patches currently used are only to get the build working. 
+#        After testing on the device,
+#        uncomment the required patches
 
 SRC_URI = "http://repository.maemo.org/pool/fremantle/free/g/gtk+2.0/gtk+2.0_${PV}-1maemo12+0m5.tar.gz \
            file://gtk+2.0-2.12.12/mer-changes.patch;patch=1 \
            file://gtk+2.0-2.12.12/mkinstalldirs \
-           file://gtk+2.0-2.12.12/no-demos.patch;patch=1 "
-#          file://gtk+2.0-2.12.12/xsettings.patch;patch=1 \
+           file://gtk+2.0-2.12.12/no-demos.patch;patch=1 \
+           file://gtk+2.0-2.12.12/xsettings.patch;patch=1 \
 #          file://gtk+2.0-2.12.12/run-iconcache.patch;patch=1 \
 #          file://gtk+2.0-2.12.12/hardcoded_libtool.patch;patch=1 \
-#          file://gtk+2.0-2.12.12/cellrenderer-cairo.patch;patch=1;pnum=0 \
-#           file://gtk+2.0-2.12.12/entry-cairo.patch;patch=1;pnum=0 \
+           file://gtk+2.0-2.12.12/cellrenderer-cairo.patch;patch=1;pnum=0 \
+#this one really needs to be killed
+           file://gtk+2.0-2.12.12/png-use-old-symbol.patch;patch=1;pnum=0 \
+           file://gtk+2.0-2.12.12/entry-cairo.patch;patch=1;pnum=0 "
 #           file://gtk+2.0-2.12.12/toggle-font.diff;patch=1;pnum=0 \
 #           file://gtk+2.0-2.12.12/scrolled-placement.patch;patch=1;pnum=0 \
 # temporary
@@ -33,7 +43,10 @@ SRC_URI = "http://repository.maemo.org/pool/fremantle/free/g/gtk+2.0/gtk+2.0_${P
 # die die die
 #           file://gtk+2.0-2.12.12/pangoxft2.10.6.diff;patch=1"
 
-EXTRA_OECONF = "--with-libtiff --disable-xkb --enable-display-migration --disable-gtk-doc --with-maemo=yes --with-libpng --with-libjpeg --with-x "
+EXTRA_OECONF = "--with-libtiff --with-gdktarget=x11 --disable-xkb --enable-display-migration --disable-gtk-doc --with-maemo=yes --with-libpng --with-libjpeg --with-x "
+
+
+
 
 LIBV = "2.10.0"
 
@@ -60,3 +73,17 @@ python populate_packages_prepend () {
         if (bb.data.getVar('DEBIAN_NAMES', d, 1)):
                 bb.data.setVar('PKG_${PN}', 'libgtk-2.0', d)
 }
+
+PACKAGES += "gdk-pixbuf"
+
+FILES_gdk-pixbuf = " ${bindir}/gdk-pixbuf-query-loaders \
+	                 ${bindir}/gtk-update-icon-cache \
+	                 ${libdir}/libgdk*"
+
+# check for TARGET_FPU=soft and inform configure of the result 
+# so it can disable some floating points
+require gtk-fpu.inc
+EXTRA_OECONF += "${@get_gtk_fpu_setting(bb, d)}"
+
+
+

@@ -4,19 +4,17 @@ HOMEPAGE = "http://www.gtk.org"
 SECTION = "libs"
 LICENSE = "LGPL"
 PRIORITY = "optional"
-DEPENDS = "glib-2.0 tiff pango atk jpeg libpng libxext libxcursor gtk-doc libgcrypt cups \
+DEPENDS = "glib-2.0 tiff pango atk jpeg libpng3 libxext libxcursor gtk-doc libgcrypt cups \
            libxrandr libxdamage libxrender libxcomposite"
 
 inherit autotools pkgconfig
 
 LEAD_SONAME = "libgtk-x11-2.0.so"
 
-FILES_${PN} = "${bindir}/gdk-pixbuf-query-loaders \
-	${bindir}/gtk-update-icon-cache \
-	${bindir}/gtk-query-immodules-2.0 \
-	${libdir}/lib*.so.* \
-	${datadir}/themes ${sysconfdir} \
-	${libdir}/gtk-2.0/${LIBV}/engines/libpixmap.so"
+FILES_${PN} = " ${bindir}/gtk-query-immodules-2.0 \
+                ${libdir}/lib*.so.* \
+                ${datadir}/themes ${sysconfdir} \
+                ${libdir}/gtk-2.0/${LIBV}/engines/libpixmap.so"
 
 FILES_${PN}-dev += " \
         ${datadir}/gtk-2.0/include \
