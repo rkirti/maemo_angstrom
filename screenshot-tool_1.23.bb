@@ -8,7 +8,7 @@ SECTION = "apps/graphics"
 DEPENDS = "gtk+"
 PR = "r2"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/s/${PN}/${PN}_${PV}-2.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/s/${PN}/${PN}_${PV}-2.tar.gz"
 
 inherit autotools
 

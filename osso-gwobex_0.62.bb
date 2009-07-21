@@ -8,7 +8,7 @@ SECTION = "base"
 DEPENDS = "glib-2.0 libopenobex1"
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}+0m5.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV}+0m5.tar.gz"
 S="${WORKDIR}/${PN}-${PV}+0m5"
 
 inherit autotools pkgconfig

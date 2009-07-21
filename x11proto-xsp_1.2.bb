@@ -9,7 +9,7 @@ DEPENDS = ""
 SECTION = "x11"
 PR = "r1"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/x/${PN}/${PN}_${PV}-1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/x/${PN}/${PN}_${PV}-1.tar.gz"
 
 inherit autotools pkgconfig
 

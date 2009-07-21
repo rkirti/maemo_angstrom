@@ -8,7 +8,7 @@ SECTION = "libs"
 DEPENDS = "gtk+ glib-2.0"
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/w/${PN}/${PN}_${PV}-0+0m5.tar.gz "
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/w/${PN}/${PN}_${PV}-0+0m5.tar.gz "
 
 inherit autotools pkgconfig
 
