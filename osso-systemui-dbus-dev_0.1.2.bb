@@ -8,7 +8,7 @@ SECTION = "base"
 DEPENDS = ""
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV}.tar.gz \
            file://osso-systemui-dbus-dev/no-doxygen.patch;patch=1"
 
 inherit pkgconfig
