@@ -8,7 +8,7 @@ SECTION = "base"
 DEPENDS = "glib-2.0 libopenobex1 osso-gwobex osso-gnome-vfs2 dbus-glib osso-gwconnect expat"
 PR = "r3"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}-3.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV}-3.tar.gz \
            file://osso-gnomevfs-extra/mer-changes.patch;patch=1 "
 
 

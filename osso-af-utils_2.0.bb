@@ -9,7 +9,7 @@ DEPENDS = "libx11 dbus libosso libxsp libpng12 libgtk2.0 x11proto-core x11proto-
 
 PR = "r3"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}-3+0m5.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV}-3+0m5.tar.gz \
            file://osso-af-utils/mer-changes.patch;patch=1"
 
 require osso.inc

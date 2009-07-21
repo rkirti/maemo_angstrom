@@ -9,7 +9,7 @@ DEPENDS = "osso-af-utils  osso-core-config dbus"
 
 PR = "r2"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/o/${PN}/${PN}_${PV}-2+0m5.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV}-2+0m5.tar.gz"
 
 inherit pkgconfig 
 
