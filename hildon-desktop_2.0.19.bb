@@ -11,9 +11,9 @@ PR = "r1"
 ##Temporary: to be fixed later
 SRC_URI = "file://hd-trial.tar.gz"
 
-EXTRA_OECONF += "--disable-gtk-doc"
+EXTRA_OECONF += "--enable-debug --disable-gtk-doc"
 
-S = "${WORKDIR}/hd-trial"
+S = "${WORKDIR}/hd-ins_in_usr"
 
 inherit autotools pkgconfig
 

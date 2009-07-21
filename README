@@ -9,6 +9,10 @@ BUILD INSTRUCTIONS
 NOTE: The tarballs for hildon-desktop and hildon-desktop-python-loader are locally hosted. 
 The corresponding recipes use file:// in their SRC_URI
 3. The image file, hildon-angstrom-image.bb goes under images.
+3b. The gtk and glib recipes should go to the corresponding folders, as they make use 
+of native recipes from the OE pack. Don't forget maemo-glib.inc
+3c. Angstrom conf files need to be put at the proper place, to stop angstrom
+from demanding latest gtk/glib
 4. For checksums.ini, merge into the existing one ????
 
 * The above steps should let one get started with an image build.

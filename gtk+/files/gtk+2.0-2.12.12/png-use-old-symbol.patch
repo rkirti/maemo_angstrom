@@ -1,0 +1,56 @@
+Index: sources/gtk+2.0-2.12.12/gdk-pixbuf/io-png.c
+===================================================================
+--- gdk-pixbuf/io-png.c	2009-07-15 18:28:39.000000000 +0530
++++ gdk-pixbuf/io-png.c	2009-07-16 02:10:44.000000000 +0530
+@@ -259,20 +259,22 @@
+         gchar *key;
+         gchar *value;
+ 
+-#ifdef PNG_USER_MEM_SUPPORTED
+-	png_ptr = png_create_read_struct_2 (PNG_LIBPNG_VER_STRING,
++// Temp. fix [15/07/09 18:30:19  Kirtika B Ruchandani <kirtibr@gmail.com>]
++// Usage of png_create_read_struct_2 creates run-time problems 
++/*#ifdef PNG_USER_MEM_SUPPORTED
++        png_ptr = png_create_read_struct_2 (PNG_LIBPNG_VER_STRING,
+                                             error,
+                                             png_simple_error_callback,
+                                             png_simple_warning_callback,
+                                             NULL, 
+                                             png_malloc_callback, 
+                                             png_free_callback);
+-#else
++#else*/
+ 	png_ptr = png_create_read_struct (PNG_LIBPNG_VER_STRING,
+                                           error,
+                                           png_simple_error_callback,
+                                           png_simple_warning_callback);
+-#endif
++//#endif
+ 	if (!png_ptr)
+ 		return NULL;
+ 
+@@ -422,20 +424,20 @@
+         
+         /* Create the main PNG context struct */
+ 
+-#ifdef PNG_USER_MEM_SUPPORTED
++/*#ifdef PNG_USER_MEM_SUPPORTED
+         lc->png_read_ptr = png_create_read_struct_2 (PNG_LIBPNG_VER_STRING,
+-                                                     lc, /* error/warning callback data */
++                                                     lc, 
+                                                      png_error_callback,
+                                                      png_warning_callback,
+                                                      NULL,
+                                                      png_malloc_callback,
+                                                      png_free_callback);
+-#else
++#else*/
+         lc->png_read_ptr = png_create_read_struct(PNG_LIBPNG_VER_STRING,
+                                                   lc, /* error/warning callback data */
+                                                   png_error_callback,
+                                                   png_warning_callback);
+-#endif
++//#endif
+         if (lc->png_read_ptr == NULL) {
+                 g_free(lc);
+                 /* error callback should have set the error */
