@@ -1,0 +1,41 @@
+BUILD INSTRUCTIONS
+-------------------------------
+
+*Adding to the recipe files: 
+
+1.All the files except for the l10n folder go under ${OE_HOME}/openembedded/recipes/maemo-oe/
+2.The localization folder goes directly under ${OE_HOME}/openembedded/recipes
+(Atleast it needs to, if you have your bitbake.conf taking recipes as within ${OEHOME}/openembedded/recipes/*/*.bb)
+NOTE: The tarballs for hildon-desktop and hildon-desktop-python-loader are locally hosted. 
+The corresponding recipes use file:// in their SRC_URI
+3. The image file, hildon-angstrom-image.bb goes under images.
+4. For checksums.ini, merge into the existing one ????
+
+* The above steps should let one get started with an image build.
+* There are some *nasty* manual additions (aarrgghh) to the image as mentioned below:
+
+1. The dbus-launch binary is for some reason not added to the ipk, and to the rootfs.
+I am adding it manually at the moment.
+2. Other manual additions include a set of .desktop files for hildon-desktop, and a script
+for getting the desktop environment started. The gdk-pixbuf ipk's binaries don't get pulled into
+the rootfs at the moment, so they too are added that way.
+
+To deal with the above, extract the "add-me.tar.gz" tarball after cd-ing to / in your rootfs
+
+
+RUNNING HILDON-DESKTOP
+-------------------------------
+1. Xorg &
+2. sh /usr/bin/start-hildon 
+
+(Start x11vnc between 1 and 2 if needed)
+
+KNOWN ISSUES 
+--------------------------------
+1. Locale support not working
+2. Some icons dont load.
+3. App. menu doesn't show the listing correctly, only filemanager is displayed in extras
+4. Maemopad and maeopadplus etc cant save files.
+
+
+
