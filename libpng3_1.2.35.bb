@@ -8,7 +8,7 @@ SECTION = "libs"
 DEPENDS = "zlib"
 PR = "r1"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libp/${PN}/${PN}_${PV}-1maemo1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libp/${PN}/${PN}_${PV}-1maemo1.tar.gz"
 
 require libpng.inc
 

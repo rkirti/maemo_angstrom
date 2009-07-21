@@ -9,7 +9,7 @@ DEPENDS = "glib-2.0 dbus dbus-glib upstart"
 
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/d/${PN}/${PN}_${PV}+0m5.tar.gz  \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/d/${PN}/${PN}_${PV}+0m5.tar.gz  \
            file://dsme/mer-changes.patch;patch=1"
 
 S= "${WORKDIR}/${PN}-${PV}+0m5"

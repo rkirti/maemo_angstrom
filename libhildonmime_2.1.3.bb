@@ -9,7 +9,7 @@ SECTION = "base"
 DEPENDS = "libosso gnome-vfs"
 PR = "r1"
 
-SRC_URI =  " http://repository.maemo.org/pool/fremantle/free/libh/${PN}/${PN}_${PV}-1+0m5.tar.gz \
+SRC_URI =  " http://repository.maemo.org/pool/maemo5.0beta/free/libh/${PN}/${PN}_${PV}-1+0m5.tar.gz \
              file://libhildonmime/mer-changes.patch;patch=1 "
 
 EXTRA_OECONF += "--with-compile-warnings=no"

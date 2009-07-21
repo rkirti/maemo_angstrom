@@ -8,7 +8,7 @@ SECTION = "x11"
 DEPENDS = "libx11 gconf glib-2.0 upstart"
 PR = "r4"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/c/${PN}/${PN}_${PV}-4+0m5.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/c/${PN}/${PN}_${PV}-4+0m5.tar.gz"
 
 inherit autotools pkgconfig
 

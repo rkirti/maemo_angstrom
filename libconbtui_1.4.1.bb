@@ -8,7 +8,7 @@ SECTION = "x11/apps"
 #No build dependencies specified in package's debian/control
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libc/${PN}/${PN}_${PV}.tar.gz "
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libc/${PN}/${PN}_${PV}.tar.gz "
 
 inherit autotools pkgconfig
 

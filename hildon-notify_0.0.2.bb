@@ -8,7 +8,7 @@ SECTION = "libs"
 DEPENDS = "libnotify"
 PR = "r1"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}-1-recomp1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/h/${PN}/${PN}_${PV}-1-recomp1.tar.gz"
 
 S = "${WORKDIR}/${PN}-${PV}-1"
 

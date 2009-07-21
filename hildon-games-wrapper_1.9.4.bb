@@ -8,7 +8,7 @@ SECTION = "misc"
 DEPENDS = "dbus gconf"
 PR = "r3"
 
-SRC_URI = " http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}-3+0m5.tar.gz  \
+SRC_URI = " http://repository.maemo.org/pool/maemo5.0beta/free/h/${PN}/${PN}_${PV}-3+0m5.tar.gz  \
             file://hildon-games-wrapper/mer-changes.patch;patch=1"
 
 # A test workaround to fix the "No GNU_HASH"

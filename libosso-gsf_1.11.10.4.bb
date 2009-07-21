@@ -9,7 +9,7 @@ DEPENDS = "glib-2.0 zlib"
 PR = "r2"
 
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libo/${PN}/${PN}_${PV}-2.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libo/${PN}/${PN}_${PV}-2.tar.gz"
 
 inherit autotools pkgconfig
 

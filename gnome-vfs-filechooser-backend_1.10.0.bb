@@ -8,7 +8,7 @@ SECTION = "base"
 DEPENDS = "glib-2.0 osso-gnome-vfs2 gtk+"
 PR = "r1"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/g/${PN}/${PN}_${PV}-1+0m5.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/g/${PN}/${PN}_${PV}-1+0m5.tar.gz \
            file://gvfsfilechooser/mer-changes.patch;patch=1"
 
 inherit autotools pkgconfig

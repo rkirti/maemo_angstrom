@@ -17,7 +17,7 @@ require libosso.inc
 
 
 SRC_URI = " \
-            http://repository.maemo.org/pool/fremantle/free/libo/${PN}/${PN}_${PV}-1.tar.gz \
+            http://repository.maemo.org/pool/maemo5.0beta/free/libo/${PN}/${PN}_${PV}-1.tar.gz \
             file://${PN}/no-hidden.patch;patch=1 \
             file://${PN}/mer-changes.patch;patch=1 \
           "

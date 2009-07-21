@@ -8,7 +8,7 @@ SECTION = "base"
 DEPENDS = "x11proto-xsp quilt libx11 libxext"
 PR = "r4"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libx/${PN}/${PN}_${PV}-4.1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libx/${PN}/${PN}_${PV}-4.1.tar.gz"
 
 inherit autotools pkgconfig
 

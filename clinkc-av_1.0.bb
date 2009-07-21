@@ -9,7 +9,7 @@ SECTION = "misc"
 DEPENDS = "clinkc"
 PR = "r15"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/c/${PN}/${PN}_${PV}-15.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/c/${PN}/${PN}_${PV}-15.tar.gz"
 
 inherit autotools pkgconfig
 

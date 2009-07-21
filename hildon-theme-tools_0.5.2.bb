@@ -8,7 +8,7 @@ SECTION = "base/ui"
 DEPENDS = "gtk+"
 PR = "r1"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/h/${PN}/${PN}_${PV}-1.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/h/${PN}/${PN}_${PV}-1.tar.gz"
 
 inherit autotools pkgconfig
 

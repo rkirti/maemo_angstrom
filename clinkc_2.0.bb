@@ -8,7 +8,7 @@ SECTION = "base"
 DEPENDS = "curl libxml2"
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/c/${PN}/${PN}_${PV}.orig.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/c/${PN}/${PN}_${PV}.orig.tar.gz \
            file://clinkc/mer-changes.patch;patch=1;pnum=0"
 
 S = "${WORKDIR}/${PN}"

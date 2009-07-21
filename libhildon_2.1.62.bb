@@ -9,7 +9,7 @@ DEPENDS = "gconf-dbus esound gtk+ gtk-doc libpng libxt libxi libcanberra"
 PR = "r1"
 
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/libh/${PN}/${PN}_${PV}-1+0m5.tar.gz"
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libh/${PN}/${PN}_${PV}-1+0m5.tar.gz"
 
 
 require libhildon.inc
