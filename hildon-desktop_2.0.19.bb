@@ -11,7 +11,7 @@ PR = "r1"
 ##Temporary: to be fixed later
 SRC_URI = "file://hd-trial.tar.gz"
 
-EXTRA_OECONF += "--enable-debug --disable-gtk-doc"
+EXTRA_OECONF = "--enable-debug=yes --disable-gtk-doc"
 
 S = "${WORKDIR}/hd-ins_in_usr"
 
