@@ -5,11 +5,15 @@ DESCRIPTION = "Cron like daemon functionality"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "base"
-DEPENDS = "dbus dbus-glib glib-2.0 libconic osso-systemui-dbus-dev dsme mce-dev "
+DEPENDS = "dbus dbus-glib glib-2.0 libconic osso-systemui-dbus-dev mce-dev "
 PR = "r0"
 
 SRC_URI = "http://repository.maemo.org/pool/diablo/free/a/${PN}/${PN}_${PV}.tar.gz  \
            file://alarmd-patches/mer-changes.patch;patch=1"
+
+# A test workaround to fix the "No GNU_HASH"
+# in elf binary issue            
+TARGET_CC_ARCH += "${LDFLAGS}"
 
 
 inherit autotools pkgconfig
