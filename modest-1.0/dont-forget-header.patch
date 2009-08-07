@@ -1,0 +1,12 @@
+Index: sources/modest-1.0-2008.43/src/widgets/modest-gtkhtml-mime-part-view.h
+===================================================================
+--- modest-1.0-2008.43/src/widgets/modest-gtkhtml-mime-part-view.h	2009-07-30 08:52:33.000000000 +0530
++++ modest-1.0-2008.43/src/widgets/modest-gtkhtml-mime-part-view.h	2009-07-30 08:55:26.000000000 +0530
+@@ -34,6 +34,7 @@
+ #include <glib.h>
+ #include <glib-object.h>
+ #include <gtkhtml/gtkhtml.h>
++#include <gdk/gdkkeysyms.h>
+ #include <tny-mime-part-view.h>
+ #include <widgets/modest-mime-part-view.h>
+ #include <widgets/modest-zoomable.h>

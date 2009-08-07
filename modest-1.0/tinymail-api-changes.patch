@@ -1,0 +1,176 @@
+Index: sources/modest-1.0-2008.43/src/dbus_api/modest-dbus-callbacks.c
+===================================================================
+--- modest-1.0-2008.43/src/dbus_api/modest-dbus-callbacks.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/src/dbus_api/modest-dbus-callbacks.c	2009-07-30 08:20:47.000000000 +0530
+@@ -1671,7 +1671,7 @@
+ 	TnyList *all_folders = tny_simple_list_new ();
+ 	tny_folder_store_get_folders (folder_store,
+ 				      all_folders,
+-				      NULL /* query */,
++				      NULL /* query */, FALSE,
+ 				      NULL /* error */);
+ 
+ 	TnyIterator *iter = tny_list_create_iterator (all_folders);
+Index: sources/modest-1.0-2008.43/src/modest-mail-operation.c
+===================================================================
+--- modest-1.0-2008.43/src/modest-mail-operation.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/src/modest-mail-operation.c	2009-07-30 08:20:01.000000000 +0530
+@@ -1657,7 +1657,7 @@
+ 				info->pending_calls++;
+ 				
+ 				tny_folder_store_get_folders_async (folder, folders, NULL,
+-								    recurse_folders_async_cb, 
++								   FALSE, recurse_folders_async_cb, 
+ 								    NULL, info);
+ 				g_object_unref (folders);
+ 			}
+@@ -1808,7 +1808,7 @@
+ 	folders = tny_simple_list_new ();
+ 	tny_folder_store_get_folders_async (TNY_FOLDER_STORE (priv->account),
+ 					    folders, NULL,
+-					    recurse_folders_async_cb, 
++					FALSE,   recurse_folders_async_cb, 
+ 					    NULL, info);
+ 	g_object_unref (folders);
+ 	
+Index: sources/modest-1.0-2008.43/src/modest-search.c
+===================================================================
+--- modest-1.0-2008.43/src/modest-search.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/src/modest-search.c	2009-07-30 08:36:37.000000000 +0530
+@@ -612,7 +612,7 @@
+ 			TnyList *children = tny_simple_list_new ();
+ 			helper->pending_calls++;
+ 			tny_folder_store_get_folders_async (TNY_FOLDER_STORE (folder), children, NULL, 
+-							    modest_search_account_get_folders_cb, 
++				         FALSE,modest_search_account_get_folders_cb, 
+ 							    NULL, helper);
+ 		}
+ 
+@@ -654,7 +654,7 @@
+ 
+ 	/* Get folders */
+ 	tny_folder_store_get_folders_async (TNY_FOLDER_STORE (account), folders, NULL, 
+-					    modest_search_account_get_folders_cb, 
++					   FALSE, modest_search_account_get_folders_cb, 
+ 					    NULL, helper);
+ }
+ 
+Index: sources/modest-1.0-2008.43/src/modest-tny-account-store.c
+===================================================================
+--- modest-1.0-2008.43/src/modest-tny-account-store.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/src/modest-tny-account-store.c	2009-07-30 08:21:53.000000000 +0530
+@@ -1702,7 +1702,7 @@
+ 	info->account_store = self;
+ 	info->transport_account = g_object_ref (transport_account);
+ 	tny_folder_store_get_folders_async (TNY_FOLDER_STORE (account_outbox), folders, NULL, 
+-					    add_outbox_from_transport_account_to_global_outbox_get_folders_cb, NULL, (gpointer) info);
++		FALSE,			    add_outbox_from_transport_account_to_global_outbox_get_folders_cb, NULL, (gpointer) info);
+ 	g_object_unref (account_outbox);
+ }
+ 
+@@ -2095,7 +2095,7 @@
+ 		TnyAccount *account = TNY_ACCOUNT (tny_iterator_get_current (acc_iter));
+ 		TnyIterator *folders_iter = NULL;
+ 
+-		tny_folder_store_get_folders (TNY_FOLDER_STORE (account), folders, NULL, NULL);
++		tny_folder_store_get_folders (TNY_FOLDER_STORE (account), folders, NULL, FALSE,NULL);
+ 		folders_iter = tny_list_create_iterator (folders);
+ 
+ 		while (msg == NULL && !tny_iterator_is_done (folders_iter)) {
+Index: sources/modest-1.0-2008.43/src/modest-tny-account.c
+===================================================================
+--- modest-1.0-2008.43/src/modest-tny-account.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/src/modest-tny-account.c	2009-07-30 08:33:27.000000000 +0530
+@@ -116,7 +116,7 @@
+ 	/* There is no need to do this _async, as these are local folders. */
+ 	/* TODO: However, this seems to fail sometimes when the network is busy, 
+ 	 * returning an empty list. murrayc. */	
+-	tny_folder_store_get_folders (TNY_FOLDER_STORE (local_account), folders, NULL, &error);
++	tny_folder_store_get_folders (TNY_FOLDER_STORE (local_account), folders, NULL,FALSE, &error);
+ 	if (error) {
+ 		g_warning ("%s: tny_folder_store_get_folders() failed:%s\n", __FUNCTION__, error->message);
+ 		g_error_free (error);
+@@ -948,7 +948,7 @@
+ 		if (!TNY_IS_MERGE_FOLDER (folder) && 
+ 		    (TNY_IS_FOLDER (folder) && 
+ 		     tny_folder_get_folder_type (TNY_FOLDER (folder)) != TNY_FOLDER_TYPE_OUTBOX))
+-			tny_folder_store_get_folders_async (folder, folders, NULL,
++			tny_folder_store_get_folders_async (folder, folders, NULL, FALSE,
+ 							    recurse_folders_async_cb, 
+ 							    NULL, helper);
+ 		g_object_unref (folders);
+@@ -998,7 +998,7 @@
+ 
+ 	folders = tny_simple_list_new ();
+ 	tny_folder_store_get_folders_async (TNY_FOLDER_STORE (self),
+-					    folders, NULL,
++					    folders, NULL, FALSE,
+ 					    recurse_folders_async_cb, 
+ 					    NULL, helper);
+ 	g_object_unref (folders);
+Index: sources/modest-1.0-2008.43/src/modest-tny-folder.c
+===================================================================
+--- modest-1.0-2008.43/src/modest-tny-folder.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/src/modest-tny-folder.c	2009-07-30 08:15:18.000000000 +0530
+@@ -415,7 +415,7 @@
+ 	
+ 	/* Get direct subfolders */
+ 	subfolders = tny_simple_list_new ();
+-	tny_folder_store_get_folders (parent, subfolders, NULL, &err);
++	tny_folder_store_get_folders (parent, subfolders, NULL, FALSE, &err);
+ 
+ 	/* Check names */
+ 	iter = tny_list_create_iterator (subfolders);
+Index: sources/modest-1.0-2008.43/tests/check_folder-transfer.c
+===================================================================
+--- modest-1.0-2008.43/tests/check_folder-transfer.c	2009-07-29 19:19:47.000000000 +0530
++++ modest-1.0-2008.43/tests/check_folder-transfer.c	2009-07-30 08:14:32.000000000 +0530
+@@ -59,7 +59,7 @@
+ 		return;
+ 
+ 	folders = tny_simple_list_new ();
+-	tny_folder_store_get_folders (store, folders, query, NULL);
++	tny_folder_store_get_folders (store, folders, query, FALSE,NULL);
+ 	iter = tny_list_create_iterator (folders);
+ 
+ 	while (!tny_iterator_is_done (iter) && (!*folder_src || !*folder_dst))
+Index: sources/modest-1.0-2008.43/src/modest-tny-local-folders-account.c
+===================================================================
+--- modest-1.0-2008.43/src/modest-tny-local-folders-account.c	2009-07-30 09:09:37.000000000 +0530
++++ modest-1.0-2008.43/src/modest-tny-local-folders-account.c	2009-07-30 09:17:38.000000000 +0530
+@@ -57,7 +57,8 @@
+ 
+ static void         get_folders    (TnyFolderStore *self, 
+ 				    TnyList *list, 
+-				    TnyFolderStoreQuery *query, 
++				    TnyFolderStoreQuery *query,
++                    gboolean refresh, 
+ 				    GError **err);
+ 
+ static TnyFolder*   create_folder  (TnyFolderStore *self, 
+@@ -154,14 +155,14 @@
+ }
+ 
+ static void
+-get_folders (TnyFolderStore *self, TnyList *list, TnyFolderStoreQuery *query, GError **err)
++get_folders (TnyFolderStore *self, TnyList *list, TnyFolderStoreQuery *query, gboolean refresh, GError **err)
+ {
+ 	TnyCamelStoreAccountClass *parent_class;
+ 	ModestTnyLocalFoldersAccountPrivate *priv;
+ 
+ 	/* Call the base class implementation: */
+ 	parent_class = g_type_class_peek_parent (MODEST_TNY_LOCAL_FOLDERS_ACCOUNT_GET_CLASS (self));
+-	parent_class->get_folders (self, list, query, err);
++	parent_class->get_folders (self, list, query,refresh, err);
+ 	
+ 	/* Add our extra folder only if it passes the query */
+ 	priv = TNY_LOCAL_FOLDERS_ACCOUNT_GET_PRIVATE (self);
+@@ -182,7 +183,7 @@
+ 
+ 	/* If the folder name is been used by our extra folders */
+ 	if (modest_tny_local_folders_account_folder_name_in_use (MODEST_TNY_LOCAL_FOLDERS_ACCOUNT (self), name)) {
+-		g_set_error (err, TNY_SERVICE_ERROR, 
++		g_set_error (err, TNY_ERROR_DOMAIN, 
+ 			     TNY_SERVICE_ERROR_FOLDER_CREATE,
+ 			     "Folder name already in use");
+ 		return NULL;
