@@ -13,3 +13,5 @@ SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV
 
 
 require  osso-gnome-vfs2.inc
+
+FILES_${PN} += "${libdir}/gnome-vfs-2.0/modules/*"
