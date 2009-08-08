@@ -5,8 +5,6 @@ SECTION = "libs"
 PRIORITY = "required"
 DEPENDS = "zlib"
 
-SRC_URI = "${SOURCEFORGE_MIRROR}/libpng/libpng-${PV}.tar.bz2"
-S = "${WORKDIR}/libpng-${PV}"
 
 inherit autotools pkgconfig binconfig
 

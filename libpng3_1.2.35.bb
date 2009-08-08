@@ -10,7 +10,7 @@ PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libp/${PN}/${PN}_${PV}-1maemo1.tar.gz"
 
-require libpng.inc
+require libpng3.inc
 
 do_stage() {
 	cp libpng.pc libpng12.pc
