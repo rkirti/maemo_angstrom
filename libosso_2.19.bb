@@ -18,7 +18,7 @@ require libosso.inc
 
 SRC_URI = " \
             http://repository.maemo.org/pool/maemo5.0beta/free/libo/${PN}/${PN}_${PV}-1.tar.gz \
-            file://${PN}/no-hidden.patch;patch=1 \
+            file://${PN}/no-inlining.patch;patch=1;pnum=0 \
             file://${PN}/mer-changes.patch;patch=1 \
           "
 
@@ -30,3 +30,8 @@ FILES_${PN}-outo-dev = "${libdir}/outo/*.la ${libdir}/outo/*.a"
 FILES_${PN}-outo-dbg = "${libdir}/outo/.debug/lib*.so"
 FILES_${PN}-outo-bin-dbg = "${libdir}/outo/.debug/*bin"
 FILES_${PN}-outo-bin = "${libdir}/outo/*bin ${libdir}/outo/mimedummy.doc"
+
+
+do_rm_work(){
+    :
+}

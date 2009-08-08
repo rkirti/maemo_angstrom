@@ -1,0 +1,48 @@
+Index: libosso-2.19/src/osso-init.c
+===================================================================
+--- src/osso-init.c	2009-08-08 14:35:38.000000000 +0530
++++ src/osso-init.c	2009-08-08 14:36:41.000000000 +0530
+@@ -717,7 +717,7 @@
+     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+ }
+ 
+-inline int __attribute__ ((visibility("hidden")))
++int __attribute__ ((visibility("hidden")))
+ muali_convert_msgtype(int t)
+ {
+     switch (t) {
+Index: libosso-2.19/src/osso-internal.h
+===================================================================
+--- src/osso-internal.h	2009-08-08 14:35:38.000000000 +0530
++++ src/osso-internal.h	2009-08-08 14:36:17.000000000 +0530
+@@ -209,7 +209,7 @@
+ #  define dprint(f, a...)
+ # endif /* LIBOSSO_DEBUG */
+ 
+-inline int __attribute__ ((visibility("hidden")))
++int __attribute__ ((visibility("hidden")))
+ muali_convert_msgtype(int t);
+ 
+ muali_arg_t* _get_muali_args(DBusMessageIter *iter);
+@@ -297,7 +297,7 @@
+ _muali_parse_id(const char *id, muali_bus_type *bus, char *sender,
+                 int *serial);
+ 
+-inline void __attribute__ ((visibility("hidden")))
++void __attribute__ ((visibility("hidden")))
+ _muali_make_id(muali_bus_type bus, const char *sender, int serial, char *id);
+ 
+ #endif /* OSSO_INTERNAL_H_ */
+Index: libosso-2.19/src/osso-rpc.c
+===================================================================
+--- src/osso-rpc.c	2009-08-08 14:35:38.000000000 +0530
++++ src/osso-rpc.c	2009-08-08 14:36:29.000000000 +0530
+@@ -1026,7 +1026,7 @@
+         *serial = atoi(buf);
+ }
+ 
+-inline void __attribute__ ((visibility("hidden")))
++void __attribute__ ((visibility("hidden")))
+ _muali_make_id(muali_bus_type bus, const char *sender, int serial, char *id)
+ {
+         snprintf(id, MAX_MSGID_LEN, "%d,%s,%d", bus, sender, serial);

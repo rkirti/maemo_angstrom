@@ -5,7 +5,7 @@ DESCRIPTION = "Application framework startup scripts, services and base-apps"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GPLv2"
 SECTION = "base"
-DEPENDS = "osso-af-utils  osso-core-config dbus"
+DEPENDS = "osso-af-utils dbus"
 
 PR = "r2"
 
