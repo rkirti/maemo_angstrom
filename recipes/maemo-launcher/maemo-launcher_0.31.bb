@@ -9,7 +9,7 @@ PR = "r0"
 
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0prealpha1/free/m/${PN}/${PN}_${PV}.orig.tar.gz \
-           file://maemo-launcher/mer-changes.patch;patch=1 "
+           file://${PN}-${PV}/mer-changes.patch;patch=1 "
 
 
 inherit autotools pkgconfig
