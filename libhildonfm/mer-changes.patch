@@ -9,16 +9,7 @@
  
  ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
  	CFLAGS += -O0
---- debian/control
-+++ debian/control
-@@ -2,7 +2,7 @@
- Section: x11
- Priority: optional
- Maintainer: Richard Sun <richard.sun@nokia.com>
--Build-Depends: debhelper (>= 4.0.0), pkg-config, libosso-dev (>= 0.9.1-1), libgtk2.0-dev (>= 2:2.10), libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, libhildon-thumbnail-dev, osso-gwconnect-dev, mce-dev, libdbus-1-dev (>= 1.0), libdbus-glib-1-dev (>= 0.50-1osso), libhildon1-dev, libhildonmime-dev, gtk-doc-tools
-+Build-Depends: debhelper (>= 4.0.0), pkg-config, libosso-dev (>= 0.9.1-1), libgtk2.0-dev (>= 2:2.10), libxi-dev, libxt-dev, libpng12-dev, libgconf2-dev, libhildon-thumbnail-dev, osso-gwconnect-dev, mce-dev, libdbus-1-dev (>= 1.0), libdbus-glib-1-dev (>= 0.50-1osso), libhildon1-dev, libhildonmime-dev, gtk-doc-tools, autoconf, automake, libtool
- Standards-Version: 3.6.0
- 
+
 --- hildon-fm/hildon-fm-enum-types.h
 +++ hildon-fm/hildon-fm-enum-types.h
 @@ -0,0 +1,30 @@
