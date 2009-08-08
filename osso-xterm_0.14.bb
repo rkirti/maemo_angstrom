@@ -19,7 +19,7 @@ inherit autotools pkgconfig gtk-icon-cache
 #Even including it so explicitly doesn't work.
 FILES_{PN} +="\
               ${datadir}/icons/* \
-              /usr/share/dbus-1/services/osso-xterm.service \
+              ${datadir}/dbus-1/services/osso-xterm.service \
               ${datadir}/dbus-1/ "
 
             
