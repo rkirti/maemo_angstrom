@@ -9,7 +9,7 @@ DEPENDS = "osso-gnome-vfs2 libhildon libosso osso-af-settings libhildonhelp maem
 PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/h/${PN}/${PN}_${PV}-1+0m5.tar.gz \
-           file://hildon-control-panel/mer-changes.patch;patch=1"
+           file://${PN}-${PV}/mer-changes.patch;patch=1"
 
 EXTRA_OECONF = "--with-maemo-gtk=yes"
 
