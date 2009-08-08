@@ -15,7 +15,3 @@ inherit autotools pkgconfig gtk-icon-cache
 
 FILES_${PN} += "${datadir}/dbus-1/"
 
-
-do_rm_work(){
-    :
-}
