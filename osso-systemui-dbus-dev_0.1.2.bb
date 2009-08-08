@@ -19,3 +19,5 @@ do_stage() {
     install -m 0644 ${S}/include/systemui/*.h ${STAGING_INCDIR}/systemui/
 }
 
+#Stop bitbake from building "osso-systemui-dbus-dev-dev" packages
+PACKAGES = "${PN}"

@@ -4,7 +4,7 @@
 DESCRIPTION = "WordPad text editor library"
 HOMEPAGE = "http://maemo.org"
 LICENSE = "GNU Lesser General Public License-version 2.1 "
-SECTION = "libs"
+SECTION = "misc"
 DEPENDS = "gtk+ glib-2.0"
 PR = "r0"
 
@@ -15,3 +15,4 @@ inherit autotools pkgconfig
 do_stage(){
     autotools_stage_all
 }
+
