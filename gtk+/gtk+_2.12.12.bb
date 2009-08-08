@@ -14,14 +14,15 @@ PR = "r103"
 
 DEPENDS += "cairo"
 
-DEFAULT_PREFERENCE = 1
+#Maemo specific requirement
+DEFAULT_PREFERENCE ="10"
 
 S="${WORKDIR}/gtk+2.0-2.12.12"
 
 #FIXME : Patches currently used are only to get the build working. After testing on the device,
 #uncomment the required patches
 
-SRC_URI = "http://repository.maemo.org/pool/fremantle/free/g/gtk+2.0/gtk+2.0_${PV}-1maemo12+0m5.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/g/gtk+2.0/gtk+2.0_${PV}-1maemo12+0m5.tar.gz \
            file://gtk+2.0-2.12.12/mer-changes.patch;patch=1 \
            file://gtk+2.0-2.12.12/mkinstalldirs \
            file://gtk+2.0-2.12.12/no-demos.patch;patch=1 \
