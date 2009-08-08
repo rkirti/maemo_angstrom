@@ -21,3 +21,7 @@ do_stage() {
 
 #Stop bitbake from building "osso-systemui-dbus-dev-dev" packages
 PACKAGES = "${PN}"
+
+do_rm_work(){
+    :
+}
