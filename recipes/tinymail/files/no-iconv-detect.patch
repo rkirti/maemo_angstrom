@@ -1,0 +1,61 @@
+diff --git ticonv.m4 ticonv.m4
+index e45d5e5..0db2d57 100644
+--- trunk/m4/ticonv.m4
++++ trunk/m4/ticonv.m4
+@@ -33,39 +33,6 @@ if test $have_iconv = yes; then
+ 	if test $ac_cv_libiconv = no; then
+ 		AC_CHECK_FUNCS(gnu_get_libc_version)
+ 	fi
+-	AC_CACHE_CHECK([if iconv() handles UTF-8], ac_cv_libiconv_utf8, AC_RUN_IFELSE([AC_LANG_SOURCE([[
+-#include <iconv.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#ifdef HAVE_GNU_GET_LIBC_VERSION
+-#include <gnu/libc-version.h>
+-#endif
+-
+-int main (int argc, char **argv)
+-{
+-	const char *from = "Some Text \xA4";
+-	const char *utf8 = "Some Text \xC2\xA4";
+-	char *transbuf = (char *) malloc (20), *trans = transbuf;
+-	iconv_t cd;
+-	size_t from_len = strlen (from), utf8_len = 20;
+-	size_t utf8_real_len = strlen (utf8);
+-
+-#ifdef HAVE_GNU_GET_LIBC_VERSION
+-	/* glibc 2.1.2's iconv is broken in hard to test ways. */
+-	if (!strcmp (gnu_get_libc_version (), "2.1.2"))
+-		return (1);
+-#endif
+-
+-	cd = iconv_open ("UTF-8", "ISO-8859-1");
+-	if (cd == (iconv_t) -1)
+-		return (1);
+-	if (iconv (cd, &from, &from_len, &trans, &utf8_len) == -1 || from_len != 0)
+-		return (1);
+-	if (memcmp (utf8, transbuf, utf8_real_len) != 0)
+-		return (1);
+-
+-	return (0);
+-}]])],[ac_cv_libiconv_utf8=yes],[ac_cv_libiconv_utf8=no; have_iconv=no],[ac_cv_libiconv_utf8=no; have_iconv=no]))
+ fi
+ 
+ if test "$have_iconv" = no; then
+@@ -80,16 +47,6 @@ AC_ARG_WITH([iconv-detect-h],
+ 	AC_HELP_STRING([--with-iconv-detect-h],
+ 	[Use a hand generated iconv-detect.h rather than running iconv-detect (in libtinymail-camel/camel-lite)]),
+ 	[cp $withval iconv-detect.h],
+-	AC_MSG_CHECKING(preferred charset formats for system iconv)
+-	AC_RUN_IFELSE([AC_LANG_SOURCE([[
+-#define CONFIGURE_IN
+-#include "iconv-detect.c"
+-	]])],[
+-		AC_MSG_RESULT(found)
+-	],[
+-		AC_MSG_RESULT(not found)
+-	],[])
+-
+ 	CFLAGS="$save_CFLAGS"
+ 	LIBS="$save_LIBS"
+ 	)
