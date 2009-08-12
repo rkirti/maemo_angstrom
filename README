@@ -1,0 +1,58 @@
+***********************************************************
+* OpenEmbedded Overlay: BB Recipes for the Maemo software
+*
+* Program: Google Summer of Code 2009
+*
+* Author : Kirtika B Ruchandani <kirtibr@gmail.com> 
+***********************************************************
+
+Introduction (For OpenEmbedded Users)
+
+To make use of this overlay do:
+ - add this directory to the BBPATH variable (One of the environment varibales
+   that is sourced before using OE)
+ - add the BB files in this directory to your BBFILES variable in conf/local.conf. Make
+   sure you put them *before* the paths of the real OE.
+   E.g.
+   BBFILES = "$OE_OVERLAY_DIR/packages/*/*.bb $OE_DIR/recipes/*/**.bb"
+   (In most cases just replace OE_OVERLAY_DIR and OE_DIR with the proper directory
+    names and everything will just work.)
+
+
+*There are two folders here: 
+ - recipes: Most of these recipes build painlessly. The only exceptions could be 
+   glib-2.0,gtk+ and gtkhtml3.14. The issue here is that your build configuration must
+   select these versions of the packages rather than the ones your distro uses. 
+ - conf: The conf files take care that the required maemo versions of these
+   recipes are chosen. I have defined a new distro based on Angstrom, which uses 
+   all the Angstrom2008.1 configs only with a few minor changes in a couple of files.
+   Note that my conf/distro/include folder only has those files which have been modified.
+   The rest of the .inc files mentioned in angstrom-maemo.conf are picked up from your OE
+   tree. You can grab those conf/distro/include .inc's from the OE repo if you dont have 
+   them already.
+
+For Poky / Non-Ansgtrom Users:
+
+   -The recipes do not need any change. For the conf files,
+   the follwing needs to be done: (You need to understand the PREFERRED_PROVIDER and 
+   PREFERRED_VERSIONS variables to do this, please check them up in the POKY handbook)
+   - Add to your distro config the preferred versions settings for these 3
+   packages:
+   
+        # Gtk+ with maemo changes
+        PREFERRED_PROVIDER_gtk+ = "gtk+"
+        PREFERRED_VERSION_gtk+ = "2.12.12"
+        #Maemo has changes in glib too
+        PREFERRED_PROVIDER_glib-2.0 = "glib-2.0"
+        PREFERRED_VERSION_glib-2.0 = "2.18.1" 
+    -gtkhtml3.8 and gtkhtml3.14 might conflict, I am not sure of this. 
+     If so, please use the gtkhtml3.14 from this overlay.
+ 
+
+* dsme/db1 recipes are optional.
+
+BUILDING AN IMAGE:
+  - Depending on the distro/image you are using, add the packages from 
+    this  overlay to your <image-name>.bb file. The maemo-angstrom-image.bb
+    in the recipes/images folder is based on gpe-image.bb in OE, so a diff
+    of the two might give a good idea of what you need to add.
