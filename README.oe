@@ -6,7 +6,7 @@
 * Author : Kirtika B Ruchandani <kirtibr@gmail.com> 
 ***********************************************************
 
-Introduction (For OpenEmbedded Users)
+Introduction 
 
 To make use of this overlay do:
  - add this directory to the BBPATH variable (One of the environment varibales
@@ -14,7 +14,7 @@ To make use of this overlay do:
  - add the BB files in this directory to your BBFILES variable in conf/local.conf. Make
    sure you put them *before* the paths of the real OE.
    E.g.
-   BBFILES = "$OE_OVERLAY_DIR/packages/*/*.bb $OE_DIR/recipes/*/**.bb"
+   BBFILES = "$OE_OVERLAY_DIR/packages/*/*.bb $OE_DIR/recipes/*/*.bb"
    (In most cases just replace OE_OVERLAY_DIR and OE_DIR with the proper directory
     names and everything will just work.)
 
@@ -31,10 +31,10 @@ To make use of this overlay do:
    tree. You can grab those conf/distro/include .inc's from the OE repo if you dont have 
    them already.
 
-For Poky / Non-Ansgtrom Users:
+For Non-Angstrom Users:
 
    -The recipes do not need any change. For the conf files,
-   the follwing needs to be done: (You need to understand the PREFERRED_PROVIDER and 
+   the following needs to be done: (You need to understand the PREFERRED_PROVIDER and 
    PREFERRED_VERSIONS variables to do this, please check them up in the POKY handbook)
    - Add to your distro config the preferred versions settings for these 3
    packages:
@@ -56,3 +56,11 @@ BUILDING AN IMAGE:
     this  overlay to your <image-name>.bb file. The maemo-angstrom-image.bb
     in the recipes/images folder is based on gpe-image.bb in OE, so a diff
     of the two might give a good idea of what you need to add.
+
+* Cribs/Queries/Flames-
+  If anything in here doesn't work, feel free to use virtual kicks, at 
+  the following places-
+  *kirtibr@gmail.com on IM
+  *rkirti on IRC (usually on #oe/#maemo)
+  *rkirti on github 
+
