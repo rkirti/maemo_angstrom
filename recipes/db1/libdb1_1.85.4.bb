@@ -7,7 +7,7 @@ LICENSE = "UCB BSD license"
 SECTION = "libs"
 PR = "r0"
 
-SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/libd/${PN}/${PN}_${PV}-osso8.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0alpha/free/libd/${PN}/${PN}_${PV}-osso8.tar.gz \
            file://libdb1/makefile.patch;patch=1;pnum=0 "
 
 
