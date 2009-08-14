@@ -7,7 +7,7 @@ LICENSE = "GPL"
 SECTION = "base"
 PR = "r2"
 
-SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/o/${PN}/${PN}_${PV}-2osso3+0m5.tar.gz \
+SRC_URI = "http://repository.maemo.org/pool/maemo5.0alpha/free/o/${PN}/${PN}_${PV}-2osso3+0m5.tar.gz \
            file://osso-gnome-vfs2/mer-changes.patch;patch=1 \
            file://osso-gnome-vfs2/no-g-gnuc-function.patch;patch=1;pnum=0 "
 
