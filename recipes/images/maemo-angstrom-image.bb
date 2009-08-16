@@ -64,6 +64,15 @@ DEBUG_PACKAGES =  " hildon-desktop-dbg \
 
 TESTING_APPS =    "inotify-tools\ 
                    maemopadplus \
+                   osso-xterm \
+                   maemo-mapper \
+                   modest \
+                   modest-locale-en-gb \
+                   libtinymail \
+                   libtinymailui-gtk \
+                   libnotify \
+                   mce-dev \
+                   gdbm \
                    python-hildondesktop \
                    hildon-desktop-python-loader \
                    mobile-application-service "
