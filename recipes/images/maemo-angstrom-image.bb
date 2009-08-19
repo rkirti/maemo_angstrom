@@ -63,9 +63,11 @@ DEBUG_PACKAGES =  " hildon-desktop-dbg \
                     gdb" 
 
 TESTING_APPS =    "inotify-tools\ 
-                   maemopadplus \
+                   omweather \
+                   omweather-weather-com-stations-db \
                    osso-xterm \
                    maemo-mapper \
+                   maemopadplus \
                    modest \
                    modest-locale-en-gb \
                    libtinymail \
@@ -76,6 +78,19 @@ TESTING_APPS =    "inotify-tools\
                    python-hildondesktop \
                    hildon-desktop-python-loader \
                    mobile-application-service "
+
+HILDONISED_GPE = " libgpewidget-hildon \
+                   libgpepimc-hildon \
+                   libgpevtype-hildon \
+                   libtododb-hildon \
+                   gpesyncd \
+                   gpe-synctool \
+                   gpe-icons \
+                   gpe-filemanager-hildon \
+                   gpe-contacts-hildon \
+                   gpe-timesheet-hildon  \
+                   gpe-todo-hildon "
+#     gpe-calendar-hildon 
 
 IMAGE_INSTALL = "    ${MACHINE_TASK_PROVIDER} \
     task-gpe-base \
@@ -128,6 +143,7 @@ IMAGE_INSTALL = "    ${MACHINE_TASK_PROVIDER} \
     ${LOCALE_PACKAGES} \
     ${MAEMO_L10N_PACKAGES} \
     ${TESTING_APPS} \
+    ${HILDONISED_GPE} \
     ${DEBUG_PACKAGES} "
 
 #ROOTFS_POSTPROCESS_COMMAND += "zap_root_password; "

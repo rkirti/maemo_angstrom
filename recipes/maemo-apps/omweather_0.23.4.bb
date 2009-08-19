@@ -21,3 +21,9 @@ do_stage(){
     autotools_stage_all
 }
 
+package_postinst_${PN} () { 
+if test ! -f  /usr/share/applications/hildon-home/omweather-home.desktop ; then
+    cp /usr/share/omweather/omweather-home.desktop /usr/share/applications/hildon-home/omweather-home.desktop
+fi
+}
+
