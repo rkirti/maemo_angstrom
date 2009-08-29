@@ -5,7 +5,7 @@ DESCRIPTION = "Maemo theming tools and layout "
 HOMEPAGE = "http://maemo.org"
 LICENSE = "Creative Commons"
 SECTION = "ui"
-DEPENDS = "hildon-theme-tools"
+DEPENDS = "hildon-theme-tools hildon-theme-tools-native"
 PR = "r1"
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0beta/free/h/${PN}/${PN}_${PV}-1.tar.gz"
