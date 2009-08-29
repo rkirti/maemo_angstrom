@@ -59,7 +59,7 @@ PREFERRED_PROVIDERS += " virtual/${TARGET_PREFIX}g++:gcc-cross"
 # Note that a full build of everything in OpenEmbedded will take GigaBytes of hard disk space, so make sure to free enough space. The default TMPDIR is
 # <build directory>/tmp
 # Don't use symlinks in in the path to avoid problems
-TMPDIR = /stuff/oebbtmp
+TMPDIR = /stuff/oetmp
 
 # Uncomment this to specify a machine to build for. See the conf directory
 # for machines currently known to OpenEmbedded. This will automatically take care
@@ -162,6 +162,6 @@ BBINCLUDELOGS = "yes"
 #make use of the packaged-staging feature
 INHERIT += "rm_work packaged-staging"
 #[rkirti] hardcoded value : BEWARE
-DEPLOY_DIR_PSTAGE = "/stuff/build/pstage/"
+DEPLOY_DIR_PSTAGE = "/stuff/maemo-angstrom/pstage/"
 
 # EDIT THIS FILE and then remove the line below before using!
