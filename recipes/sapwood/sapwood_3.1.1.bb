@@ -18,6 +18,7 @@ inherit autotools pkgconfig
 EXTRA_OECONF += "--enable-abstract-sockets=no"
 
 
+FILES_${PN}-dbg += "${libdir}/gtk-2.0/2.10.0/engines/.debug"
 FILES_${PN} += "${libdir}/gtk-2.0/2.10.0/engines/"
 
 do_stage(){
