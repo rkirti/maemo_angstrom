@@ -21,4 +21,4 @@ do_stage(){
     autotools_stage_all
 }
 
-EXTRA_OECONF += " --disable-gtk-doc --disable-deprecated"
+EXTRA_OECONF += " --disable-gtk-doc --disable-deprecated --with-samba-includes=${STAGING_INCDIR}"
