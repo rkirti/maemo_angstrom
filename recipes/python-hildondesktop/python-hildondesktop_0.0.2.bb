@@ -18,10 +18,11 @@ do_stage(){
     autotools_stage_all
 }
 
-PACKAGES = "${PN} hildon-desktop-python-loader"
+PACKAGES += "hildon-desktop-python-loader"
 
-FILES_hildon-desktop-python-loader = "${libdir}/hildon-desktop/loaders/* "
+FILES_hildon-desktop-python-loader = "${libdir}/hildon-desktop/loaders/*.so.* "
 
+FILES_${PN}-dbg += "${libdir}/python2.6/site-packages/.debug"
 FILES_${PN} += "${datadir}/pygtk \
                 ${libdir}/python2.6" 
 
