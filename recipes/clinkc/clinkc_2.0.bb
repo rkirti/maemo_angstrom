@@ -3,17 +3,21 @@
 
 DESCRIPTION = "CyberLink for C UPnP library support"
 HOMEPAGE = "unknown"
-LICENSE = "unknown"
+LICENSE = "BSD"
 SECTION = "base"
 DEPENDS = "curl libxml2"
 PR = "r0"
 
 SRC_URI = "http://repository.maemo.org/pool/maemo5.0alpha/free/c/${PN}/${PN}_${PV}.orig.tar.gz \
-           file://${PN}-${PV}/mer-changes.patch;patch=1;pnum=0"
+           file://${PN}-${PV}/mer-changes.patch;patch=1;pnum=0 \
+           file://no-doxygen.patch;patch=1"
 
 S = "${WORKDIR}/${PN}"
 
 inherit autotools pkgconfig
+
+FILES_${PN}-dbg += "${datadir}/doc/clinkc-2.0-0/samples/.debug" 
+
 
 do_stage(){
     autotools_stage_all

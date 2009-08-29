@@ -1,0 +1,12 @@
+--- clinkc/Makefile.am~	2009-08-19 21:28:44.000000000 +0200
++++ clinkc/Makefile.am	2009-08-19 21:38:20.000000000 +0200
+@@ -24,8 +24,7 @@
+ 	COPYING \
+ 	Doxyfile
+ 
+-nobase_devdocs_DATA = \
+-	doxygen/html/*
++nobase_devdocs_DATA = 
+ 
+ doxygen/html/*:
+ 	cd $(srcdir) && doxygen Doxyfile
