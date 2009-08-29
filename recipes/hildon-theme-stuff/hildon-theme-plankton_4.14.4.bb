@@ -15,3 +15,7 @@ inherit autotools pkgconfig
 
 
 FILES_${PN} += "/usr/share/* " 
+
+do_compile () {
+	oe_runmake LAYOUT_DIR="${STAGING_DATADIR}/hildon-theme-layout-4"
+}
