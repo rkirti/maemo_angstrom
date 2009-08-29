@@ -11,7 +11,9 @@ inherit autotools pkgconfig
 
 LEAD_SONAME = "libgtk-x11-2.0.so"
 
-FILES_${PN} = " ${bindir}/gtk-query-immodules-2.0 \
+FILES_${PN} = " ${bindir}/gdk-pixbuf-query-loaders \
+                ${bindir}/gtk-query-immodules-2.0 \
+                ${bindir}/gtk-update-icon-cache \ 
                 ${libdir}/lib*.so.* \
                 ${datadir}/themes ${sysconfdir} \
                 ${libdir}/gtk-2.0/${LIBV}/engines/libpixmap.so"

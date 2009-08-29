@@ -10,7 +10,7 @@ require gtk+.inc
 PROVIDES = "gdk-pixbuf"
 RPROVIDES = "gdk-pixbuf"
 
-PR = "r103"
+PR = "r104"
 
 DEPENDS += "cairo"
 
@@ -41,13 +41,11 @@ SRC_URI = "http://repository.maemo.org/pool/maemo5.0alpha/free/g/gtk+2.0/gtk+2.0
 # die die die
 #           file://gtk+2.0-2.12.12/pangoxft2.10.6.diff;patch=1"
 
-EXTRA_OECONF = "--with-libtiff --with-gdktarget=x11 --disable-xkb --enable-display-migration --disable-gtk-doc --with-maemo=yes --with-libpng --with-libjpeg --with-x "
+EXTRA_OECONF = "--with-libtiff --with-gdktarget=x11 --disable-xkb --disable-gtk-doc --with-maemo=yes --with-libpng --with-libjpeg --with-x "
 
 
 #Used for the gdk-pixbuf stuff
 EXTRA_OECONF += "--with-included-loaders=png,tga --disable-gtk-doc"
-
-
 
 
 LIBV = "2.10.0"
@@ -81,15 +79,3 @@ require gtk-fpu.inc
 EXTRA_OECONF += "${@get_gtk_fpu_setting(bb, d)}"
 
 
-PACKAGES += "gdk-pixbuf"
-
-FILES_gdk-pixbuf = " ${bindir}/gdk-pixbuf-query-loaders \
-	                 ${bindir}/gtk-update-icon-cache \
-	                 ${libdir}/libgdk*"
-
-
-
-# Needed while Testing 
-do_rm_work(){
-    :
-}
