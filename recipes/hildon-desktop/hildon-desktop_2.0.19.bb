@@ -11,7 +11,7 @@ PR = "r1"
 ##Temporary: to be fixed later
 SRC_URI = "file://hd-trial.tar.gz"
 
-EXTRA_OECONF = "--enable-debug=yes --disable-gtk-doc"
+EXTRA_OECONF = "--enable-debug=no --disable-gtk-doc"
 
 S = "${WORKDIR}/hd-ins_in_usr"
 
@@ -20,6 +20,7 @@ inherit autotools pkgconfig
 FILES_${PN} += "${datadir}/applications/hildon-marquee/* \ 
                 ${datadir}/* "
 
+FILES_${PN}-dbg += "${libdir}/hildon-desktop/policies/.debug"
 
 do_install_append(){
     install -d ${D}${datadir}/applications ${D}${datadir}/applications/hildon-marquee
