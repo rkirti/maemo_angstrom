@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Screenshot tool"
 HOMEPAGE = "http://maemo.org"
-LICENSE = "GPL"
 SECTION = "apps/graphics"
+LICENSE = "GPL"
 DEPENDS = "gtk+"
 PR = "r2"
 
