@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "X11 Xomap custom library."
 HOMEPAGE = "http://maemo.org"
-LICENSE = "unknown"
 SECTION = "base"
+LICENSE = "unknown"
 DEPENDS = "x11proto-xsp quilt libx11 libxext"
 PR = "r4"
 
@@ -15,4 +14,3 @@ inherit autotools pkgconfig
 do_stage(){
     autotools_stage_all
 }
-
