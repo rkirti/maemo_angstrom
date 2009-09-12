@@ -6,14 +6,12 @@ PRIORITY = "optional"
 LICENSE = "LGPL"
 DEPENDS = "libmimedir libeventdb libtododb"
 
-inherit pkgconfig gpe autotools
-
 SRC_URI = "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=libgpevtype;rev=9931"
+
+inherit pkgconfig gpe autotools
 
 EXTRA_OECONF = "--enable-hildon"
 
 do_stage () {
-	autotools_stage_all
+        autotools_stage_all
 }
-
-
