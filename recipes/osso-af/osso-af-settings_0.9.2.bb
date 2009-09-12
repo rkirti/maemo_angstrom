@@ -1,6 +1,5 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 LICENSE = "GPL"
 PR = "r1"
 
