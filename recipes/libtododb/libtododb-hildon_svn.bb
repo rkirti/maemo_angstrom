@@ -6,11 +6,11 @@ PRIORITY = "optional"
 LICENSE = "LGPL"
 DEPENDS = "libgpewidget libgpepimc sqlite"
 
-SRC_URI = "http://repository.maemo.org/extras-devel/pool/diablo/free/source/libt/libtododb/libtododb_2.8+maemo+svn20081212-3.tar.gz "
-
-S = "${WORKDIR}/libtododb-2.8+maemo+svn20081212"
+SRC_URI = "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=libtododb;rev=9931"
 
 inherit pkgconfig gettext autotools
+
+EXTRA_OECONF += " --enable-hildon"
 
 do_compile() {
         oe_runmake PREFIX=${prefix}
