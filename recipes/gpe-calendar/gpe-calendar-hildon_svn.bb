@@ -12,6 +12,8 @@ SRC_URI = "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=gpe-calendar;r
 
 inherit autotools gtk-icon-cache
 
+EXTRA_OECONF += " --enable-hildon "
+
 do_compile() {
         oe_runmake PREFIX=${prefix}
 }
