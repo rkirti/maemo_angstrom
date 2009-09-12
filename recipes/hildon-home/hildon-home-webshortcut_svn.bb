@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Webshortcut plugin for hildon home"
 HOMEPAGE = "http://maemo.org"
-LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "x11"
+LICENSE = "GNU Lesser General Public License-version 2.1"
 DEPENDS = "libhildon libosso libconic libhildonfm hildon-desktop osso-af-settings"
 PR = "r3"
 
@@ -20,5 +19,4 @@ do_configure_prepend(){
     done
 }
 
-
-FILES_${PN}  += "${libdir}/hildon-desktop/*"
+FILES_${PN} += "${libdir}/hildon-desktop/*"
