@@ -1,6 +1,5 @@
-LICENSE     = "GNU Lesser General Public License-version 2.1 "
 DESCRIPTION = "Nokia OSSO IPC library"
-
+LICENSE = "GNU Lesser General Public License-version 2.1 "
 DEPENDS = "dbus-glib glib-2.0 mce-dev"
 
 inherit autotools pkgconfig lib_package
@@ -15,5 +14,3 @@ do_configure_prepend() {
 do_stage() {
   autotools_stage_all
 }
-
-

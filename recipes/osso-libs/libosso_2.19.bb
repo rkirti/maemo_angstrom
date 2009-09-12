@@ -1,20 +1,14 @@
-# Copyright (C) 2009 Kirtika B Ruchandani <kirtibr@gmail.com> 
+# Copyright (C) 2009 Kirtika B Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
 # NOTE: outo is now optional in libosso.
 # libosso builds without outo. TO-DO- add outo recipes
-
 DESCRIPTION = "Nokia OSSO IPC library"
 HOMEPAGE = "http://maemo.org"
-LICENSE = "GNU Lesser Public License-version 2.1"
 SECTION = "base"
 SECTION_${PN}-doc = "doc"
 SECTION_${PN}-dev = "devel"
-
+LICENSE = "GNU Lesser Public License-version 2.1"
 PR = "r1"
-
-
-require libosso.inc
-
 
 SRC_URI = " \
             http://repository.maemo.org/pool/maemo5.0beta/free/libo/${PN}/${PN}_${PV}-1.tar.gz \
@@ -31,7 +25,4 @@ FILES_${PN}-outo-dbg = "${libdir}/outo/.debug/lib*.so"
 FILES_${PN}-outo-bin-dbg = "${libdir}/outo/.debug/*bin"
 FILES_${PN}-outo-bin = "${libdir}/outo/*bin ${libdir}/outo/mimedummy.doc"
 
-
-do_rm_work(){
-    :
-}
+require libosso.inc
