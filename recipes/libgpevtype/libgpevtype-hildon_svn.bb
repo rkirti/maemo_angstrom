@@ -8,9 +8,9 @@ DEPENDS = "libmimedir libeventdb libtododb"
 
 inherit pkgconfig gpe autotools
 
-SRC_URI = "http://repository.maemo.org/extras-devel/pool/diablo/free/source/libg/libgpevtype/libgpevtype_2.8+maemo+svn20081212-3.tar.gz"
+SRC_URI = "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=libgpevtype;rev=9931"
 
-S = "${WORKDIR}/libgpevtype-2.8+maemo+svn20081212"
+EXTRA_OECONF = "--enable-hildon"
 
 do_stage () {
 	autotools_stage_all
