@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Maemo theming tools and layout "
 HOMEPAGE = "http://maemo.org"
-LICENSE = "Creative Commons"
 SECTION = "ui"
+LICENSE = "Creative Commons"
 DEPENDS = "hildon-theme-tools hildon-theme-tools-native"
 PR = "r1"
 

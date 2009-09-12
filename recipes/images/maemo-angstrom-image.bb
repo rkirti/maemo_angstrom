@@ -73,7 +73,6 @@ TESTING_APPS =    "inotify-tools\
                    libtinymail \
                    libtinymailui-gtk \
                    libnotify \
-                   mce-dev \
                    gdbm \
                    python-hildondesktop \
                    hildon-desktop-python-loader \

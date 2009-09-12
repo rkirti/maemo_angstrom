@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Wrapper for supporting dbus callbacks in notification actions"
 HOMEPAGE = "http://maemo.org "
-LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "libs"
+LICENSE = "GNU Lesser General Public License-version 2.1"
 DEPENDS = "libnotify"
 PR = "r1"
 
