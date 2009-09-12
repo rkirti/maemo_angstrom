@@ -1,0 +1,183 @@
+diff -Naur tinymail/files/no-iconv-detect.patch /stuff/openembedded/recipes/tinymail/files/no-iconv-detect.patch
+--- tinymail/files/no-iconv-detect.patch	2009-08-09 21:54:31.000000000 +0530
++++ /stuff/openembedded/recipes/tinymail/files/no-iconv-detect.patch	2009-08-11 00:07:41.000000000 +0530
+@@ -1,61 +1,18 @@
+-diff --git ticonv.m4 ticonv.m4
+-index e45d5e5..0db2d57 100644
+---- trunk/m4/ticonv.m4
+-+++ trunk/m4/ticonv.m4
+-@@ -33,39 +33,6 @@ if test $have_iconv = yes; then
+- 	if test $ac_cv_libiconv = no; then
+- 		AC_CHECK_FUNCS(gnu_get_libc_version)
+- 	fi
+--	AC_CACHE_CHECK([if iconv() handles UTF-8], ac_cv_libiconv_utf8, AC_RUN_IFELSE([AC_LANG_SOURCE([[
+--#include <iconv.h>
+--#include <stdlib.h>
+--#include <string.h>
+--#ifdef HAVE_GNU_GET_LIBC_VERSION
+--#include <gnu/libc-version.h>
+--#endif
+--
+--int main (int argc, char **argv)
+--{
+--	const char *from = "Some Text \xA4";
+--	const char *utf8 = "Some Text \xC2\xA4";
+--	char *transbuf = (char *) malloc (20), *trans = transbuf;
+--	iconv_t cd;
+--	size_t from_len = strlen (from), utf8_len = 20;
+--	size_t utf8_real_len = strlen (utf8);
+--
+--#ifdef HAVE_GNU_GET_LIBC_VERSION
+--	/* glibc 2.1.2's iconv is broken in hard to test ways. */
+--	if (!strcmp (gnu_get_libc_version (), "2.1.2"))
+--		return (1);
+--#endif
+--
+--	cd = iconv_open ("UTF-8", "ISO-8859-1");
+--	if (cd == (iconv_t) -1)
+--		return (1);
+--	if (iconv (cd, &from, &from_len, &trans, &utf8_len) == -1 || from_len != 0)
+--		return (1);
+--	if (memcmp (utf8, transbuf, utf8_real_len) != 0)
+--		return (1);
+--
+--	return (0);
+--}]])],[ac_cv_libiconv_utf8=yes],[ac_cv_libiconv_utf8=no; have_iconv=no],[ac_cv_libiconv_utf8=no; have_iconv=no]))
+- fi
++--- m4/ticonv.m4~	2007-10-30 13:57:32.000000000 +0100
+++++ trunk/m4/ticonv.m4	2007-10-30 13:57:32.000000000 +0100
++@@ -76,15 +76,6 @@
+  
+- if test "$have_iconv" = no; then
+-@@ -80,16 +47,6 @@ AC_ARG_WITH([iconv-detect-h],
+- 	AC_HELP_STRING([--with-iconv-detect-h],
+- 	[Use a hand generated iconv-detect.h rather than running iconv-detect (in libtinymail-camel/camel-lite)]),
+- 	[cp $withval iconv-detect.h],
+--	AC_MSG_CHECKING(preferred charset formats for system iconv)
+--	AC_RUN_IFELSE([AC_LANG_SOURCE([[
++ CFLAGS="$CFLAGS -I$srcdir"
++ 
++-AC_MSG_CHECKING(preferred charset formats for system iconv)
++-AC_RUN_IFELSE([AC_LANG_SOURCE([[
+ -#define CONFIGURE_IN
+ -#include "iconv-detect.c"
+--	]])],[
+--		AC_MSG_RESULT(found)
+--	],[
+--		AC_MSG_RESULT(not found)
+--	],[])
+--
+- 	CFLAGS="$save_CFLAGS"
+- 	LIBS="$save_LIBS"
+- 	)
++-]])],[
++-	AC_MSG_RESULT(found)
++-],[
++-	AC_MSG_RESULT(not found)
++-],[])
++ 
++ CFLAGS="$save_CFLAGS"
++ LIBS="$save_LIBS"
+diff -Naur tinymail/libtinymail.inc /stuff/openembedded/recipes/tinymail/libtinymail.inc
+--- tinymail/libtinymail.inc	2009-08-09 21:54:31.000000000 +0530
++++ /stuff/openembedded/recipes/tinymail/libtinymail.inc	2009-08-11 00:07:41.000000000 +0530
+@@ -3,11 +3,7 @@
+ LICENSE = "LGPL"
+ DEPENDS = "gtk+ glib-2.0 gnome-vfs gconf-dbus libgnomeui"
+ 
+-# We are building for maemo here, but the platform option should
+-# be passed in a better way rather to maintain compatibility with 
+-# upstream recipe.
+-
+-EXTRA_OECONF=" --disable-gnome --with-platform=maemo --with-html-component=none"
++EXTRA_OECONF=" --disable-gnome --with-platform=gpe --with-html-component=none"
+ 
+ SRC_URI = "http://tinymail.org/files/releases/pre-releases/v${PV}/libtinymail-${PV}.tar.bz2 \
+ 	   file://no-iconv-detect.patch;patch=1 \
+@@ -55,14 +51,4 @@
+ 
+ do_stage () {
+ 	autotools_stage_all
+-}
+-
+-do_stage_append(){
+-    install -d ${STAGING_INCDIR}/libtinymail-gnomevfs-1.0
+-    install -m 0644 ${S}/libtinymail-gomevfs/tny-vfs-stream.h  ${STAGING_INCDIR}/libtinymail-gnomevfs-1.0
+-
+-}
+-
+-do_rm_work(){
+-    :
+-}
++}
+\ No newline at end of file
+diff -Naur tinymail/libtinymail_svn.bb /stuff/openembedded/recipes/tinymail/libtinymail_svn.bb
+--- tinymail/libtinymail_svn.bb	2009-08-09 21:54:31.000000000 +0530
++++ /stuff/openembedded/recipes/tinymail/libtinymail_svn.bb	2009-08-11 00:07:41.000000000 +0530
+@@ -2,16 +2,18 @@
+ SECTION = "x11/utils"
+ LICENSE = "LGPL"
+ DEPENDS = "gtk+ glib-2.0 gnome-vfs gconf-dbus libgnomeui"
++PV = "0.0.5+svnr${SRCREV}"
++PR = "r3"
+ 
+-DEFAULT_PREFERENCE = "10"
++DEFAULT_PREFERENCE = "-1"
+ 
+-EXTRA_OECONF=" --with-libiconv --disable-gnome --with-platform=maemo --with-html-component=none"
++EXTRA_OECONF=" --disable-gnome --with-platform=gpe --with-html-component=none"
+ 
+-SRC_URI = "svn://svn.tinymail.org/svn/tinymail/;module=trunk;proto=https;rev=3955 \
+-	       file://camel-lite-configure-hack.patch;patch=1;maxdate=20061113 \
+-           file://no-iconv-detect.patch;patch=1;mindate=20061114 \
+-	       file://iconv-detect.h \
+-	       file://gtk-doc.m4 \
++SRC_URI = "svn://svn.tinymail.org/svn/tinymail/;module=trunk;proto=http \
++	   file://camel-lite-configure-hack.patch;patch=1;maxdate=20061113 \
++	   file://no-iconv-detect.patch;patch=1;mindate=20061114 \
++	   file://iconv-detect.h \
++	   file://gtk-doc.m4 \
+            file://gtk-doc.make"
+ 
+ inherit pkgconfig autotools
+@@ -25,15 +27,10 @@
+ 	cp ${WORKDIR}/iconv-detect.h ${S}/libtinymail-camel/camel-lite/
+ }
+ 
+-do_stage(){
+-    autotools_stage_all
+-}
+-
+ 
+ PACKAGES =+ 	"lib${PN}-gpe lib${PN}-gpe-dev \
+-                 lib${PN}-maemo lib${PN}-maemo-dev \
+-                 tinymail-camel-lite tinymail-camel-lite-dev tinymail-camel-lite-dbg \
+-                 libtinymailui-gtk libtinymailui libtinymail-camel lib${PN}"
++		 tinymail-camel-lite tinymail-camel-lite-dev tinymail-camel-lite-dbg \
++		 libtinymailui-gtk libtinymailui libtinymail-camel lib${PN}"
+ 
+ FILES_lib${PN} =		  "${libdir}/lib*.so.*"
+ FILES_libtinymailui =		  "${libdir}/libtinymailui*.so.*"
+@@ -46,14 +43,6 @@
+                                    ${libdir}/libtinymail-gpe*.a \
+ 				   ${libdir}/libtinymail-gpe*.la"
+ 
+-FILES_lib${PN}-maemo = 		  "${libdir}/libtinymail-maemo*.so.*"
+-FILES_lib${PN}-maemo-dev = 	  "${libdir}/libtinymail-maemo*.so \
+-                                   ${libdir}/libtinymail-maemo*.a \
+-				   ${libdir}/libtinymail-maemo*.la"
+-
+-
+-
+-
+ LEAD_SONAME_tinymail-camel-lite = "libcamel-lite"
+ FILES_tinymail-camel-lite += 	  "${libdir}/libcamel*.so.* \
+ 				   ${libdir}/camel-lite-1.2/camel-providers/*.so \
+@@ -65,6 +54,4 @@
+ 				   ${libdir}/camel-lite-1.2/camel-providers/*.a "
+ FILES_tinymail-camel-lite-dbg +=  "${libdir}/camel-lite-1.2/camel-providers/.debug"
+ 
+-do_rm_work(){
+-    :
+-}
++

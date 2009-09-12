@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Stations database and source lib for weather.com for Other Maemo Weather"
 HOMEPAGE = "https://garage.maemo.org/projects/omweather/ "
-LICENSE = "GPL"
 SECTION = "apps"
+LICENSE = "GPL"
 DEPENDS = "libxml2 gtk+"
 PR = "r0"
 
@@ -16,7 +15,5 @@ do_stage(){
     autotools_stage_all
 }
 
-FILES_${PN}     += "${datadir}/omweather \
+FILES_${PN} += "${datadir}/omweather \
                     ${libdir}/omweather/*"
-
-

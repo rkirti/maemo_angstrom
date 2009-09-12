@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Email client for platforms with modest resources"
 HOMEPAGE = "http://modest.garage.maemo.org"
-LICENSE = "Nokia copyright"
 SECTION = "mail"
+LICENSE = "Nokia copyright"
 DEPENDS = "gnome-common gtkhtml3.14 libconic libhildon dbus dbus-glib osso-af-settings hildon-notify gconf glib-2.0 osso-gnome-vfs2 libhildonmime libtinymail alarmd libnotify mce-dev maemo-launcher"
 PR = "r0"
 
@@ -22,7 +21,3 @@ do_stage(){
 }
 
 FILES_${PN} += "${datadir}/dbus-1/*"
-
-do_rm_work(){
-    :
-}
