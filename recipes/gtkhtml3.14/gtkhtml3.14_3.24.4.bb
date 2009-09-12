@@ -1,14 +1,13 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "HTML rendering library"
 HOMEPAGE = "unknown"
-LICENSE = "GPL"
 SECTION = "x11/libs"
+LICENSE = "GPL"
 DEPENDS = "gtk+ gail"
 PR = "r0"
 
-SRC_URI =  "http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.24/gtkhtml-3.24.4.tar.gz \
+SRC_URI = "http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.24/gtkhtml-3.24.4.tar.gz \
            file://gtkhtml/gtkhtml_050_check_string.diff;patch=p1 \
            file://gtkhtml/gtkhtml_090_dependency_removal.diff;patch=p1 \
            file://gtkhtml/gtkhtml_100_dependency_removal_cleaning.diff;patch=p1 \
@@ -33,22 +32,21 @@ SRC_URI =  "http://ftp.gnome.org/pub/GNOME/sources/gtkhtml/3.24/gtkhtml-3.24.4.t
            file://gtkhtml/gtkhtml_300_coverity_findings.diff;patch=p1 \
            file://gtkhtml/gtkhtml_310_some_workarounds_to_avoid_crash.diff;patch=p1  "
 
-S="${WORKDIR}/gtkhtml-${PV}"
+S = "${WORKDIR}/gtkhtml-${PV}"
 
 inherit autotools pkgconfig
+
 EXTRA_OECONF = "--disable-gtk-doc"
-	
-ORBIT_IDL = "${STAGING_BINDIR_NATIVE}/orbit-idl-2"
 
 do_configure_append(){
     find ${S} -name Makefile | xargs sed -i s:'-I$(includedir)':'-I.':g
     find ${S} -name Makefile | xargs sed -i s:'-I${prefix}/include':'-I.':g
     find ${S} -name Makefile | xargs sed -i 's|ORBIT_IDL =.*|ORBIT_IDL = ${ORBIT_IDL}|'
 }
-
-
 do_stage(){
     autotools_stage_all
 }
 
 FILES_${PN} += "${datadir}/gtkhtml-3.14/*"
+
+ORBIT_IDL = "${STAGING_BINDIR_NATIVE}/orbit-idl-2"

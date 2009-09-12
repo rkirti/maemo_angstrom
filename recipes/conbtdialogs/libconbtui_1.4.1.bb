@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "DBUS API for invoking various dialogs"
 HOMEPAGE = "http://maemo.org"
-LICENSE = "GNU Lesser General Public License-version 2.1"
 SECTION = "x11/apps"
+LICENSE = "GNU Lesser General Public License-version 2.1"
 #No build dependencies specified in package's debian/control
 PR = "r0"
 
@@ -20,4 +19,3 @@ do_stage(){
 PACKAGES = "conbtdialogs-dev"
 
 FILES_conbtdialogs-dev = "/usr/*"
-

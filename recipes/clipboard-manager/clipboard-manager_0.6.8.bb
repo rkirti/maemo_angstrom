@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Clipboard Manager"
 HOMEPAGE = "http://maemo.org"
-LICENSE = "unknown"
 SECTION = "x11"
+LICENSE = "unknown"
 DEPENDS = "libx11 gconf glib-2.0 upstart"
 PR = "r4"
 

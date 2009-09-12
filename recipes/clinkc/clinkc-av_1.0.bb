@@ -1,11 +1,10 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "Cyberlink for C AV library"
 HOMEPAGE = "http://maemo.org"
-LICENSE = "Nokia copyright"
 #Hack to stop incorrect package naming
 SECTION = "misc"
+LICENSE = "Nokia copyright"
 DEPENDS = "clinkc"
 PR = "r15"
 

@@ -1,10 +1,9 @@
 # Copyright (C) 2009 Kirtika Ruchandani <kirtibr@gmail.com>
 # Released under the MIT license (see COPYING.MIT for the terms)
-
 DESCRIPTION = "CyberLink for C UPnP library support"
 HOMEPAGE = "unknown"
-LICENSE = "BSD"
 SECTION = "base"
+LICENSE = "BSD"
 DEPENDS = "curl libxml2"
 PR = "r0"
 
@@ -16,9 +15,8 @@ S = "${WORKDIR}/${PN}"
 
 inherit autotools pkgconfig
 
-FILES_${PN}-dbg += "${datadir}/doc/clinkc-2.0-0/samples/.debug" 
-
-
 do_stage(){
     autotools_stage_all
 }
+
+FILES_${PN}-dbg += "${datadir}/doc/clinkc-2.0-0/samples/.debug"
