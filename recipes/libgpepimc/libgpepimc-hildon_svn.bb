@@ -1,18 +1,17 @@
-DESCRIPTION = "Common code for GPE PIMs"
+DESCRIPTION = "Common code for GPE PIMs (hildon UI version)"
 SECTION = "gpe/libs"
 PRIORITY = "optional"
 LICENSE = "LGPL"
-DEPENDS = "libgpewidget gtk+ sqlite"
+DEPENDS = "libgpewidget-hildon gtk+ sqlite"
 PROVIDES = "libgepepimc"
 RPROVIDES = "libgepepimc"
-PV = "0.8+svn${SRCDATE}"
 PR = "r0"
+
+SRC_URI = "svn://projects.linuxtogo.org/svn/gpe/trunk/base;module=libgpepimc;rev=9931"
 
 inherit pkgconfig autotools
 
-SRC_URI = "${GPE_SVN}"
-
-S = "${WORKDIR}/${PN}"
+EXTRA_OECONF = "--enable-hildon"
 
 do_stage () {
         oe_libinstall -so libgpepimc ${STAGING_LIBDIR}
@@ -23,5 +22,3 @@ do_stage () {
 }
 
 headers = "pim-categories.h pim-categories-ui.h"
-
-DEFAULT_PREFERENCE = "-1"
